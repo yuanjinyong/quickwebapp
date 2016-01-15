@@ -1,0 +1,5 @@
+
+
+allprojects {
+    //configurations.all.transitive = false //不进行依赖传递，否则要下载很多依赖项
+}

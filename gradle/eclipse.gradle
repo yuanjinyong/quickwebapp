@@ -1,0 +1,86 @@
+
+
+allprojects {
+    afterEvaluate { gradleProject ->
+        plugins.withType(EclipsePlugin) {
+            eclipse {
+                //pathVariables 'webAppDir': webAppDir
+
+                project { project ->
+                    //name = "${gradleProject.name}"
+                    comment = "${version}"
+                }
+
+                classpath {
+                    downloadSources = true
+                    downloadJavadoc = false
+
+                    file {
+                        whenMerged { classpath ->
+                            def srcs = classpath.entries.findAll { entry -> entry.kind == 'src' }
+                            def libs = classpath.entries.findAll { entry -> entry.kind == 'lib' }
+                            def cons = classpath.entries.findAll { entry -> entry.kind == 'con' }
+                            def output = classpath.entries.findAll { entry -> entry.kind == 'output' }
+
+                            classpath.entries.clear()
+                            classpath.entries.addAll(srcs)
+                            classpath.entries.addAll(libs)
+                            classpath.entries.addAll(cons.reverse())
+                            classpath.entries.addAll(output)
+
+                            classpath.entries.findAll { entry -> entry.kind == 'lib' }*.exported = true
+                        }
+                    }
+                }
+            }
+        }
+
+        plugins.withType(EclipseWtpPlugin) {
+            eclipse {
+                classpath {
+                    defaultOutputDir = new File(projectDir, "${webAppDirName}/WEB-INF/classes")
+                    containers 'org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0'
+                }
+
+                wtp {
+                    component {
+                        gradleProject.sourceSets.test.allSource.srcDirs.each { file ->
+                            sourceDirs += file
+                        }
+
+                        //contextPath = "${gradleProject.name}"
+                        property name: 'java-output-path', value: "/${gradleProject.name}/${webAppDirName}/WEB-INF/classes"
+                    }
+
+                    facet {
+                        file {
+                            withXml { provider ->
+                                Node node = provider.asNode()
+                                node.fixed.find { it.@facet == 'jst.java' }.@facet = 'java'
+                                node.installed.find { it.@facet == 'jst.java' }.@facet = 'java'
+                                node.installed.find { it.@facet == 'jst.web' }.@version = '3.0'
+                                node.appendNode('runtime', [name: 'Apache Tomcat v7.0'])
+                                node.appendNode('fixed', [facet: 'wst.jsdt.web'])
+                                node.appendNode('installed', [facet: 'wst.jsdt.web', version: '1.0'])
+                            }
+                        }
+                    }
+                }
+            }
+
+            task copyDependencyLibs(type: Copy) {
+                group eclipseWtp.group
+                from(configurations.compile+configurations.runtime-configurations.providedCompile-configurations.providedRuntime) {
+                    exclude 'tomcat-em*.jar'
+                }
+                into "${webAppDirName}/WEB-INF/lib"
+                description = "复制依赖到的jar包到${destinationDir}。"
+                doFirst { logger.info(description) }
+                doLast {
+                    inputs.files.each { logger.info("复制文件：${it.absolutePath}") }
+                }
+            }
+            eclipseClasspath.finalizedBy copyDependencyLibs
+        }
+    }
+}
