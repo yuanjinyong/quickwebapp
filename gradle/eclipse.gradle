@@ -71,7 +71,7 @@ allprojects {
             task copyDependencyLibs(type: Copy) {
                 group eclipseWtp.group
                 from(configurations.compile+configurations.runtime-configurations.providedCompile-configurations.providedRuntime) {
-                    exclude 'tomcat-em*.jar'
+                    exclude 'tomcat-embed-*.jar', 'tomcat-jdbc-*.jar'
                 }
                 into "${webAppDirName}/WEB-INF/lib"
                 description = "复制依赖到的jar包到${destinationDir}。"
