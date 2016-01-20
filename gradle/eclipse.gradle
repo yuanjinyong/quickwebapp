@@ -36,6 +36,7 @@ allprojects {
         }
 
         plugins.withType(EclipseWtpPlugin) {
+            def libDir = new File(webAppDir, 'WEB-INF/lib')
             eclipse {
                 classpath {
                     defaultOutputDir = new File(projectDir, "${webAppDirName}/WEB-INF/classes")
@@ -71,9 +72,9 @@ allprojects {
             task copyDependencyLibs(type: Copy) {
                 group eclipseWtp.group
                 from(configurations.compile+configurations.runtime-configurations.providedCompile-configurations.providedRuntime) {
-                    exclude 'tomcat-embed-*.jar', 'tomcat-jdbc-*.jar'
+                    //exclude 'tomcat-embed-*.jar', 'tomcat-jdbc-*.jar'
                 }
-                into "${webAppDirName}/WEB-INF/lib"
+                into libDir
                 description = "复制依赖到的jar包到${destinationDir}。"
                 doFirst { logger.info(description) }
                 doLast {
@@ -81,6 +82,22 @@ allprojects {
                 }
             }
             eclipseClasspath.finalizedBy copyDependencyLibs
+
+            task cleanDependencyLibs(type: Delete) {
+                group eclipseWtp.group
+                delete libDir
+                description = "删除${libDir}。"
+                doFirst { logger.info(description) }
+            }
+            cleanEclipseClasspath.finalizedBy cleanDependencyLibs
+
+            task cleanClasses(type: Delete) {
+                group eclipseWtp.group
+                delete eclipse.classpath.defaultOutputDir
+                description = "删除${eclipse.classpath.defaultOutputDir}。"
+                doFirst { logger.info(description) }
+            }
+            cleanEclipseClasspath.finalizedBy cleanClasses
         }
     }
 }

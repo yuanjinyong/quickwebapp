@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 指定一个需要在配置中解析使用的外部属性文件 -->
+    <properties resource="mybatis/generator/cfg.properties" />
+
+    <!-- 指定在何处可以找到驱动程序 -->
+    <!--<classPathEntry location="${mybatis.generator.datasource.driverJarFile}" /> -->
+
+    <!-- 如果你希望不生成和Example查询有关的内容，那么可以按照如下进行配置 -->
+    <!--<context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat"> -->
+    <context id="Mysql" targetRuntime="${mybatis.generator.targetRuntime}" defaultModelType="${mybatis.generator.defaultModelType}">
+        <!-- 自动给表名或字段名添加**分隔符**。 -->
+        <property name="autoDelimitKeywords" value="true" />
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+
+        <!--<plugin /> -->
+
+        <commentGenerator type="com.quickwebapp.tools.mybatis.MyCommentGenerator">
+            <property name="suppressAllComments" value="${mybatis.generator.suppressAllComments}" /> <!-- 生成注释 -->
+            <property name="suppressDate" value="${mybatis.generator.suppressDate}" /> <!-- 生成的注释不包含时间戳 -->
+        </commentGenerator>
+
+
+        <jdbcConnection driverClass="${mybatis.generator.datasource.driverClassName}" connectionURL="${mybatis.generator.datasource.url}" userId="${mybatis.generator.datasource.username}" password="${mybatis.generator.datasource.password}"></jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="${mybatis.generator.forceBigDecimals}" />
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="${mybatis.generator.javaModelPackage}" targetProject="${mybatis.generator.javaModelDir}">
+            <property name="enableSubPackages" value="true" />
+            <!-- Java模型生成器也应该对字符串进行trim操作。 这意味着任何字符串属性的setter方法将调用trim方法 - 如果数据库可能会在字符末尾返回空白符，这是非常有用的。 -->
+            <property name="trimStrings" value="false" />
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="${mybatis.generator.sqlMapPackage}" targetProject="${mybatis.generator.sqlMapDir}">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="${mybatis.generator.javaClientPackage}" targetProject="${mybatis.generator.javaClientDir}" type="${mybatis.generator.javaClientGeneratorType}">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="IT_%">
+            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="f_id" sqlStatement="Mysql" identity="true" />
+        </table>
+
+    </context>
+</generatorConfiguration>
