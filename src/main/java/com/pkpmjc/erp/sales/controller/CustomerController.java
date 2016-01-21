@@ -26,6 +26,7 @@ import com.pkpmjc.erp.sales.mapper.CustomerMapper;
  *
  */
 @RestController
+@RequestMapping(value = "/api")
 public class CustomerController {
     @Autowired
     private CustomerMapper customerMapper;
