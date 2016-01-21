@@ -13,8 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @author Administrator
  *
  */
-@ComponentScan("com.pkpmjc.erp.**")
-@MapperScan("com.pkpmjc.erp.**.mapper.**")
+@ComponentScan(basePackages = { "com.pkpmjc.erp.**.controller.**", "com.pkpmjc.erp.**.service.**" })
+@MapperScan(basePackages = { "com.pkpmjc.erp.**.mapper.**" })
 @SpringBootApplication
 @EnableAutoConfiguration
 public class Application {
