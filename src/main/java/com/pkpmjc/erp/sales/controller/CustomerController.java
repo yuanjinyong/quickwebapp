@@ -6,6 +6,9 @@ package com.pkpmjc.erp.sales.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,11 +31,16 @@ import com.pkpmjc.erp.sales.mapper.CustomerMapper;
 @RestController
 @RequestMapping(value = "/api")
 public class CustomerController {
+    private Log log = LogFactory.getLog(CustomerController.class);
+    private Logger logger = Logger.getLogger(CustomerController.class);
+
     @Autowired
     private CustomerMapper customerMapper;
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
     public ResponseEntity<List<Customer>> list(Map<String, Object> param) {
+        logger.debug("logger" + param.toString());
+        log.debug("log" + param.toString());
         CustomerExample example = new CustomerExample();
         return new ResponseEntity<List<Customer>>(customerMapper.selectByExampleWithBLOBs(example), HttpStatus.OK);
     }
