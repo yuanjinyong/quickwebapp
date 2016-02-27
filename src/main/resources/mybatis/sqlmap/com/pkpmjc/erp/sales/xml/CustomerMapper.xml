@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pkpmjc.erp.sales.mapper.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <id column="f_id" property="f_id" jdbcType="INTEGER" />
+    <result column="f_customer_no" property="f_customer_no" jdbcType="VARCHAR" />
+    <result column="f_customer_name" property="f_customer_name" jdbcType="VARCHAR" />
+    <result column="f_linker" property="f_linker" jdbcType="VARCHAR" />
+    <result column="f_tel" property="f_tel" jdbcType="VARCHAR" />
+    <result column="f_fax" property="f_fax" jdbcType="VARCHAR" />
+    <result column="f_status" property="f_status" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.pkpmjc.erp.sales.entity.Customer" extends="BaseResultMap" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <result column="f_remark" property="f_remark" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    f_id, f_customer_no, f_customer_name, f_linker, f_tel, f_fax, f_status
+  </sql>
+  <sql id="Blob_Column_List" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    f_remark
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.pkpmjc.erp.sales.entity.CustomerExample" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_sales_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.pkpmjc.erp.sales.entity.CustomerExample" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_sales_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_sales_customer
+    where f_id = #{f_id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    delete from t_sales_customer
+    where f_id = #{f_id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.pkpmjc.erp.sales.entity.CustomerExample" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    delete from t_sales_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <selectKey resultType="java.lang.Integer" keyProperty="f_id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sales_customer (f_customer_no, f_customer_name, f_linker, 
+      f_tel, f_fax, f_status, 
+      f_remark)
+    values (#{f_customer_no,jdbcType=VARCHAR}, #{f_customer_name,jdbcType=VARCHAR}, #{f_linker,jdbcType=VARCHAR}, 
+      #{f_tel,jdbcType=VARCHAR}, #{f_fax,jdbcType=VARCHAR}, #{f_status,jdbcType=INTEGER}, 
+      #{f_remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    <selectKey resultType="java.lang.Integer" keyProperty="f_id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sales_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="f_customer_no != null" >
+        f_customer_no,
+      </if>
+      <if test="f_customer_name != null" >
+        f_customer_name,
+      </if>
+      <if test="f_linker != null" >
+        f_linker,
+      </if>
+      <if test="f_tel != null" >
+        f_tel,
+      </if>
+      <if test="f_fax != null" >
+        f_fax,
+      </if>
+      <if test="f_status != null" >
+        f_status,
+      </if>
+      <if test="f_remark != null" >
+        f_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="f_customer_no != null" >
+        #{f_customer_no,jdbcType=VARCHAR},
+      </if>
+      <if test="f_customer_name != null" >
+        #{f_customer_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_linker != null" >
+        #{f_linker,jdbcType=VARCHAR},
+      </if>
+      <if test="f_tel != null" >
+        #{f_tel,jdbcType=VARCHAR},
+      </if>
+      <if test="f_fax != null" >
+        #{f_fax,jdbcType=VARCHAR},
+      </if>
+      <if test="f_status != null" >
+        #{f_status,jdbcType=INTEGER},
+      </if>
+      <if test="f_remark != null" >
+        #{f_remark,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.pkpmjc.erp.sales.entity.CustomerExample" resultType="java.lang.Integer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    select count(*) from t_sales_customer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    <set >
+      <if test="record.f_id != null" >
+        f_id = #{record.f_id,jdbcType=INTEGER},
+      </if>
+      <if test="record.f_customer_no != null" >
+        f_customer_no = #{record.f_customer_no,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f_customer_name != null" >
+        f_customer_name = #{record.f_customer_name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f_linker != null" >
+        f_linker = #{record.f_linker,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f_tel != null" >
+        f_tel = #{record.f_tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f_fax != null" >
+        f_fax = #{record.f_fax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f_status != null" >
+        f_status = #{record.f_status,jdbcType=INTEGER},
+      </if>
+      <if test="record.f_remark != null" >
+        f_remark = #{record.f_remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    set f_id = #{record.f_id,jdbcType=INTEGER},
+      f_customer_no = #{record.f_customer_no,jdbcType=VARCHAR},
+      f_customer_name = #{record.f_customer_name,jdbcType=VARCHAR},
+      f_linker = #{record.f_linker,jdbcType=VARCHAR},
+      f_tel = #{record.f_tel,jdbcType=VARCHAR},
+      f_fax = #{record.f_fax,jdbcType=VARCHAR},
+      f_status = #{record.f_status,jdbcType=INTEGER},
+      f_remark = #{record.f_remark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    set f_id = #{record.f_id,jdbcType=INTEGER},
+      f_customer_no = #{record.f_customer_no,jdbcType=VARCHAR},
+      f_customer_name = #{record.f_customer_name,jdbcType=VARCHAR},
+      f_linker = #{record.f_linker,jdbcType=VARCHAR},
+      f_tel = #{record.f_tel,jdbcType=VARCHAR},
+      f_fax = #{record.f_fax,jdbcType=VARCHAR},
+      f_status = #{record.f_status,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    <set >
+      <if test="f_customer_no != null" >
+        f_customer_no = #{f_customer_no,jdbcType=VARCHAR},
+      </if>
+      <if test="f_customer_name != null" >
+        f_customer_name = #{f_customer_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_linker != null" >
+        f_linker = #{f_linker,jdbcType=VARCHAR},
+      </if>
+      <if test="f_tel != null" >
+        f_tel = #{f_tel,jdbcType=VARCHAR},
+      </if>
+      <if test="f_fax != null" >
+        f_fax = #{f_fax,jdbcType=VARCHAR},
+      </if>
+      <if test="f_status != null" >
+        f_status = #{f_status,jdbcType=INTEGER},
+      </if>
+      <if test="f_remark != null" >
+        f_remark = #{f_remark,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where f_id = #{f_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    set f_customer_no = #{f_customer_no,jdbcType=VARCHAR},
+      f_customer_name = #{f_customer_name,jdbcType=VARCHAR},
+      f_linker = #{f_linker,jdbcType=VARCHAR},
+      f_tel = #{f_tel,jdbcType=VARCHAR},
+      f_fax = #{f_fax,jdbcType=VARCHAR},
+      f_status = #{f_status,jdbcType=INTEGER},
+      f_remark = #{f_remark,jdbcType=LONGVARCHAR}
+    where f_id = #{f_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pkpmjc.erp.sales.entity.Customer" >
+    <!--
+        警告 - @mbggenerated
+        由MyBatis Generator自动生成的代码，请不要删除。
+    -->
+    update t_sales_customer
+    set f_customer_no = #{f_customer_no,jdbcType=VARCHAR},
+      f_customer_name = #{f_customer_name,jdbcType=VARCHAR},
+      f_linker = #{f_linker,jdbcType=VARCHAR},
+      f_tel = #{f_tel,jdbcType=VARCHAR},
+      f_fax = #{f_fax,jdbcType=VARCHAR},
+      f_status = #{f_status,jdbcType=INTEGER}
+    where f_id = #{f_id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -53,6 +53,14 @@ repositories {
     mavenCentral()
 }
 
+
+configurations {
+    //otherConf
+    compile.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
     //angularjs
@@ -66,8 +74,8 @@ dependencies {
     //spring-boot
     //支持 Web 应用开发，包含 Tomcat 和 spring-mvc
     compile("org.springframework.boot:spring-boot-starter-web") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
     compile("org.springframework.boot:spring-boot-starter-log4j")
     providedCompile("org.springframework.boot:spring-boot-starter-tomcat")

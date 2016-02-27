@@ -9,17 +9,17 @@
 @rem ####################Added by Yuanjinyong##################################
 if exist T: (
     set  GRADLE_USER_HOME=T:\.gradle
-	
-	ver | find "4.0." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "4.10." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "4.90." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "3.51." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "5.0." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "5.1." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "5.2." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
-	ver | find "6.0." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
-	ver | find "6.1." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
-	ver | find "6.2." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
+
+    ver | find "4.0." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "4.10." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "4.90." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "3.51." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "5.0." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "5.1." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "5.2." > NUL && wmic ENVIRONMENT create name="GRADLE_USER_HOME",username="<system>",VariableValue="T:\.gradle">NUL
+    ver | find "6.0." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
+    ver | find "6.1." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
+    ver | find "6.2." > NUL && setx GRADLE_USER_HOME T:\.gradle>NUL
 )
 @rem ####################Added by Yuanjinyong end##############################
 
