@@ -435,9 +435,14 @@ public class DatabaseIntrospector {
 
         Map<ActualTableName, List<IntrospectedColumn>> answer = new HashMap<ActualTableName, List<IntrospectedColumn>>();
 
+        ResultSet rs1 = databaseMetaData.getTables(localCatalog, localSchema, localTableName, null);
+        while (rs1.next()) {
+            tc.setTableRemark(rs1.getString("REMARKS"));
+        }
+        closeResultSet(rs1);
         if (logger.isDebugEnabled()) {
             String fullTableName = composeFullyQualifiedTableName(localCatalog, localSchema, localTableName, '.');
-            logger.debug(getString("Tracing.1", fullTableName)); //$NON-NLS-1$
+            logger.debug(getString("Tracing.1", fullTableName) + tc.getTableRemark()); //$NON-NLS-1$
         }
 
         ResultSet rs = databaseMetaData.getColumns(localCatalog, localSchema, localTableName, null);

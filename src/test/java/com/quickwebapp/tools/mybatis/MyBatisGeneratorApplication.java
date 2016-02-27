@@ -1,5 +1,5 @@
 /**
- * 
+ * 生成MyBatis的类和Mapper XML文件
  */
 package com.quickwebapp.tools.mybatis;
 
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
-import org.mybatis.generator.logging.Log;
-import org.mybatis.generator.logging.LogFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -56,7 +56,11 @@ public class MyBatisGeneratorApplication {
                 logger.debug("生成" + resource.getDescription());
                 Configuration config = cp.parseConfiguration(resource.getInputStream());
                 MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, shellCallback, warnings);
-                myBatisGenerator.generate(null);
+                myBatisGenerator.generate(new MyBatisGeneratorProgressCallback());
+
+                for (String warning : warnings) {
+                    logger.error(warning);
+                }
             } catch (Exception e) {
                 logger.error("生成" + resource.getURI() + "失败！", e);
             }

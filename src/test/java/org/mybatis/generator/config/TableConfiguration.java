@@ -65,6 +65,7 @@ public class TableConfiguration extends PropertyHolder {
     private String catalog;
     private String schema;
     private String tableName;
+    private String tableRemark;
     private String domainObjectName;
     private String alias;
     private ModelType modelType;
@@ -285,6 +286,14 @@ public class TableConfiguration extends PropertyHolder {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getTableRemark() {
+        return tableRemark;
+    }
+
+    public void setTableRemark(String tableRemark) {
+        this.tableRemark = tableRemark;
     }
 
     public List<ColumnOverride> getColumnOverrides() {

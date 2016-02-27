@@ -47,8 +47,11 @@ public class DefaultShellCallback implements ShellCallback {
 
         File project = new File(targetProject);
         if (!project.isDirectory()) {
-            throw new ShellException(getString("Warning.9", //$NON-NLS-1$
-                    targetProject));
+            boolean rc = project.mkdirs();
+            if (!rc) {
+                throw new ShellException(getString("Warning.9", //$NON-NLS-1$
+                        targetProject));
+            }
         }
 
         StringBuilder sb = new StringBuilder();

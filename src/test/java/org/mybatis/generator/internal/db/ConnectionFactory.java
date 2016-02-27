@@ -62,6 +62,8 @@ public class ConnectionFactory {
             props.setProperty("password", config.getPassword()); //$NON-NLS-1$
         }
 
+        props.setProperty("useInformationSchema", "true");// 设置可以获取tables remarks信息
+
         props.putAll(config.getProperties());
 
         Connection conn = driver.connect(config.getConnectionURL(), props);

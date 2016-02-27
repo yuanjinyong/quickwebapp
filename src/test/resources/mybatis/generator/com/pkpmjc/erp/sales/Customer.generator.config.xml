@@ -20,7 +20,7 @@
 
         <!--<plugin /> -->
 
-        <commentGenerator type="com.quickwebapp.tools.mybatis.MyCommentGenerator">
+        <commentGenerator>
             <property name="suppressAllComments" value="${mybatis.generator.suppressAllComments}" /> <!-- 生成注释 -->
             <property name="suppressDate" value="${mybatis.generator.suppressDate}" /> <!-- 生成的注释不包含时间戳 -->
         </commentGenerator>

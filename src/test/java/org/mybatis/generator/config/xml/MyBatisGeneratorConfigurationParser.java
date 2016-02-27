@@ -20,6 +20,8 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.mybatis.generator.config.ColumnOverride;
@@ -115,6 +117,19 @@ public class MyBatisGeneratorConfigurationParser {
 
             properties.load(inputStream);
             inputStream.close();
+
+            // 嵌套引用变量处理，比如：mybatis.generator.sqlMapDir=${mybatis.generator.projectDir}/src/main/resources/mybatis/sqlmap
+            Iterator<Entry<Object, Object>> it = properties.entrySet().iterator();
+            while (it.hasNext()) {
+                Entry<Object, Object> entry = it.next();
+                Object originalValue = entry.getValue();
+                String newValue = parsePropertyTokens(originalValue.toString());
+                while (!newValue.equals(originalValue)) {
+                    originalValue = newValue;
+                    newValue = parsePropertyTokens(originalValue.toString());
+                }
+                entry.setValue(newValue);
+            }
         } catch (IOException e) {
             if (stringHasValue(resource)) {
                 throw new XMLParserException(getString("RuntimeError.16", resource)); //$NON-NLS-1$
