@@ -1,0 +1,11 @@
+{
+  "name": "quickwebapp",
+  "version": "0.0.1-snapshot",
+  "description": "Web应用快速开发平台",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-testem": "^0.5.22",
+    "sinon": "^1.17.3"
+  }
+}
