@@ -8,8 +8,8 @@ set WEBAPP_DIR=%PROJECT_DIR%\src\main\webapp
 set LOG_FILE=%~fn0.log
 
 cd /d %WEBAPP_DIR%
-echo grunt testem:run:unit 2>&1 |mtee /d/t %LOG_FILE%
-grunt testem:run:unit 2>&1 |mtee /d/t /+ %LOG_FILE%
+echo grunt --no-color testem:run:unit 2>&1 |mtee /d/t %LOG_FILE%
+grunt --no-color testem:run:unit 2>&1 |mtee /d/t /+ %LOG_FILE%
 cd /d %PROJECT_DIR%
 
 pause
