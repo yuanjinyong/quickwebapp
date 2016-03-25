@@ -83,7 +83,9 @@ dependencies {
     runtime("org.springframework.boot:spring-boot-starter-actuator")
     //mybatis-spring-boot
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.0.0")
-    
+    //MD5算法
+    compile("commons-codec:commons-codec:1.10")
+
     //MySQL
     runtime "mysql:mysql-connector-java:5.1.32"
     //druid

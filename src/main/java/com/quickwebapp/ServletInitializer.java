@@ -10,7 +10,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  * @author Administrator
  *
  */
-public class ApplicationWebXml extends SpringBootServletInitializer {
+public class ServletInitializer extends SpringBootServletInitializer {
     /*
      * (non-Javadoc)
      * 

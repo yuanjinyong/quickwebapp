@@ -53,7 +53,7 @@ public class MyBatisGeneratorApplication {
                 System.setProperty("mybatis.generator.javaClientPackage", defaultPackage + ".mapper");
                 System.setProperty("mybatis.generator.sqlMapPackage", defaultPackage + ".xml");
                 System.setProperty("mybatis.generator.defaultClassName", defaultClassName);
-                logger.debug("生成" + resource.getDescription());
+                logger.info("生成" + resource.getDescription());
                 Configuration config = cp.parseConfiguration(resource.getInputStream());
                 MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, shellCallback, warnings);
                 myBatisGenerator.generate(new MyBatisGeneratorProgressCallback());
