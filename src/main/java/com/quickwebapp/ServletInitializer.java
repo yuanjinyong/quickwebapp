@@ -6,6 +6,8 @@ package com.quickwebapp;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
+import com.quickwebapp.core.listener.ApplicationStartup;
+
 /**
  * @author Administrator
  *
@@ -19,7 +21,8 @@ public class ServletInitializer extends SpringBootServletInitializer {
      * SpringApplicationBuilder)
      */
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        builder.application().addListeners(new ApplicationStartup());
+        return builder.sources(Application.class);
     }
 }

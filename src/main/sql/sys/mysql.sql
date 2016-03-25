@@ -17,8 +17,7 @@ CREATE TABLE `t_sys_url` (
   `f_handler_method` VARCHAR(512) COLLATE utf8_bin DEFAULT NULL COMMENT '处理方法',
   `f_log` INT(1) NOT NULL DEFAULT '2' COMMENT '是否记录日志。如查询列表，进入增加界面等，都不记录，而删除、修改、增加就需要记录',
   `f_auto` INT(1) NOT NULL DEFAULT '1' COMMENT '是否自动扫描生成',
-  PRIMARY KEY (`f_id`),
-  UNIQUE KEY `U_SYS_URL` (`f_url`,`f_methods`)
+  PRIMARY KEY (`f_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='URL定义表';
 
 

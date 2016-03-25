@@ -46,7 +46,7 @@ public class UrlService extends BaseService<String, UrlEntity> {
 
     public void updateAutoEntities(List<UrlEntity> entityList) {
         MapEntity mapEntity = new MapEntity();
-        mapEntity.put("f_auto", 1);
+        mapEntity.put("f_auto", true);
         urlMapper.deleteEntities(mapEntity);
         urlMapper.insertEntities(entityList);
     }

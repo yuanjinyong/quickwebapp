@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.quickwebapp.core.listener.ApplicationStartup;
+
 /**
  * @author Administrator
  *
@@ -22,6 +24,9 @@ public class Application {
      * @param args
      */
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        // SpringApplication.run(Application.class, args);
+        SpringApplication springApplication = new SpringApplication(Application.class);
+        springApplication.addListeners(new ApplicationStartup());
+        springApplication.run(args);
     }
 }
