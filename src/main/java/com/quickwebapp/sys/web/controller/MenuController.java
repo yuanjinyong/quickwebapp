@@ -1,9 +1,9 @@
 package com.quickwebapp.sys.web.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.quickwebapp.core.entity.MapEntity;
 import com.quickwebapp.core.service.BaseService;
 import com.quickwebapp.core.web.controller.BaseController;
 import com.quickwebapp.sys.entity.MenuEntity;
@@ -37,9 +36,9 @@ public class MenuController extends BaseController<String, MenuEntity> {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<MenuEntity>> list(Map<String, Object> params) {
+    public ResponseEntity<List<MenuEntity>> list(HttpServletRequest request) {
         // return super.list(params);
-        return new ResponseEntity<List<MenuEntity>>(menuService.getMenuList(new MapEntity(params)), HttpStatus.OK);
+        return new ResponseEntity<List<MenuEntity>>(menuService.getMenuList($params(request)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -64,7 +63,7 @@ public class MenuController extends BaseController<String, MenuEntity> {
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public ResponseEntity<MenuEntity> delete(Map<String, Object> params) {
-        return super.delete(params);
+    public ResponseEntity<MenuEntity> delete(HttpServletRequest request) {
+        return super.delete($params(request));
     }
 }

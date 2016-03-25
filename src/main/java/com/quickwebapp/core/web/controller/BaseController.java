@@ -1,7 +1,6 @@
 package com.quickwebapp.core.web.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,8 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
 
     protected abstract BaseService<P, E> getService();
 
-    public ResponseEntity<List<E>> list(Map<String, Object> params) {
-        return new ResponseEntity<List<E>>(getService().selectEntityListPage(new MapEntity(params)), HttpStatus.OK);
+    public ResponseEntity<List<E>> list(MapEntity mapEntity) {
+        return new ResponseEntity<List<E>>(getService().selectEntityListPage(mapEntity), HttpStatus.OK);
     }
 
     public ResponseEntity<Void> create(E entity, UriComponentsBuilder ucBuilder) {
@@ -46,8 +45,8 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
         return new ResponseEntity<E>(HttpStatus.NO_CONTENT);
     }
 
-    public ResponseEntity<E> delete(Map<String, Object> params) {
-        getService().deleteEntities(new MapEntity(params));
+    public ResponseEntity<E> delete(MapEntity mapEntity) {
+        getService().deleteEntities(mapEntity);
         return new ResponseEntity<E>(HttpStatus.NO_CONTENT);
     }
 

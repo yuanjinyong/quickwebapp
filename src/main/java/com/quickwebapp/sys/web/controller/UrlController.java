@@ -1,9 +1,9 @@
 package com.quickwebapp.sys.web.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +30,8 @@ public class UrlController extends BaseController<String, UrlEntity> {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<List<UrlEntity>> list(Map<String, Object> params) {
-        return super.list(params);
+    public ResponseEntity<List<UrlEntity>> list(HttpServletRequest request) {
+        return super.list($params(request));
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -55,7 +55,7 @@ public class UrlController extends BaseController<String, UrlEntity> {
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public ResponseEntity<UrlEntity> delete(Map<String, Object> params) {
-        return super.delete(params);
+    public ResponseEntity<UrlEntity> delete(HttpServletRequest request) {
+        return super.delete($params(request));
     }
 }
