@@ -35,13 +35,13 @@ public class MenuController extends BaseController<String, MenuEntity> {
         return menuService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<MenuEntity>> list(HttpServletRequest request) {
         // return super.list(params);
         return new ResponseEntity<List<MenuEntity>>(menuService.getMenuList($params(request)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody MenuEntity entity, UriComponentsBuilder ucBuilder) {
         return super.create(entity, ucBuilder);
     }
@@ -62,7 +62,7 @@ public class MenuController extends BaseController<String, MenuEntity> {
         return super.delete(primaryKey);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<MenuEntity> delete(HttpServletRequest request) {
         return super.delete($params(request));
     }

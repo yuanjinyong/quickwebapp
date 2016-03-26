@@ -29,12 +29,12 @@ public class UrlController extends BaseController<String, UrlEntity> {
         return urlService;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UrlEntity>> list(HttpServletRequest request) {
         return super.list($params(request));
     }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> create(@RequestBody UrlEntity entity, UriComponentsBuilder ucBuilder) {
         return super.create(entity, ucBuilder);
     }
@@ -54,7 +54,7 @@ public class UrlController extends BaseController<String, UrlEntity> {
         return super.delete(primaryKey);
     }
 
-    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<UrlEntity> delete(HttpServletRequest request) {
         return super.delete($params(request));
     }
