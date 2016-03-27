@@ -1,7 +1,20 @@
 <div class="page-header">
-    <h1>A checklist</h1>
+    <h1>URL管理</h1>
+    <div class="well span6" style="float: none;">
+        <button ng-click="changeShow('list')">switch to list</button>
+        <button ng-click="changeShow('add')">switch to add</button>
+        <button ng-click="changeShow('edit')">switch to edit</button>
+        <button ng-click="changeShow('detail')">switch to detail</button>
+    </div>
 </div>
-<div class="alert alert-info" role="alert" ng-hide="items && items.length > 0">There are no items yet.</div>
+
+<div class="span6" ng-switch="showMode">
+    <div ng-switch-when="list">我是列表區塊dgsdfgsdfgsdg</div>
+    <div ng-switch-when="add">我是新增區塊</div>
+    <div ng-switch-when="edit">我是修改區塊</div>
+    <div ng-switch-when="detail">我是明細區塊</div>
+</div>
+<div class="alert alert-info" role="alert" ng-hide="items && items.length > 0">无记录.</div>
 <form class="form-horizontal" role="form" ng-submit="addItem(newItem)">
     <div class="form-group" ng-repeat="item in items">
         <div class="checkbox col-xs-9">

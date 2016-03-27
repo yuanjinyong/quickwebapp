@@ -5,19 +5,35 @@
 <title>Quick Webapp</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/app.css" />
 </head>
+
+
 <body ng-app="app" ng-controller="ApplicationController">
-    <div ng-if="currentUser">
-        <div class="container">
-            <ul class="nav nav-pills" role="tablist">
-                <li class="active"><a href="#/">个人中心</a></li>
-                <li><a href="#/url">URL管理</a></li>
-                <li><a href="#/menu">菜单管理</a></li>
-                <li><a href="" ng-click="logout()">logout</a></li>
-            </ul>
+    <div id="app" class="app-navbar-fixed app-sidebar-fixed">
+        <div class="container"></div>
+        <!-- 用户登录才可见 -->
+        <div ng-if="currentUser">
+            <div id="sidebar" class="sidebar app-aside">
+                <div class="sidebar-container perfect-scrollbar ps-container ps-active-y">
+                    <nav>
+                        <div class="navbar-title">
+                            <span>系统菜单</span>
+                        </div>
+                        <!-- 采用递归方式，实现无限级菜单 -->
+                        <ul class="main-navigation-menu">
+                            <li ng-repeat="menu in currentUser.menu.children" ng-include="'template/nodes_renderer.html'"></li>
+                        </ul>
+                    </nav>
+                    <!--div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -994px;"></div-->
+                    <!--div class="ps-scrollbar-y-rail" style="top: 997px; height: 175px; right: 3px;"</div-->
+                </div>
+            </div>
         </div>
+
+        <!-- angular的视图 -->
+        <div ng-view class="container"></div>
     </div>
-    <div ng-view class="container"></div>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-route.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-resource.min.js"></script>
@@ -25,6 +41,7 @@
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/controller.js"></script>
     <script type="text/javascript" src="app/sys/login/controller.js"></script>
+    <script type="text/javascript" src="app/sys/error/controller.js"></script>
     <script type="text/javascript" src="app/sys/url/controller.js"></script>
     <script type="text/javascript" src="app/sys/url/service.js"></script>
     <script type="text/javascript" src="app/sys/menu/controller.js"></script>

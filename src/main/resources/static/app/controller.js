@@ -29,6 +29,26 @@
                 failCallback && failCallback(response);
             });
         };
+        $scope.openMenu = function(menu) {
+            if (menu.f_type === 2) {
+                $scope.route(menu.f_url_id);
+            } else {
+                if (menu.isOpen) {
+                    menu.isOpen = false;
+                } else {
+                    menu.isOpen = true;
+                }
+            }
+        };
+        $scope.route = function(path) {
+            if (path != '') {
+                $scope.logger('路由到' + path);
+                $location.path(path);
+            }
+        };
+        $scope.changeShow = function(showMode) {
+            $scope.showMode = showMode;
+        }
 
         $scope.setCurrentUser = function(user) {
             $scope.currentUser = user;
@@ -43,6 +63,7 @@
         };
 
         $scope.logger('ApplicationController');
+        $scope.showMode = "list";
         $scope.currentUser = null;
         if ($scope.currentUser == null) {
             $scope.logger('需要先登录');

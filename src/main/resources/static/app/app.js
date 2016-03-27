@@ -16,12 +16,15 @@
         }).when('/login', {
             templateUrl : 'app/sys/login/form.html',
             controller : 'LoginController'
-        }).when('/url', {
+        }).when('/sys/url', {
             templateUrl : 'app/sys/url/list.html',
             controller : 'UrlController'
-        }).when('/menu', {
+        }).when('/sys/menu', {
             templateUrl : 'app/sys/menu/list.html',
             controller : 'MenuController'
-        }).otherwise('/');
+        }).otherwise('/sys/error', {
+            templateUrl : 'app/sys/error/error.html',
+            controller : 'ErrorController'
+        });
     });
 }(angular));

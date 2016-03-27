@@ -1,0 +1,20 @@
+<a herf="" ng-click="openMenu(menu)">
+    <div class="item-content">
+        <div class="item-media">
+            <!-- 菜单项图标 -->
+            <i class="ti-menu-alt"></i>
+        </div>
+        <div class="item-inner">
+            <!-- 菜单项名称 -->
+            <span class="title">{{p_index}}{{$index+1}} {{menu.f_menu_name}}</span>
+            <!-- 展开/收缩图标 -->
+            <i class="icon-arrow" ng-if="menu.f_type === 1 && menu.children.length > 0">+</i>
+        </div>
+    </div>
+</a>
+<div ng-if="menu.f_type === 1 && menu.children.length > 0">
+    <ul class="sub-menu" ng-show="menu.isOpen" ng-init="p_index = (p_index + ($index+1) + '.')">
+        <!-- 子菜单 -->
+        <li ng-repeat="menu in menu.children" ng-include="'template/nodes_renderer.html'"></li>
+    </ul>
+</div>
