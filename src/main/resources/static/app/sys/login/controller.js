@@ -1,51 +1,33 @@
 (function(angular) {
-    var LoginController = function($rootScope, $scope, $http, $location, menuService) {
-        console.log('LoginController');
-        var authenticate = function(credentials, callback) {
-            var headers = credentials ? {
-                authorization : 'Basic ' + btoa(credentials.username + ':' + credentials.password)
+    var LoginController = function($scope, $location) {
+        $scope.logger('LoginController');
+
+        $scope.login = function() {
+            var user = $scope.credentials;
+            var headers = user ? {
+                authorization : 'Basic ' + btoa(user.username + ':' + user.password)
             } : {};
 
-            $http.get('authenticate', {
+            $scope.httpGet('authenticate', {
                 headers : headers
-            }).success(function(response) {
-                alert(JSON.stringify(response, null, 2));
-                if (response.name) {
-                    //menuService.query(function(response) {
-                    //    $rootScope.menu = response ? response : [];
-                    //});
-
-                    $scope.setCurrentUser(response);
-                    $rootScope.authenticated = true;
-                } else {
-                    $scope.setCurrentUser(null);
-                    $rootScope.authenticated = false;
-                }
-                callback && callback();
-            }).error(function(response) {
+            }, function(response) {
+                $scope.setCurrentUser(response);
+                $scope.error = false;
+                $location.path('/');
+            }, function(response) {
                 $scope.setCurrentUser(null);
-                $rootScope.authenticated = false;
-                callback && callback();
+                $scope.error = true;
+                $location.path('/login');
             });
-        }
-
+        };
 
         $scope.error = false;
-        //authenticate();
-        $scope.credentials = {username : 'admin', password : 'pkpm'};
-        $scope.login = function() {
-            authenticate($scope.credentials, function() {
-                if ($rootScope.authenticated) {
-                    $location.path('/');
-                    $scope.error = false;
-                } else {
-                    $location.path('/login');
-                    $scope.error = true;
-                }
-            });
+        $scope.credentials = {
+            username : ($scope.dev ? 'admin' : ''),
+            password : ($scope.dev ? 'pkpm' : '')
         };
     };
 
-    LoginController.$inject = [ '$rootScope', '$scope', '$http', '$location', 'MenuService' ];
+    LoginController.$inject = [ '$scope', '$location' ];
     angular.module('app.controllers').controller('LoginController', LoginController);
 }(angular));
