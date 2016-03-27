@@ -65,18 +65,21 @@ configurations {
 dependencies {
     //angularjs
     runtime("org.webjars:angularjs:1.4.8")
-    runtime("org.webjars:angular-ui-router:0.2.15")
+    //runtime("org.webjars:angular-ui-router:0.2.15")
     runtime("org.webjars:angular-ui-bootstrap:1.0.3")
     runtime("org.webjars:bootstrap:3.3.6")
-    runtime("org.webjars:font-awesome:4.5.0")
-    runtime("org.webjars:jquery:1.12.0")
-    
+    //runtime("org.webjars:font-awesome:4.5.0")
+    //runtime("org.webjars:jquery:1.12.0")
+    runtime("org.webjars:lodash:4.0.0")
+
     //spring-boot
     //支持 Web 应用开发，包含 Tomcat 和 spring-mvc
     compile("org.springframework.boot:spring-boot-starter-web") {
         //exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
         //exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
+    //
+    compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-log4j")
     providedCompile("org.springframework.boot:spring-boot-starter-tomcat")
     //添加适用于生产环境的功能，如性能指标和监测等功能
@@ -87,7 +90,8 @@ dependencies {
     compile("commons-codec:commons-codec:1.10")
 
     //MySQL
-    runtime "mysql:mysql-connector-java:5.1.32"
+    //runtime "mysql:mysql-connector-java:5.1.32"
+    runtime('mysql:mysql-connector-java')
     //druid
     runtime "com.alibaba:druid:1.0.16"
 

@@ -1,11 +1,11 @@
 (function(angular) {
-    var AppController = function($scope, Url) {
-        Url.query(function(response) {
+    var UrlController = function($scope, urlService) {
+        urlService.query(function(response) {
             $scope.items = response ? response : [];
         });
 
         $scope.addItem = function(description) {
-            new Url({
+            new UrlService({
                 description : description,
                 checked : false
             }).$save(function(item) {
@@ -25,6 +25,6 @@
         };
     };
 
-    AppController.$inject = [ '$scope', 'Url' ];
-    angular.module("app.controllers").controller("AppController", AppController);
+    UrlController.$inject = [ '$scope', 'UrlService' ];
+    angular.module("app.controllers").controller("UrlController", UrlController);
 }(angular));

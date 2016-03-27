@@ -1,6 +1,6 @@
 (function(angular) {
-    var UrlFactory = function($resource) {
-        return $resource('/webapp/api/sys/urls/:id', {
+    var MenuService = function($resource) {
+        return $resource('/webapp/api/sys/menus/:id', {
             id : '@id'
         }, {
             update : {
@@ -12,6 +12,6 @@
         });
     };
 
-    UrlFactory.$inject = [ '$resource' ];
-    angular.module("app.services").factory("Url", UrlFactory);
+    MenuService.$inject = [ '$resource' ];
+    angular.module("app.services").factory("MenuService", MenuService);
 }(angular));
