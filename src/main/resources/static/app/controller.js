@@ -64,8 +64,8 @@
 
         $scope.logger('ApplicationController');
         $scope.showMode = "list";
-        $scope.currentUser = null;
-        if ($scope.currentUser == null) {
+        //$scope.currentUser = null;
+        if ($scope.currentUser == undefined || $scope.currentUser == null) {
             $scope.logger('需要先登录');
             $location.path('/login');
         }

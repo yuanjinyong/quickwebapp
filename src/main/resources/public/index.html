@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Quick Webapp</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/app.css" />
 </head>
@@ -11,7 +11,9 @@
 
 <body ng-app="app" ng-controller="ApplicationController">
     <div id="app" class="app-navbar-fixed app-sidebar-fixed">
-        <div class="container"></div>
+        <div class="container" style="height: 65px;line-height:65px;">
+            <span style="float:right;"><a href="" ng-click="logout()" ng-show="currentUser">退出</a></span>
+        </div>
         <!-- 用户登录才可见 -->
         <div ng-if="currentUser">
             <div id="sidebar" class="sidebar app-aside">
