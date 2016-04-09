@@ -1,11 +1,21 @@
-<form role="form" ng-submit="login()">
-    <div class="alert alert-danger" ng-show="error">There was a problem logging in. Please try again.</div>
-    <div class="form-group">
-        <label for="username">用户名：</label> <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username" />
+<div class="container">
+    <div style="float: right; padding: 100px 10px;">
+        <form role="form" ng-submit="login()" style="width: 400px;">
+            <div style="text-align: center;">
+                <div class="alert alert-danger" style="margin-top:-72px;" ng-show="error">There was a problem logging in. Please try again.</div>
+            </div>
+            <div style="text-align: left;">
+                <div class="form-group">
+                    <label for="username">用户名：</label> <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username" />
+                </div>
+                <div class="form-group">
+                    <label for="password">密码：</label> <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password" />
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary">登录</button>
+                <button type="reset" class="btn btn-warning">重置</button>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <label for="password">密码：</label> <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password" />
-    </div>
-    <button type="submit" class="btn btn-primary">登录</button>
-    <button type="reset" class="btn btn-warning">重置</button>
-</form>
+</div>

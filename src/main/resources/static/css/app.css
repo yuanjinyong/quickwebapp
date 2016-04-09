@@ -1,0 +1,76 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+html, body, #app {
+    height: 100%;
+    *overflow: hidden; /* 消除IE7下的横向滚动条 */
+    font-size: 14px;
+}
+
+.header-container, .main-container, .footer-container {
+    width: 100%;
+    position: absolute;
+}
+
+.header-container {
+    background: #d9edf7;
+    top: 0;
+    width: 100%;
+    height: 65px;
+    line-height: 65px;
+}
+
+.main-container {
+    background: #fbfbfb;
+    top: 65px;
+    bottom: 30px;
+    width: 100%;
+    height: auto;
+}
+
+.footer-container {
+    background: #d9edf7;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.menu-container, .page-container {
+    float: left;
+    position: absolute;
+    overflow-y: auto;
+    top: 0px;
+    height: 100%;
+}
+
+.menu-container {
+    background: #C5F5D1;
+    overflow-x: auto;
+    width: 180px;
+}
+
+.page-container {
+    width: 100%;
+}
+
+.page-container .view-container {
+    background: #fff;
+    overflow-x: auto;
+    height: 100%;
+    margin-left: 180px;
+}
+
+.navbar-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: blue;
+    padding: 10px 20px;
+}
+
+.item-content {
+    padding: 5px 20px;
+}

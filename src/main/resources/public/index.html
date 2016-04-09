@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Quick Webapp</title>
+<title>Quick Webapp - Web应用快速开发平台</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/app.css" />
@@ -11,30 +11,47 @@
 
 <body ng-app="app" ng-controller="ApplicationController">
     <div id="app" class="app-navbar-fixed app-sidebar-fixed">
-        <div class="container" style="height: 65px;line-height:65px;">
-            <span style="float:right;"><a href="" ng-click="logout()" ng-show="currentUser">退出</a></span>
+        <div class="header-container" ng-if="!currentUser">
+            <div style="font-size: xx-large; text-align: center;">Quick Webapp - Web应用快速开发平台</div>
         </div>
-        <!-- 用户登录才可见 -->
-        <div ng-if="currentUser">
-            <div id="sidebar" class="sidebar app-aside">
-                <div class="sidebar-container perfect-scrollbar ps-container ps-active-y">
-                    <nav>
-                        <div class="navbar-title">
-                            <span>系统菜单</span>
-                        </div>
-                        <!-- 采用递归方式，实现无限级菜单 -->
-                        <ul class="main-navigation-menu">
-                            <li ng-repeat="menu in currentUser.menu.children" ng-include="'template/nodes_renderer.html'"></li>
-                        </ul>
-                    </nav>
-                    <!--div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -994px;"></div-->
-                    <!--div class="ps-scrollbar-y-rail" style="top: 997px; height: 175px; right: 3px;"</div-->
+        <div class="header-container" ng-if="currentUser" style="height: 65px; line-height: 65px;">
+            <div style="display: inline; font-size: xx-large;">
+                <img style="margin: 10px;" src="image/logo.png"></img>Quick Webapp - Web应用快速开发平台
+            </div>
+            <div style="display: inline;">
+                <span style="float: right; margin-right: 20px;"><a href="" ng-click="logout()" ng-show="currentUser">退出</a></span>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="page-container">
+                <!-- angular的视图 -->
+                <div ng-view class="view-container"></div>
+            </div>
+
+            <!-- 用户登录才可见 -->
+            <div class="menu-container" ng-if="currentUser">
+                <div id="sidebar" class="sidebar app-aside">
+                    <div class="sidebar-container perfect-scrollbar ps-container ps-active-y">
+                        <nav>
+                            <div class="navbar-title">
+                                <span>系统菜单</span>
+                            </div>
+                            <!-- 采用递归方式，实现无限级菜单 -->
+                            <ul class="main-navigation-menu">
+                                <li ng-repeat="menu in currentUser.menu.children" ng-include="'template/menu.html'"></li>
+                            </ul>
+                        </nav>
+                        <!--div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -994px;"></div-->
+                        <!--div class="ps-scrollbar-y-rail" style="top: 997px; height: 175px; right: 3px;"</div-->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- angular的视图 -->
-        <div ng-view class="container"></div>
+
+        <div class="footer-container">
+            <span style="text-align: center;">© 2016-2017 袁进勇版权所有</span>
+        </div>
     </div>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-route.min.js"></script>
