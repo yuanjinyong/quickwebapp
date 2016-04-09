@@ -1,5 +1,7 @@
 (function(angular) {
     var ApplicationController = function($rootScope, $scope, $http, $location) {
+        console.log('ApplicationController');
+
         $scope.dev = true; // 开发模式
         $scope.logger = function(message) {
             if (typeof (message) == 'object') {
@@ -54,21 +56,32 @@
             $scope.currentUser = user;
         };
 
+        $scope.toLogin = function() {
+            $scope.setCurrentUser(null);
+            $scope.logger('跳转到登录页面');
+            $location.path('/login');
+        };
+
         $scope.logout = function() {
             $scope.httpPost('logout', {}, function(response) {
-                $scope.setCurrentUser(null);
-                $location.path('/login');
+                $scope.toLogin();
             }, function(response) {
+                $scope.logger(response);
             });
         };
 
-        $scope.logger('ApplicationController');
         $scope.showMode = "list";
-        //$scope.currentUser = null;
-        if ($scope.currentUser == undefined || $scope.currentUser == null) {
-            $scope.logger('需要先登录');
-            $location.path('/login');
-        }
+        $scope.setCurrentUser(null); //先初始成null，然后从服务器上获取当前用户信息，如果没有获取到则跳转到登录页面
+        $scope.httpGet('user', {}, function(response) {
+            if (response != "") {
+                $scope.setCurrentUser(response);
+            } else {
+                $scope.toLogin();
+            }
+        }, function(response) {
+            $scope.logger(response);
+            $scope.toLogin();
+        });
     };
     ApplicationController.$inject = [ '$rootScope', '$scope', '$http', '$location' ];
     angular.module('app.controllers').controller('ApplicationController', ApplicationController);

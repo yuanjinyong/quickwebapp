@@ -3,10 +3,13 @@ package com.quickwebapp.sys.web.controller;
 import java.security.Principal;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +20,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.quickwebapp.sys.security.CsrfHeaderFilter;
@@ -28,11 +32,20 @@ public class LoginController {
     @Resource
     private MenuService menuService;
 
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public ResponseEntity<SecurityUser> user(HttpServletRequest request) {
+        return new ResponseEntity<SecurityUser>((SecurityUser) request.getSession().getAttribute("curUser"),
+                HttpStatus.OK);
+    }
+
     @RequestMapping("/authenticate")
-    public Principal authenticate(Principal user) {
+    public Principal authenticate(Principal user, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) user;
         SecurityUser curUser = new SecurityUser(token.getPrincipal(), token.getCredentials());
         curUser.setMenu(menuService.getMenuTree("ROOT", true));
+
+        request.getSession().setAttribute("curUser", curUser);
+
         return curUser;
     }
 
@@ -63,7 +76,7 @@ public class LoginController {
             http.logout().logoutSuccessUrl("/");
 
             // 配置不需要登录即可访问的URL。
-            http.authorizeRequests().antMatchers("/", "/authenticate", "/index.html", "/app/sys/login/*.html")
+            http.authorizeRequests().antMatchers("/", "/user", "/authenticate", "/index.html", "/app/sys/login/*.html")
                     .permitAll();
             // 其他URL地址都需要登录
             http.authorizeRequests().anyRequest().authenticated();

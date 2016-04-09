@@ -1,5 +1,7 @@
 (function(angular) {
     var UrlController = function($scope, urlService) {
+        $scope.logger('UrlController');
+
         urlService.query(function(response) {
             $scope.items = response ? response : [];
         });
