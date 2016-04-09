@@ -1,0 +1,22 @@
+{
+  "groups": [{
+    "name": "mybatis.page",
+    "type": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties",
+    "sourceType": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties"
+  }],
+  "properties": [
+    {
+      "name": "mybatis.page.dialect",
+      "type": "java.lang.String",
+      "description": "数据库方言（类型）",
+      "sourceType": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties"
+    },
+    {
+      "name": "mybatis.page.sql-id-regex",
+      "type": "java.lang.String",
+      "description": "应用分页插件的SQL语句的ID（正则表达式匹配）",
+      "sourceType": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties"
+    }
+  ],
+  "hints": []
+}

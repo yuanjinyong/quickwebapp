@@ -12,7 +12,7 @@
 buildscript {
     repositories {
         maven {
-            url "http://jy-pkpm.6655.la:8081/nexus/content/groups/public"
+            url "http://www.jianyanxinxi.com:8081/nexus/content/groups/public"
         }
         mavenCentral()
     }
@@ -48,7 +48,7 @@ version = "0.0.1-snapshot"
 // In this section you declare where to find the dependencies of your project
 repositories {
     maven {
-        url "http://jy-pkpm.6655.la:8081/nexus/content/groups/public"
+        url "http://www.jianyanxinxi.com:8081/nexus/content/groups/public"
     }
     mavenCentral()
 }
@@ -73,6 +73,8 @@ dependencies {
     runtime("org.webjars:lodash:4.0.0")
 
     //spring-boot
+    //用于生成spring-configuration-metadata.json文件
+    compile("org.springframework.boot:spring-boot-configuration-processor")
     //支持 Web 应用开发，包含 Tomcat 和 spring-mvc
     compile("org.springframework.boot:spring-boot-starter-web") {
         //exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
@@ -82,10 +84,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-log4j")
     providedCompile("org.springframework.boot:spring-boot-starter-tomcat")
+    providedCompile("org.apache.tomcat:servlet-api:6.0.45")
     //添加适用于生产环境的功能，如性能指标和监测等功能
     runtime("org.springframework.boot:spring-boot-starter-actuator")
     //mybatis-spring-boot
-    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.0.0")
+    compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.0.2")
     //MD5算法
     compile("commons-codec:commons-codec:1.10")
 

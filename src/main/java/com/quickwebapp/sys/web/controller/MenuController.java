@@ -64,6 +64,6 @@ public class MenuController extends BaseController<String, MenuEntity> {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<MenuEntity> delete(HttpServletRequest request) {
-        return super.delete($params(request));
+        return super.deleteBatch($params(request));
     }
 }

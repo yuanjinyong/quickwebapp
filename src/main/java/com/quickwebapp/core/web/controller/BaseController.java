@@ -45,7 +45,7 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
         return new ResponseEntity<E>(HttpStatus.NO_CONTENT);
     }
 
-    public ResponseEntity<E> delete(MapEntity mapEntity) {
+    public ResponseEntity<E> deleteBatch(MapEntity mapEntity) {
         getService().deleteEntities(mapEntity);
         return new ResponseEntity<E>(HttpStatus.NO_CONTENT);
     }

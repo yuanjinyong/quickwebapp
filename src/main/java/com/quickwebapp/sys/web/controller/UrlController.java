@@ -56,6 +56,6 @@ public class UrlController extends BaseController<String, UrlEntity> {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<UrlEntity> delete(HttpServletRequest request) {
-        return super.delete($params(request));
+        return super.deleteBatch($params(request));
     }
 }

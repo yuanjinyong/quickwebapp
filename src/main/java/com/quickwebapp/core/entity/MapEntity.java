@@ -17,6 +17,13 @@ import java.util.TreeMap;
  *
  */
 public class MapEntity extends TreeMap<String, Object> {
+    public static final Integer DEFAULT_PAGE_SIZE = 10;
+    public static final Integer MAX_PAGE_SIZE = 10000;
+    public static final String PAGE_SIZE = "pageSize";
+    public static final String CURRENT_PAGE = "currentPage";
+    public static final String TOTAL_COUNT = "totalCount";
+    public static final String ORDER_BY = "orderBy";
+
     private static final long serialVersionUID = 1L;
 
     public MapEntity() {
@@ -26,6 +33,52 @@ public class MapEntity extends TreeMap<String, Object> {
     public MapEntity(Map<String, Object> map) {
         super();
         this.putAll(map);
+    }
+
+    public MapEntity setPageSize(Integer pageSize) {
+        this.put(PAGE_SIZE, pageSize);
+        return this;
+    }
+
+    public MapEntity setPageSizeWithDefault() {
+        this.put(PAGE_SIZE, DEFAULT_PAGE_SIZE);
+        return this;
+    }
+
+    public MapEntity setPageSizeWithMax() {
+        this.put(PAGE_SIZE, MAX_PAGE_SIZE);
+        return this;
+    }
+
+    public Integer getPageSize() {
+        return this.getInteger(PAGE_SIZE, null);
+    }
+
+    public MapEntity setCurrentPage(Integer currentPage) {
+        this.put(CURRENT_PAGE, currentPage);
+        return this;
+    }
+
+    public Integer getCurrentPage() {
+        return this.getInteger(CURRENT_PAGE, null);
+    }
+
+    public MapEntity setTotalCount(Integer totalCount) {
+        this.put(TOTAL_COUNT, totalCount);
+        return this;
+    }
+
+    public Integer getTotalCount() {
+        return this.getInteger(TOTAL_COUNT, null);
+    }
+
+    public MapEntity setOrderBy(String orderBy) {
+        this.put(ORDER_BY, orderBy);
+        return this;
+    }
+
+    public String getOrderBy() {
+        return this.getString(ORDER_BY, null);
     }
 
     public String getString(final Object key) {

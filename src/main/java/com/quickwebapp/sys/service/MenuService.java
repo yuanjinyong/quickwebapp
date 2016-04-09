@@ -66,7 +66,7 @@ public class MenuService extends BaseService<String, MenuEntity> {
     }
 
     public List<MenuEntity> getMenuList(MapEntity mapEntity) {
-        mapEntity.put("orderBy", "f_parent_ids,f_order");
+        mapEntity.setPageSizeWithMax().setOrderBy("f_parent_ids, f_order");
         List<MenuEntity> menuList = getMapper().selectEntityListPage(mapEntity);
         Map<String, MenuEntity> menuMap = new HashMap<String, MenuEntity>();
         for (MenuEntity menu : menuList) {
