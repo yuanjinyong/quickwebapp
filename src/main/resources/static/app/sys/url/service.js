@@ -1,6 +1,6 @@
 (function(angular) {
     var UrlService = function($resource) {
-        return $resource('/webapp/api/sys/urls/:id', {
+        return $resource(contextPath + '/api/sys/urls/:id', {
             id : '@id'
         }, {
             update : {

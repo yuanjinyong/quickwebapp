@@ -1,6 +1,6 @@
 (function(angular) {
     var MenuService = function($resource) {
-        return $resource('/webapp/api/sys/menus/:id', {
+        return $resource(contextPath + '/api/sys/menus/:id', {
             id : '@id'
         }, {
             update : {

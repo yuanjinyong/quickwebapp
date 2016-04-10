@@ -1,3 +1,5 @@
+var contextPath='/webapp';
+
 (function(angular) {
     console.log('angular init');
     angular.module('app.controllers', []);
@@ -9,6 +11,14 @@
         // browser will not pop up an authentication dialog (which is desirable in our app since we want to control the
         // authentication).
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+/*        $http.get('api/sys/routes', {}).success(function(response) {
+            $scope.logger(response);
+            successCallback && successCallback(response);
+        }).error(function(response) {
+            $scope.logger(response);
+            failCallback && failCallback(response);
+        });*/
 
         $routeProvider.when('/workspace', {
             templateUrl : 'workspace.html',
