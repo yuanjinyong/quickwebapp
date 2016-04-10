@@ -4,7 +4,7 @@ var contextPath='/webapp';
     console.log('angular init');
     angular.module('app.controllers', []);
     angular.module('app.services', []);
-    angular.module('app', [ 'ngRoute', 'ngResource', 'app.controllers', 'app.services' ]);
+    angular.module('app', [ 'ngRoute', 'ngResource', 'ui.grid', 'app.controllers', 'app.services' ]);
 
     angular.module('app').config(function($routeProvider, $httpProvider) {
         // Spring Security responds to it by not sending a “WWW-Authenticate” header in a 401 response, and thus the
