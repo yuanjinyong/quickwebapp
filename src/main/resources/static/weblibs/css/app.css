@@ -23,7 +23,8 @@ html, body, #app {
 }
 
 .main-container {
-    background: #fbfbfb;
+    /*background: #fbfbfb;*/
+    background: #fff;
     top: 65px;
     bottom: 30px;
     width: 100%;
@@ -50,7 +51,7 @@ html, body, #app {
 .menu-container {
     background: #C5F5D1;
     overflow-x: auto;
-    width: 180px;
+    width: 170px;
 }
 
 .page-container {
@@ -61,7 +62,9 @@ html, body, #app {
     background: #fff;
     overflow-x: auto;
     height: 100%;
-    margin-left: 180px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-left: 170px;
 }
 
 .navbar-title {
