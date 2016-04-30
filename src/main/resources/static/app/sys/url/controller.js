@@ -1,6 +1,6 @@
 (function(angular) {
     var UrlController = function($scope, urlService) {
-        $scope.logger('UrlController');
+        console.log('UrlController');
 
         // urlService.query(function(response) {
         // $scope.items = response ? response : [];
@@ -86,7 +86,6 @@
         }, true);
 
         $scope.myGridOptions = {
-            i18n : 'zh-cn',
             data : 'myGridData',
             columnDefs : [ {
                 field : 'f_url',

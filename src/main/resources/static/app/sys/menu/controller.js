@@ -1,6 +1,6 @@
 (function(angular) {
     var MenuController = function($scope, menuService) {
-        $scope.logger('MenuController');
+        console.log('MenuController');
 
         menuService.query(function(response) {
             $scope.items = response ? response : [];

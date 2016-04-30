@@ -32,13 +32,26 @@ public class LoginController {
     @Resource
     private MenuService menuService;
 
+    /**
+     * 获取用户信息，用于首次打开主页时判断是否需要登录。
+     * 
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<SecurityUser> user(HttpServletRequest request) {
         return new ResponseEntity<SecurityUser>((SecurityUser) request.getSession().getAttribute("curUser"),
                 HttpStatus.OK);
     }
 
-    @RequestMapping("/authenticate")
+    /**
+     * 登录认证
+     * 
+     * @param user
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/authenticate")
     public Principal authenticate(Principal user, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) user;
         SecurityUser curUser = new SecurityUser(token.getPrincipal(), token.getCredentials());
@@ -56,8 +69,8 @@ public class LoginController {
         @Override
         public void configure(WebSecurity web) throws Exception {
             // Spring Security should completely ignore URLs
-            web.ignoring().antMatchers("/favicon.ico", "/webjars/**", "/css/**", "/js/**", "/app/**/*.css",
-                    "/app/**/*.js");
+            web.ignoring().antMatchers("/webjars/**", "/weblibs/**", "/app/**/*.css", "/app/**/*.js", "/index.html",
+                    "/app/sys/login/*.html");
         }
 
         @Override
@@ -76,8 +89,7 @@ public class LoginController {
             http.logout().logoutSuccessUrl("/");
 
             // 配置不需要登录即可访问的URL。
-            http.authorizeRequests().antMatchers("/", "/user", "/authenticate", "/index.html", "/app/sys/login/*.html")
-                    .permitAll();
+            http.authorizeRequests().antMatchers("/", "/user", "/authenticate").permitAll();
             // 其他URL地址都需要登录
             http.authorizeRequests().anyRequest().authenticated();
             // TODO 需要等系统启动后根据数据库中配置URL访问权来刷新。

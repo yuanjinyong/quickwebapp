@@ -1,6 +1,6 @@
 (function(angular) {
     var LoginController = function($scope, $location) {
-        $scope.logger('LoginController');
+        console.log('LoginController');
 
         $scope.login = function() {
             var user = $scope.credentials;

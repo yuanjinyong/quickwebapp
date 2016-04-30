@@ -3,24 +3,31 @@
 <head>
 <meta charset="utf-8" />
 <title>Quick Webapp - Web应用快速开发平台</title>
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/x-icon" href="weblibs/favicon.ico">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link rel="stylesheet" href="webjars/ui-grid/3.1.1/ui-grid.min.css" />
-<link rel="stylesheet" href="css/app.css" />
+<link rel="stylesheet" href="weblibs/css/app.css" />
 </head>
 
 
 <body ng-app="app" ng-controller="ApplicationController">
     <div id="app" class="app-navbar-fixed app-sidebar-fixed">
-        <div class="header-container" ng-if="!currentUser">
-            <div style="font-size: xx-large; text-align: center;">Quick Webapp - Web应用快速开发平台</div>
-        </div>
-        <div class="header-container" ng-if="currentUser" style="height: 65px; line-height: 65px;">
-            <div style="display: inline; font-size: xx-large;">
-                <img style="margin: 10px;" src="image/logo.png"></img>Quick Webapp - Web应用快速开发平台
+        <div class="header-container" style="height: 65px; line-height: 65px;">
+            <div style="display: inline; font-size: xx-large; font-weight: bold;">
+                <span><img style="margin: 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
             </div>
-            <div style="display: inline;">
-                <span style="float: right; margin-right: 20px;"><a href="" ng-click="logout()" ng-show="currentUser">退出</a></span>
+            <div style="display: inline; float: right; margin-right: 20px;">
+                <span>语言切换：<select ng-model="lang" ng-options="l.code as l.name for l in langs" ng-change="changeLang(lang)"></select></span>
+            </div>
+            <div style="display: inline;" ng-if="currentUser">
+                <div style="display: inline; margin-left: 20px;">
+                    <div style="display: inline;; font-weight: bold; color: blue;">
+                        <span>欢迎您：{{currentUser.principal.username}}</span>
+                    </div>
+                    <div style="display: inline; float: right; margin-right: 20px;">
+                        <a href="" ng-click="logout()" ng-show="currentUser" style="panding-left: 100px;">退出</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="main-container">
