@@ -16,9 +16,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,8 +69,8 @@ public class LoginController {
         @Override
         public void configure(WebSecurity web) throws Exception {
             // Spring Security should completely ignore URLs
-            web.ignoring().antMatchers("/webjars/**", "/weblibs/**", "/app/**/*.css", "/app/**/*.js", "/index.html",
-                    "/app/sys/login/*.html");
+            web.ignoring().antMatchers("/", "/webjars/**", "/weblibs/**", "/app/**/*.css", "/app/**/*.js",
+                    "/index.html", "/app/sys/login/*.html");
         }
 
         @Override
@@ -89,13 +89,13 @@ public class LoginController {
             http.logout().logoutSuccessUrl("/");
 
             // 配置不需要登录即可访问的URL。
-            http.authorizeRequests().antMatchers("/", "/user", "/authenticate").permitAll();
+            http.authorizeRequests().antMatchers("/user", "/authenticate").permitAll();
             // 其他URL地址都需要登录
             http.authorizeRequests().anyRequest().authenticated();
             // TODO 需要等系统启动后根据数据库中配置URL访问权来刷新。
 
             // 添加一个过滤器，用于Spring Security和angular之间某些属性名的转换
-            http.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class).csrf()
+            http.addFilterAfter(new CsrfHeaderFilter(), SessionManagementFilter.class).csrf()
                     .csrfTokenRepository(csrfTokenRepository());
         }
 
