@@ -5,6 +5,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -21,6 +22,7 @@ public class MapEntity extends TreeMap<String, Object> {
     public static final Integer MAX_PAGE_SIZE = 10000;
     public static final String PAGE_SIZE = "pageSize";
     public static final String CURRENT_PAGE = "currentPage";
+    public static final String CURRENT_PAGE_DATA = "currentPageData";
     public static final String TOTAL_COUNT = "totalCount";
     public static final String ORDER_BY = "orderBy";
 
@@ -61,6 +63,15 @@ public class MapEntity extends TreeMap<String, Object> {
 
     public Integer getCurrentPage() {
         return this.getInteger(CURRENT_PAGE, null);
+    }
+
+    public MapEntity setCurrentPageData(List<?> currentPageData) {
+        this.put(CURRENT_PAGE_DATA, currentPageData);
+        return this;
+    }
+
+    public List<?> getCurrentPageData() {
+        return (List<?>) this.get(CURRENT_PAGE_DATA);
     }
 
     public MapEntity setTotalCount(Integer totalCount) {

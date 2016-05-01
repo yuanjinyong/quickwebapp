@@ -32,6 +32,8 @@ import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.quickwebapp.core.entity.MapEntity;
 import com.quickwebapp.core.utils.HelpUtil;
@@ -45,6 +47,7 @@ import com.quickwebapp.core.utils.HelpUtil;
  */
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 public class PageInterceptor implements Interceptor {
+    private static final Logger LOG = LoggerFactory.getLogger(PageInterceptor.class);
     private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
     private static final ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
@@ -69,7 +72,11 @@ public class PageInterceptor implements Interceptor {
                     if (mappedStatement.getId().matches(this.sqlIdRegex)) {
                         processTotalCount((Connection) invocation.getArgs()[0], mappedStatement, boundSql);
 
-                        metaObject.setValue("delegate.boundSql.sql", generatePageSql(boundSql.getSql(), mapEntity));
+                        String pageSql = generatePageSql(boundSql.getSql(), mapEntity);
+                        metaObject.setValue("delegate.boundSql.sql", pageSql);
+
+                        LOG.info("\n重写分页后的SQL如下：\n" + mappedStatement.getId() + "\n" + mappedStatement.getResource()
+                                + "\n" + pageSql);
                     }
                 }
             }
@@ -101,7 +108,7 @@ public class PageInterceptor implements Interceptor {
             throws Exception, SQLException {
         MapEntity parameterObject = (MapEntity) boundSql.getParameterObject();
         // 如果入参中已经传入了totalCount，则不需要再去查询出总数了
-        if (parameterObject.getTotalCount() != null) {
+        if (parameterObject.getTotalCount() != null && parameterObject.getTotalCount() > 0) {
             return;
         }
 
@@ -118,6 +125,7 @@ public class PageInterceptor implements Interceptor {
             resultSet = countStmt.executeQuery();
             if (resultSet.next()) {
                 parameterObject.setTotalCount(resultSet.getInt(1));
+                LOG.info("\n重写分页参数里的总页数：totalCount={}\n{}", parameterObject.getTotalCount(), countSql);
             }
         } finally {
             try {
@@ -139,7 +147,7 @@ public class PageInterceptor implements Interceptor {
 
             return countMappedStatement.getBoundSql(boundSql.getParameterObject()).getSql();
         } else {
-            return "SELECT COUNT(1) FROM (" + boundSql.getSql() + ") TOTAL_COUNT ";
+            return "SELECT COUNT(1) TOTAL_COUNT FROM (" + boundSql.getSql() + ") temp ";
         }
     }
 
@@ -204,7 +212,7 @@ public class PageInterceptor implements Interceptor {
     private String generatePageSql(String sql, MapEntity mapEntity) {
         Integer pageSize = mapEntity.getPageSize();
         Integer currentPage = mapEntity.getCurrentPage();
-        Integer beginRow = currentPage == null || currentPage < 2 ? 0 : (currentPage - 1) * pageSize;
+        Integer beginRow = (currentPage == null || currentPage < 2) ? 0 : (currentPage - 1) * pageSize;
 
         String orderBy = mapEntity.getOrderBy();
 

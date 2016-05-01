@@ -10,6 +10,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.quickwebapp.core.entity.BaseEntity;
 import com.quickwebapp.core.entity.MapEntity;
 import com.quickwebapp.core.service.BaseService;
+import com.quickwebapp.core.utils.HelpUtil;
 
 public abstract class BaseController<P, E extends BaseEntity<P>> extends TopController {
     // protected static final String OP_SELECT = "select"; // 查询
@@ -18,6 +19,25 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
     // protected static final String OP_DELETE = "delete"; // 删除
 
     protected abstract BaseService<P, E> getService();
+
+    public ResponseEntity<MapEntity> page(MapEntity mapEntity) {
+        if (mapEntity.getPageSize() == null) {
+            mapEntity.setPageSizeWithDefault();
+        }
+
+        List<E> currentPageData = getService().selectEntityListPage(mapEntity);
+        return new ResponseEntity<MapEntity>(buildPageEntity(mapEntity, currentPageData), HttpStatus.OK);
+    }
+
+    private MapEntity buildPageEntity(MapEntity mapEntity, List<E> currentPageData) {
+        MapEntity pageEntity = new MapEntity();
+        pageEntity.setPageSize(mapEntity.getPageSize());
+        pageEntity.setCurrentPage(mapEntity.getCurrentPage() != null ? mapEntity.getCurrentPage()
+                : (HelpUtil.isEmptyCollection(currentPageData) ? 0 : 1));
+        pageEntity.setCurrentPageData(currentPageData);
+        pageEntity.setTotalCount(mapEntity.getTotalCount());
+        return pageEntity;
+    }
 
     public ResponseEntity<List<E>> list(MapEntity mapEntity) {
         return new ResponseEntity<List<E>>(getService().selectEntityListPage(mapEntity), HttpStatus.OK);
@@ -49,69 +69,4 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
         getService().deleteEntities(mapEntity);
         return new ResponseEntity<E>(HttpStatus.NO_CONTENT);
     }
-
-    // protected String toList(String viewPath) {
-    // $attr("operation", $("operation"));
-    // $attr("identity", $("identity"));
-    // return viewPath + "/list";
-    // }
-    //
-    // protected String toDetail(String viewPath, P primaryKey, Class<E> clz) throws InstantiationException,
-    // IllegalAccessException, ClassNotFoundException, UnSupportedOperationException {
-    // $attr("entity", getDetail(primaryKey, clz));
-    // $attr("operation", $("operation"));
-    // $attr("identity", $("identity"));
-    // return viewPath + "/detail";
-    // }
-    //
-    // protected String toDetail(String viewPath, E entity) {
-    // $attr("entity", entity);
-    // $attr("operation", $("operation"));
-    // $attr("identity", $("identity"));
-    // return viewPath + "/detail";
-    // }
-    //
-    // @SuppressWarnings("unchecked")
-    // protected E getDetail(P primaryKey, Class<E> clz) throws InstantiationException, IllegalAccessException,
-    // ClassNotFoundException, UnSupportedOperationException {
-    // String operation = $("operation");
-    // if (OP_INSERT.equals(operation)) {
-    // return (E) Class.forName(clz.getName()).newInstance();
-    // } else if (OP_UPDATE.equals(operation) || OP_SELECT.equals(operation)) {
-    // return getService().selectEntity(primaryKey);
-    // } else {
-    // throw new UnSupportedOperationException("不支持操作类型：" + operation + "！");
-    // }
-    // }
-    //
-    // protected MapEntity list(HttpServletRequest request) throws Exception {
-    // MapEntity mapEntity = $params(request);
-    // List<E> entityList = getService().selectEntityListPage(mapEntity);
-    // MapEntity resultMap = new MapEntity();
-    // resultMap.put("Rows", entityList);
-    // resultMap.put("Total", mapEntity.getInteger("total", 0));
-    // return resultMap;
-    // }
-    //
-    // protected MapEntity save(E entity) throws UnSupportedOperationException {
-    // return save(entity);
-    // }
-    //
-    // protected MapEntity save(E entity, MapEntity data) throws UnSupportedOperationException {
-    // String operation = $("operation");
-    // if (OP_INSERT.equals(operation)) {
-    // getService().insertEntity(entity);
-    // } else if (OP_UPDATE.equals(operation)) {
-    // getService().updateEntity(entity);
-    // } else {
-    // throw new UnSupportedOperationException("不支持操作类型[" + operation + "]！");
-    // }
-    //
-    // return success(data, entity);
-    // }
-    //
-    // protected MapEntity delete(P primaryKey) {
-    // getService().deleteEntity(primaryKey);
-    // return success();
-    // }
 }

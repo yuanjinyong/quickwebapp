@@ -1,10 +1,24 @@
-var contextPath='/webapp';
+var contextPath = '/webapp';
 
 (function(angular) {
     console.log('angular init');
+    angular.module('app.directives', []);
+    angular.module('app.filters', []);
     angular.module('app.controllers', []);
     angular.module('app.services', []);
-    angular.module('app', [ 'ngRoute', 'ngResource', 'ui.grid', 'app.controllers', 'app.services' ]);
+    angular.module('app', [ //
+    'ngRoute', // 多视图路由
+    'ngResource', // RESTful API
+    'ui.grid', // Grid表格控件
+    'ui.grid.pagination', // Grid表格翻页控件
+    'ui.grid.selection', // Grid表格下拉框控件
+    'ui.grid.resizeColumns', // Grid表格启用调整列宽
+    'ui.grid.moveColumns', //
+    'app.directives', // 自定义指令
+    'app.filters', // 自定义过滤器
+    'app.controllers', // 控制器
+    'app.services'// 服务
+    ]);
 
     angular.module('app').config(function($routeProvider, $httpProvider) {
         // Spring Security responds to it by not sending a “WWW-Authenticate” header in a 401 response, and thus the

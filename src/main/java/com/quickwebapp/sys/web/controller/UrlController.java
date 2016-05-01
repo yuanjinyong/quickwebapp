@@ -1,7 +1,5 @@
 package com.quickwebapp.sys.web.controller;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.quickwebapp.core.entity.MapEntity;
 import com.quickwebapp.core.service.BaseService;
 import com.quickwebapp.core.web.controller.BaseController;
 import com.quickwebapp.sys.entity.UrlEntity;
@@ -30,8 +29,8 @@ public class UrlController extends BaseController<String, UrlEntity> {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UrlEntity>> list(HttpServletRequest request) {
-        return super.list($params(request));
+    public ResponseEntity<MapEntity> list(HttpServletRequest request) {
+        return super.page($params(request));
     }
 
     @RequestMapping(method = RequestMethod.POST)
