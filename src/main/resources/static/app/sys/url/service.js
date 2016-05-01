@@ -1,6 +1,7 @@
 (function(angular) {
     var UrlService = function($resource) {
-        return $resource(contextPath + '/api/sys/urls/:id', {
+        var uri = 'api/sys/urls';
+        var service = $resource(this.uri + '/:id', {
             id : '@id'
         }, {
             update : {
@@ -10,6 +11,8 @@
                 method : "DELETE"
             }
         });
+        service.uri = uri;
+        return service;
     };
 
     UrlService.$inject = [ '$resource' ];

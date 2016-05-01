@@ -13,7 +13,9 @@ var contextPath = '/webapp';
     'ui.grid.pagination', // Grid表格翻页控件
     'ui.grid.selection', // Grid表格下拉框控件
     'ui.grid.resizeColumns', // Grid表格启用调整列宽
-    'ui.grid.moveColumns', //
+    'ui.grid.moveColumns', // Grid表格拖动调整列顺序
+    'ui.grid.pinning', // Grid表格固定列
+    'ui.grid.exporter', // Grid表格导出记录
     'app.directives', // 自定义指令
     'app.filters', // 自定义过滤器
     'app.controllers', // 控制器

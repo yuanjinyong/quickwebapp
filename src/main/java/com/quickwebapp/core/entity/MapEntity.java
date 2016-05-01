@@ -62,7 +62,12 @@ public class MapEntity extends TreeMap<String, Object> {
     }
 
     public Integer getCurrentPage() {
-        return this.getInteger(CURRENT_PAGE, null);
+        Integer currentPage = this.getInteger(CURRENT_PAGE, null);
+        if (currentPage == null || currentPage < 1) {
+            currentPage = 1;
+            this.put(CURRENT_PAGE, currentPage);
+        }
+        return currentPage;
     }
 
     public MapEntity setCurrentPageData(List<?> currentPageData) {
@@ -74,13 +79,22 @@ public class MapEntity extends TreeMap<String, Object> {
         return (List<?>) this.get(CURRENT_PAGE_DATA);
     }
 
+    public Integer getBeginRowNum() {
+        return (this.getCurrentPage() - 1) * this.getPageSize();
+    }
+
     public MapEntity setTotalCount(Integer totalCount) {
         this.put(TOTAL_COUNT, totalCount);
         return this;
     }
 
     public Integer getTotalCount() {
-        return this.getInteger(TOTAL_COUNT, null);
+        Integer totalCount = this.getInteger(TOTAL_COUNT, null);
+        if (totalCount == null) {
+            totalCount = 0;
+            this.put(TOTAL_COUNT, totalCount);
+        }
+        return totalCount;
     }
 
     public MapEntity setOrderBy(String orderBy) {

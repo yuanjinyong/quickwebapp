@@ -21,7 +21,10 @@
         };
 
         $scope.httpGet = function(url, params, successCallback, failCallback) {
-            $http.get(url, params).success(function(response) {
+            $scope.dev && console.debug(params);
+            return $http.get(url, {
+                params : params
+            }).success(function(response) {
                 $scope.dev && console.debug(response);
                 successCallback && successCallback(response);
             }).error(function(response) {
@@ -30,7 +33,10 @@
             });
         };
         $scope.httpPost = function(url, params, successCallback, failCallback) {
-            $http.post(url, params).success(function(response) {
+            $scope.dev && console.debug(params);
+            return $http.post(url, {
+                params : params
+            }).success(function(response) {
                 $scope.dev && console.debug(response);
                 successCallback && successCallback(response);
             }).error(function(response) {

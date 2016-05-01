@@ -90,8 +90,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         entity.setF_produces(mapping.getProducesCondition().toString());
         entity.setF_custom(mapping.getCustomCondition() == null ? "[]" : mapping.getCustomCondition().toString());
         entity.setF_handler_method(method.getMethod().toString());
-        entity.setF_log(true);
-        entity.setF_auto(true);
+        entity.setF_log(1);
+        entity.setF_auto(1);
         
         String id = DigestUtils.md5Hex(entity.getF_handler_method());
         // String id = DigestUtils.md5Hex(entity.getF_patterns() + entity.getF_methods() + entity.getF_params()

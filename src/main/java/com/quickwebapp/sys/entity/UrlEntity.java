@@ -13,8 +13,8 @@ public class UrlEntity extends BaseEntity<String> {
     private String f_produces; //
     private String f_custom; //
     private String f_handler_method; // 处理方法
-    private Boolean f_log; // 是否记录日志。如查询列表，进入增加界面等，都不记录，而删除、修改、增加就需要记录
-    private Boolean f_auto; // 是否自动扫描生成
+    private Integer f_log; // 是否记录日志。如查询列表，进入增加界面等，都不记录，而删除、修改、增加就需要记录
+    private Integer f_auto; // 是否自动扫描生成
 
     public String getF_url() {
         return f_url;
@@ -96,19 +96,19 @@ public class UrlEntity extends BaseEntity<String> {
         this.f_handler_method = f_handler_method;
     }
 
-    public Boolean getF_log() {
+    public Integer getF_log() {
         return f_log;
     }
 
-    public void setF_log(Boolean f_log) {
+    public void setF_log(Integer f_log) {
         this.f_log = f_log;
     }
 
-    public Boolean getF_auto() {
+    public Integer getF_auto() {
         return f_auto;
     }
 
-    public void setF_auto(Boolean f_auto) {
+    public void setF_auto(Integer f_auto) {
         this.f_auto = f_auto;
     }
 }

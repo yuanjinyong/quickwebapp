@@ -1,6 +1,7 @@
 (function(angular) {
     var MenuService = function($resource) {
-        return $resource(contextPath + '/api/sys/menus/:id', {
+        var uri = 'api/sys/menus';
+        var service = $resource(this.uri + '/:id', {
             id : '@id'
         }, {
             update : {
@@ -10,6 +11,8 @@
                 method : "DELETE"
             }
         });
+        service.uri = uri;
+        return service;
     };
 
     MenuService.$inject = [ '$resource' ];

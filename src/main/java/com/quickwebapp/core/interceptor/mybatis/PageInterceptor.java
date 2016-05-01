@@ -66,8 +66,8 @@ public class PageInterceptor implements Interceptor {
             // 如果没有传入任何参数或者入参不是统一的MapEntity，则不进行翻页数据的处理
             if (parameterObject != null && parameterObject instanceof MapEntity) {
                 MapEntity mapEntity = (MapEntity) parameterObject;
-                // 要传入了pageSize且SqlId以“ListPage”结尾，才进行翻页数据的处理
-                if (mapEntity.getPageSize() != null) {
+                // 要传入了pageSize或orderBy且SqlId以“ListPage”结尾，才进行翻页数据的处理
+                if (mapEntity.getPageSize() != null || !HelpUtil.isEmptyString(mapEntity.getOrderBy())) {
                     MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
                     if (mappedStatement.getId().matches(this.sqlIdRegex)) {
                         processTotalCount((Connection) invocation.getArgs()[0], mappedStatement, boundSql);
@@ -210,27 +210,31 @@ public class PageInterceptor implements Interceptor {
      * @return
      */
     private String generatePageSql(String sql, MapEntity mapEntity) {
-        Integer pageSize = mapEntity.getPageSize();
-        Integer currentPage = mapEntity.getCurrentPage();
-        Integer beginRow = (currentPage == null || currentPage < 2) ? 0 : (currentPage - 1) * pageSize;
-
-        String orderBy = mapEntity.getOrderBy();
-
         StringBuffer pageSql = new StringBuffer();
         if ("mysql".equals(dialect)) {
             pageSql.append(sql);
+            String orderBy = mapEntity.getOrderBy();
             if (!HelpUtil.isEmptyString(orderBy)) {
                 pageSql.append(" \nORDER BY ").append(orderBy);
             }
-            pageSql.append(" \n LIMIT " + beginRow + "," + pageSize);
+            Integer pageSize = mapEntity.getPageSize();
+            if (pageSize != null) {
+                Integer beginRow = mapEntity.getBeginRowNum();
+                pageSql.append(" \n LIMIT " + beginRow + "," + pageSize);
+            }
         } else if ("oracle".equals(dialect)) {
             pageSql.append("SELECT * FROM (SELECT TMP_TB.*, ROWNUM ROW_ID FROM (\n");
             pageSql.append(sql);
+            String orderBy = mapEntity.getOrderBy();
             if (!HelpUtil.isEmptyString(orderBy)) {
                 pageSql.append(" \nORDER BY ").append(orderBy);
             }
-            pageSql.append("\n) AS TMP_TB WHERE ROWNUM <= ").append(beginRow + pageSize).append(") WHERE ROW_ID > ")
-                    .append(beginRow);
+            Integer pageSize = mapEntity.getPageSize();
+            if (pageSize != null) {
+                Integer beginRow = mapEntity.getBeginRowNum();
+                pageSql.append("\n) AS TMP_TB WHERE ROWNUM <= ").append(beginRow + pageSize).append(") WHERE ROW_ID > ")
+                        .append(beginRow);
+            }
         }
 
         return pageSql.toString();

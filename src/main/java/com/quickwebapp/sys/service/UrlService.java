@@ -37,7 +37,7 @@ public class UrlService extends BaseService<String, UrlEntity> {
 
     @Override
     public void updateEntity(UrlEntity entity) {
-        if (entity.getF_auto()) {
+        if (entity.getF_auto() == 1) {
             throw new BusinessException("扫描RequestMapping自动生成的URL记录，不能修改！");
         }
 
@@ -54,7 +54,7 @@ public class UrlService extends BaseService<String, UrlEntity> {
     @Override
     public void deleteEntity(String id) {
         UrlEntity entity = super.selectEntity(id);
-        if (entity.getF_auto()) {
+        if (entity.getF_auto() == 1) {
             throw new BusinessException("扫描RequestMapping自动生成的URL记录，不能删除！");
         }
 

@@ -10,7 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.quickwebapp.core.entity.BaseEntity;
 import com.quickwebapp.core.entity.MapEntity;
 import com.quickwebapp.core.service.BaseService;
-import com.quickwebapp.core.utils.HelpUtil;
 
 public abstract class BaseController<P, E extends BaseEntity<P>> extends TopController {
     // protected static final String OP_SELECT = "select"; // 查询
@@ -20,27 +19,13 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
 
     protected abstract BaseService<P, E> getService();
 
-    public ResponseEntity<MapEntity> page(MapEntity mapEntity) {
-        if (mapEntity.getPageSize() == null) {
-            mapEntity.setPageSizeWithDefault();
-        }
-
-        List<E> currentPageData = getService().selectEntityListPage(mapEntity);
-        return new ResponseEntity<MapEntity>(buildPageEntity(mapEntity, currentPageData), HttpStatus.OK);
-    }
-
-    private MapEntity buildPageEntity(MapEntity mapEntity, List<E> currentPageData) {
-        MapEntity pageEntity = new MapEntity();
-        pageEntity.setPageSize(mapEntity.getPageSize());
-        pageEntity.setCurrentPage(mapEntity.getCurrentPage() != null ? mapEntity.getCurrentPage()
-                : (HelpUtil.isEmptyCollection(currentPageData) ? 0 : 1));
-        pageEntity.setCurrentPageData(currentPageData);
-        pageEntity.setTotalCount(mapEntity.getTotalCount());
-        return pageEntity;
-    }
-
     public ResponseEntity<List<E>> list(MapEntity mapEntity) {
         return new ResponseEntity<List<E>>(getService().selectEntityListPage(mapEntity), HttpStatus.OK);
+    }
+
+    public ResponseEntity<MapEntity> page(MapEntity mapEntity) {
+        mapEntity.setCurrentPageData(getService().selectEntityListPage(mapEntity));
+        return new ResponseEntity<MapEntity>(mapEntity, HttpStatus.OK);
     }
 
     public ResponseEntity<Void> create(E entity, UriComponentsBuilder ucBuilder) {
