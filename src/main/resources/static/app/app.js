@@ -9,6 +9,7 @@ var contextPath = '/webapp';
     angular.module('app', [ //
     'ngRoute', // 多视图路由
     'ngResource', // RESTful API
+    'ui.bootstrap', //Bootstrap components
     'ui.grid', // Grid表格控件
     'ui.grid.pagination', // Grid表格翻页控件
     'ui.grid.selection', // Grid表格下拉框控件
