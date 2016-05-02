@@ -205,12 +205,11 @@
             params.orderBy = gridOptions.orderBy || '';
 
             angular.extend(params, gridOptions.queryParams);
-            console.log(urlService);
-            var s = urlService;
-            debugger;
 
-            //return urlService.get(params, function(page) {
-            return $scope.httpGet(urlService.uri, params, function(page) {
+            // return urlService.get(params, function(page) {
+            return $scope.httpGet(urlService.uri, {
+                params : params
+            }, function(page) {
                 // 追加行号到每条记录中
                 angular.forEach(page.currentPageData, function(data, index, array) {
                     data.index = beginRowNum + index + 1;
