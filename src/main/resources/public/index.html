@@ -25,7 +25,9 @@
                         <span>欢迎您：{{currentUser.principal.username}}</span>
                     </div>
                     <div style="display: inline; float: right; margin-right: 20px;">
-                        <a href="" ng-click="logout()" ng-show="currentUser" style="panding-left: 100px;"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
+                        <button class="btn btn-sm btn-primary" ng-click="logout()">
+                            <span class="glyphicon glyphicon-log-out"></span> 退出
+                        </button>
                     </div>
                 </div>
             </div>
