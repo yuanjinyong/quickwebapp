@@ -44,6 +44,53 @@
             errorMsg : null, // 自定义属性，用于显示错误信息
             id : 'urlGrid', // 自定义属性，表格ID
             title : 'URL列表', // 自定义属性，表格标题
+            url : urlService.uri, // 自定义属性，从后台加载表格数据记录时使用的URL地址
+            loadFn : function(params, isExporterAllData) {
+                console.log(this);
+                var gridOptions = this;
+                var beginRowNum;
+
+                var queryParams = {};
+                if (isExporterAllData) {
+                    beginRowNum = 0;
+                } else {
+                    queryParams.pageSize = gridOptions.paginationPageSize;
+                    queryParams.currentPage = gridOptions.paginationCurrentPage || 1;
+                    queryParams.totalCount = gridOptions.totalItems;
+                    beginRowNum = (queryParams.currentPage - 1) * queryParams.pageSize;
+                }
+                queryParams.orderBy = gridOptions.orderBy || '';
+
+                angular.extend(queryParams, gridOptions.queryParams);
+                if (params) {
+                    angular.extend(queryParams, params);
+                }
+
+                return $scope.httpGet(gridOptions.url, {
+                    params : queryParams
+                }, function(page) {
+                    // 追加行号到每条记录中
+                    angular.forEach(page.currentPageData, function(data, index, array) {
+                        data.index = beginRowNum + index + 1;
+                    });
+                    // 更新表格的记录总数
+                    gridOptions.totalItems = page.totalCount;
+                    // 更新表格当前页的记录
+                    gridOptions.data = page.currentPageData;
+                    // 刷新工具栏
+                    if (gridOptions.toolbar && gridOptions.toolbar.updateFn) {
+                        gridOptions.toolbar.updateFn(null);
+                    }
+
+                    if (gridOptions.data && gridOptions.data.length) {
+                        gridOptions.errorMsg = null;
+                    } else {
+                        gridOptions.errorMsg = "无记录。";
+                    }
+                }, function(page) {
+                    gridOptions.errorMsg = "后台异常！";
+                });
+            }, // 自定义函数，从后台加载表格数据记录
             toolbar : {
                 updateFn : function(row) {
                     angular.forEach(this.groups, function(group) {
@@ -66,7 +113,11 @@
                         });
                     });
 
-                    $scope.$apply(); // this triggers a $digest
+                    try {
+                        $scope.$apply(); // this triggers a $digest
+                    } catch (e) {
+                        console.error(e);
+                    }
                 },
                 groups : [ {
                     items : [ {
@@ -80,7 +131,6 @@
                         id : "edit",
                         ico : "pencil",
                         text : "修改",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("修改");
                         }
@@ -88,7 +138,6 @@
                         id : "remove",
                         ico : "minus",
                         text : "删除",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("删除");
                         }
@@ -98,7 +147,6 @@
                         id : "approve",
                         ico : "ok",
                         text : "审核通过",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("审核通过");
                         }
@@ -106,7 +154,6 @@
                         id : "reject",
                         ico : "remove",
                         text : "审核驳回",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("审核驳回");
                         }
@@ -114,7 +161,6 @@
                         id : "back",
                         ico : "share-alt",
                         text : "退回新建",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("退回新建");
                         }
@@ -138,7 +184,6 @@
                         id : "print",
                         ico : "print",
                         text : "打印",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("打印");
                         }
@@ -146,7 +191,6 @@
                         id : "printview",
                         ico : "picture",
                         text : "预览",
-                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("预览");
                         }
@@ -256,51 +300,46 @@
             exporterPdfMaxGridWidth : 500,
             exporterCsvLinkElement : angular.element(document.querySelectorAll(".custom-csv-link-location")),
             exporterAllDataFn : function() {
-                return loadGrid($scope.urlGridOptions, true).then(function() {
+                var gridOptions = this;
+                return gridOptions.loadFn(null, true).then(function() {
                     // 导出成功后，要重新把表格的当前页记录加载下
-                    loadGrid($scope.urlGridOptions);
+                    gridOptions.loadFn();
                 });
             },
             onRegisterApi : function(gridApi) {
                 gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
-                    if (loadGrid) {
-                        var orderBy = "";
-                        if (sortColumns.length > 0) {
-                            angular.forEach(sortColumns, function(data, index, array) {
-                                orderBy += "," + data.field + " " + data.sort.direction;
-                            });
-                            orderBy = orderBy.substring(1);
-                        }
-                        this.grid.options.orderBy = orderBy;
-
-                        loadGrid(this.grid.options);
+                    var orderBy = "";
+                    if (sortColumns.length > 0) {
+                        angular.forEach(sortColumns, function(data, index, array) {
+                            orderBy += "," + data.field + " " + data.sort.direction;
+                        });
+                        orderBy = orderBy.substring(1);
                     }
+                    this.grid.options.orderBy = orderBy;
+
+                    this.grid.options.loadFn();
                 });
 
                 gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
-                    if (loadGrid) {
-                        loadGrid(this.grid.options);
-                    }
+                    this.grid.options.loadFn();
                 });
 
                 gridApi.core.on.filterChanged($scope, function() {
-                    if (loadGrid) {
-                        var grid = this.grid;
-                        var gridOptions = grid.options;
+                    var grid = this.grid;
+                    var gridOptions = grid.options;
 
-                        // 过滤条件变了，需要重置记录总数和查询参数
-                        gridOptions.totalItems = 0;
-                        gridOptions.queryParams = {};
+                    // 过滤条件变了，需要重置记录总数和查询参数
+                    gridOptions.totalItems = 0;
+                    gridOptions.queryParams = {};
 
-                        // 获取过滤条件到查询参数中
-                        angular.forEach(grid.columns, function(data, index, array) {
-                            if (data.enableFiltering && data.filters[0].term) {
-                                gridOptions.queryParams[data.field] = data.filters[0].term;
-                            }
-                        });
+                    // 获取过滤条件到查询参数中
+                    angular.forEach(grid.columns, function(data, index, array) {
+                        if (data.enableFiltering && data.filters[0].term) {
+                            gridOptions.queryParams[data.field] = data.filters[0].term;
+                        }
+                    });
 
-                        loadGrid(gridOptions);
-                    }
+                    gridOptions.loadFn();
                 });
 
                 // /////
@@ -312,46 +351,8 @@
             }
         };
 
-        var loadGrid = function(gridOptions, isExporterAllData) {
-            var beginRowNum;
-            var params = {};
-            if (isExporterAllData) {
-                beginRowNum = 0;
-            } else {
-                params.pageSize = gridOptions.paginationPageSize;
-                params.currentPage = gridOptions.paginationCurrentPage || 1;
-                params.totalCount = gridOptions.totalItems;
-                beginRowNum = (params.currentPage - 1) * params.pageSize;
-            }
-            params.orderBy = gridOptions.orderBy || '';
-
-            angular.extend(params, gridOptions.queryParams);
-
-            // return urlService.get(params, function(page) {
-            return $scope.httpGet(urlService.uri, {
-                params : params
-            }, function(page) {
-                // 追加行号到每条记录中
-                angular.forEach(page.currentPageData, function(data, index, array) {
-                    data.index = beginRowNum + index + 1;
-                });
-                // 更新表格的记录总数
-                gridOptions.totalItems = page.totalCount;
-                // 更新表格当前页的记录
-                gridOptions.data = page.currentPageData;
-                gridOptions.toolbar.updateFn(null);
-                if (gridOptions.data && gridOptions.data.length) {
-                    gridOptions.errorMsg = null;
-                } else {
-                    gridOptions.errorMsg = "无记录。";
-                }
-            }, function(page) {
-                gridOptions.errorMsg = "后台异常！";
-            });
-        };
-
         // 打开时首次加载表格数据
-        loadGrid($scope.urlGridOptions);
+        $scope.urlGridOptions.loadFn();
     };
 
     UrlController.$inject = [ '$scope', '$log', 'UrlService' ];
