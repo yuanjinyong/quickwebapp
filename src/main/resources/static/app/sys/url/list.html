@@ -1,23 +1,24 @@
 <div class="container">
-    <div class="page-header">
-        <h1>URL管理</h1>
-        <div class="well span6" style="float: none;">
-            <button ng-click="changeShow('list')">switch to list</button>
-            <button ng-click="changeShow('add')">switch to add</button>
-            <button ng-click="changeShow('edit')">switch to edit</button>
-            <button ng-click="changeShow('detail')">switch to detail</button>
-        </div>
-    </div>
-    <div class="span6" ng-switch="showMode">
-        <div ng-switch-when="list">我是列表區塊dgsdfgsdfgsdg</div>
-        <div ng-switch-when="add">我是新增區塊</div>
-        <div ng-switch-when="edit">我是修改區塊</div>
-        <div ng-switch-when="detail">我是明細區塊</div>
-    </div>
+    <h1>URL管理</h1>
 
-    <div class="grid" ui-grid="urlGridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
-        <div class="text-center" style="position: absolute; top: 60px; width: 100%; padding: 10px 30px 10px 10px;" ng-hide="urlGridOptions.data && urlGridOptions.data.length > 0">
-            <uib-alert>无记录。</uib-alert>
+    <div class="panel panel-default">
+        <div class="panel-heading bold">
+            <strong>{{urlGridOptions.title}}</strong>
+        </div>
+        <div class="panel-toolbar" style="padding: 2px; border-bottom: 1px solid #ccc;">
+            <button class="btn btn-sm btn-default" ng-click="">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </button>
+            <div class="btn-group" style="padding: 0px 2px;" ng-repeat="group in urlGridOptions.toolbar.groups">
+                <button class="btn btn-sm btn-primary" ng-repeat="item in group.items" ng-click="item.click(urlGridOptions, item)">
+                    <span class="glyphicon glyphicon-{{item.ico}}"></span> {{item.text}}
+                </button>
+            </div>
+        </div>
+        <div class="grid" style="border: none;" ui-grid="urlGridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
+            <div class="text-center" style="position: absolute; top: 60px; width: 100%; padding: 10px 30px 10px 10px;" ng-show="urlGridOptions.errorMsg">
+                <uib-alert>{{urlGridOptions.errorMsg}}</uib-alert>
+            </div>
         </div>
     </div>
 </div>

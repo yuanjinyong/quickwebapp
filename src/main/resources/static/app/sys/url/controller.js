@@ -37,8 +37,89 @@
             paginationPageSizes : [ 10, 20, 30, 50, 100 ], // 可选每页记录数
             paginationPageSize : 10, // 每页记录数
             totalItems : 0, // 总记录数
-            orderBy : "", // 自己写的用于后台排序的
-            queryParams : {}, // 自己写的用于后台查询过滤的条件参数
+            orderBy : "", // 自定义属性，用于后台排序的
+            queryParams : {}, // 自定义属性，用于后台查询过滤的条件参数
+            errorMsg : null, // 自定义属性，用于显示错误信息
+            title : "URL列表", // 自定义属性，表格标题
+            toolbar : {
+                groups : [ {
+                    items : [ {
+                        id : "add",
+                        ico : "plus",
+                        text : "增加",
+                        click : function(gridOptions, item) {
+                            alert("增加");
+                        }
+                    }, {
+                        id : "edit",
+                        ico : "pencil",
+                        text : "修改",
+                        click : function(gridOptions, item) {
+                            alert("修改");
+                        }
+                    }, {
+                        id : "remove",
+                        ico : "minus",
+                        text : "删除",
+                        click : function(gridOptions, item) {
+                            alert("删除");
+                        }
+                    } ]
+                }, {
+                    items : [ {
+                        id : "approve",
+                        ico : "ok",
+                        text : "审核通过",
+                        click : function(gridOptions, item) {
+                            alert("审核通过");
+                        }
+                    }, {
+                        id : "reject",
+                        ico : "remove",
+                        text : "审核驳回",
+                        click : function(gridOptions, item) {
+                            alert("审核驳回");
+                        }
+                    }, {
+                        id : "back",
+                        ico : "share-alt",
+                        text : "退回新建",
+                        click : function(gridOptions, item) {
+                            alert("退回新建");
+                        }
+                    } ]
+                }, {
+                    items : [ {
+                        id : "refresh",
+                        ico : "refresh",
+                        text : "刷新",
+                        click : function(gridOptions, item) {
+                            alert("刷新");
+                        }
+                    }, {
+                        id : "export",
+                        ico : "floppy-disk",
+                        text : "导出",
+                        click : function(gridOptions, item) {
+                            alert("导出");
+                        }
+                    }, {
+                        id : "print",
+                        ico : "print",
+                        text : "打印",
+                        click : function(gridOptions, item) {
+                            alert("打印");
+                        }
+                    }, {
+                        id : "printView",
+                        ico : "picture",
+                        text : "预览",
+                        click : function(gridOptions, item) {
+                            alert("预览");
+                        }
+                    } ]
+                } ]
+            }, // 自定义属性，表格工具栏
             columnDefs : [
                     {
                         field : 'index',
@@ -218,6 +299,13 @@
                 gridOptions.totalItems = page.totalCount;
                 // 更新表格当前页的记录
                 gridOptions.data = page.currentPageData;
+                if (gridOptions.data && gridOptions.data.length) {
+                    gridOptions.errorMsg = null;
+                } else {
+                    gridOptions.errorMsg = "无记录。";
+                }
+            }, function(page) {
+                gridOptions.errorMsg = "后台异常！";
             });
         };
 

@@ -17,7 +17,7 @@
                 <span><img style="margin: 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
             </div>
             <div style="display: inline; float: right; margin-right: 20px;">
-                <span>语言切换：<select ng-model="lang" ng-options="l.code as l.name for l in langs" ng-change="changeLang(lang)"></select></span>
+                <select ng-model="lang" ng-options="l.code as l.name for l in langs" ng-change="changeLang(lang)"></select>
             </div>
             <div style="display: inline;" ng-if="currentUser">
                 <div style="display: inline; margin-left: 20px;">
@@ -25,7 +25,7 @@
                         <span>欢迎您：{{currentUser.principal.username}}</span>
                     </div>
                     <div style="display: inline; float: right; margin-right: 20px;">
-                        <a href="" ng-click="logout()" ng-show="currentUser" style="panding-left: 100px;">退出</a>
+                        <a href="" ng-click="logout()" ng-show="currentUser" style="panding-left: 100px;"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
                     </div>
                 </div>
             </div>
