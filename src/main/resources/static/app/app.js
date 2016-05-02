@@ -12,7 +12,7 @@ var contextPath = '/webapp';
     'ui.bootstrap', //Bootstrap components
     'ui.grid', // Grid表格控件
     'ui.grid.pagination', // Grid表格翻页控件
-    'ui.grid.selection', // Grid表格下拉框控件
+    'ui.grid.selection', // Grid表格启用选择行
     'ui.grid.resizeColumns', // Grid表格启用调整列宽
     'ui.grid.moveColumns', // Grid表格拖动调整列顺序
     'ui.grid.pinning', // Grid表格固定列

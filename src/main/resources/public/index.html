@@ -17,7 +17,15 @@
                 <span><img style="margin: 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
             </div>
             <div style="display: inline; float: right; margin-right: 20px;">
-                <select ng-model="lang" ng-options="l.code as l.name for l in langs" ng-change="changeLang(lang)"></select>
+                <div class="btn-group" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
+                    <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
+                        <span class="caret"></span> <span class="sr-only">{{currentLang.name}}</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                        <li role="menuitem" ng-repeat="lang in langs"><a href="" ng-click="changeLang(lang)">{{lang.name}}</a></li>
+                    </ul>
+                </div>
             </div>
             <div style="display: inline;" ng-if="currentUser">
                 <div style="display: inline; margin-left: 20px;">

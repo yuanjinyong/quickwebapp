@@ -12,11 +12,15 @@
             code : 'zh-cn',
             name : '中文'
         } ];
-        $scope.lang = 'zh-cn';
+        $scope.currentLang = {
+            code : 'zh-cn',
+            name : '中文'
+        };
 
-        i18nService.setCurrentLang($scope.lang);
-        $scope.changeLang = function(newVal) {
-            i18nService.setCurrentLang(newVal);
+        i18nService.setCurrentLang($scope.currentLang.code);
+        $scope.changeLang = function(lang) {
+            $scope.currentLang = lang;
+            i18nService.setCurrentLang(lang.code);
             $route.reload();
         };
 
