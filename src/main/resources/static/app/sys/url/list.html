@@ -2,20 +2,18 @@
     <h1>URL管理</h1>
 
     <div class="panel panel-default">
-        <div class="panel-heading bold">
-            <strong>{{urlGridOptions.title}}</strong>
-        </div>
+        <div class="panel-heading" style="height: 30px; line-height: 30px; margin: 0px; padding: 0px 35px; font-weight: bold; font-size: 18px;">{{urlGridOptions.title}}</div>
         <div class="panel-toolbar" style="padding: 2px; border-bottom: 1px solid #ccc;">
             <button class="btn btn-sm btn-default" ng-click="">
                 <span class="glyphicon glyphicon-menu-hamburger"></span>
             </button>
             <div class="btn-group" style="padding: 0px 2px;" ng-repeat="group in urlGridOptions.toolbar.groups">
-                <button class="btn btn-sm btn-primary" ng-repeat="item in group.items" ng-click="item.click(urlGridOptions, item)">
+                <button class="btn btn-sm btn-primary" ng-repeat="item in group.items" ng-click="item.click(urlGridOptions, item)" ng-disabled="item.disabled">
                     <span class="glyphicon glyphicon-{{item.ico}}"></span> {{item.text}}
                 </button>
             </div>
         </div>
-        <div class="grid" style="border: none;" ui-grid="urlGridOptions" ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
+        <div class="grid" style="border: none;" ui-grid="urlGridOptions" ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
             <div class="text-center" style="position: absolute; top: 60px; width: 100%; padding: 10px 30px 10px 10px;" ng-show="urlGridOptions.errorMsg">
                 <uib-alert>{{urlGridOptions.errorMsg}}</uib-alert>
             </div>

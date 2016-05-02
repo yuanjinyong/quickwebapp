@@ -1,5 +1,5 @@
 (function(angular) {
-    var UrlController = function($scope, urlService) {
+    var UrlController = function($scope, $log, urlService) {
         console.log('UrlController');
 
         $scope.addItem = function(description) {
@@ -29,6 +29,8 @@
         };
 
         $scope.urlGridOptions = {
+            enableFullRowSelection : true, // 启用单击行选中功能
+            multiSelect : false, // 禁用多选
             enableGridMenu : true, // 启用表格右上角菜单
             enableFiltering : true, // 启用过滤器
             enableColumnResizing : true, // 启用调整列宽
@@ -37,10 +39,11 @@
             paginationPageSizes : [ 10, 20, 30, 50, 100 ], // 可选每页记录数
             paginationPageSize : 10, // 每页记录数
             totalItems : 0, // 总记录数
-            orderBy : "", // 自定义属性，用于后台排序的
+            orderBy : '', // 自定义属性，用于后台排序的
             queryParams : {}, // 自定义属性，用于后台查询过滤的条件参数
             errorMsg : null, // 自定义属性，用于显示错误信息
-            title : "URL列表", // 自定义属性，表格标题
+            id : 'urlGrid', // 自定义属性，表格ID
+            title : 'URL列表', // 自定义属性，表格标题
             toolbar : {
                 groups : [ {
                     items : [ {
@@ -54,6 +57,7 @@
                         id : "edit",
                         ico : "pencil",
                         text : "修改",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("修改");
                         }
@@ -61,6 +65,7 @@
                         id : "remove",
                         ico : "minus",
                         text : "删除",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("删除");
                         }
@@ -70,6 +75,7 @@
                         id : "approve",
                         ico : "ok",
                         text : "审核通过",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("审核通过");
                         }
@@ -77,6 +83,7 @@
                         id : "reject",
                         ico : "remove",
                         text : "审核驳回",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("审核驳回");
                         }
@@ -84,6 +91,7 @@
                         id : "back",
                         ico : "share-alt",
                         text : "退回新建",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("退回新建");
                         }
@@ -94,7 +102,7 @@
                         ico : "refresh",
                         text : "刷新",
                         click : function(gridOptions, item) {
-                            alert("刷新");
+                            loadGrid(gridOptions);
                         }
                     }, {
                         id : "export",
@@ -107,13 +115,15 @@
                         id : "print",
                         ico : "print",
                         text : "打印",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("打印");
                         }
                     }, {
-                        id : "printView",
+                        id : "printview",
                         ico : "picture",
                         text : "预览",
+                        disabled : true,
                         click : function(gridOptions, item) {
                             alert("预览");
                         }
@@ -136,6 +146,7 @@
                         field : 'f_url',
                         displayName : 'URL',
                         headerCellClass : 'text-center',
+                        cellTemplate : '<div class="ui-grid-cell-contents"><a href="" ng-click="showDetail()">{{COL_FIELD}}</a></div>',
                         pinnedLeft : true,// 靠左固定列
                         width : 300
                     },
@@ -173,7 +184,6 @@
                         },
                         cellFilter : 'trueFalseFilter',
                         enableColumnResizing : false,
-                        pinnedRight : true, // 靠右固定列
                         enableSorting : false,
                         width : 100
                     }, {
@@ -229,45 +239,73 @@
                 });
             },
             onRegisterApi : function(gridApi) {
-                $scope.gridApi = gridApi;
-
-                $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+                gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
                     if (loadGrid) {
                         var orderBy = "";
                         if (sortColumns.length > 0) {
                             angular.forEach(sortColumns, function(data, index, array) {
-                                // data等价于array[index]
                                 orderBy += "," + data.field + " " + data.sort.direction;
                             });
                             orderBy = orderBy.substring(1);
                         }
-                        $scope.urlGridOptions.orderBy = orderBy;
+                        this.grid.options.orderBy = orderBy;
 
-                        loadGrid($scope.urlGridOptions);
+                        loadGrid(this.grid.options);
                     }
                 });
 
                 gridApi.pagination.on.paginationChanged($scope, function(newPage, pageSize) {
                     if (loadGrid) {
-                        loadGrid($scope.urlGridOptions);
+                        loadGrid(this.grid.options);
                     }
                 });
 
-                $scope.gridApi.core.on.filterChanged($scope, function() {
+                gridApi.core.on.filterChanged($scope, function() {
                     if (loadGrid) {
+                        var grid = this.grid;
+                        var gridOptions = grid.options;
+
                         // 过滤条件变了，需要重置记录总数和查询参数
-                        $scope.urlGridOptions.totalItems = 0;
-                        $scope.urlGridOptions.queryParams = {};
+                        gridOptions.totalItems = 0;
+                        gridOptions.queryParams = {};
 
                         // 获取过滤条件到查询参数中
-                        angular.forEach(this.grid.columns, function(data, index, array) {
+                        angular.forEach(grid.columns, function(data, index, array) {
                             if (data.enableFiltering && data.filters[0].term) {
-                                $scope.urlGridOptions.queryParams[data.field] = data.filters[0].term;
+                                gridOptions.queryParams[data.field] = data.filters[0].term;
                             }
                         });
 
-                        loadGrid($scope.urlGridOptions);
+                        loadGrid(gridOptions);
                     }
+                });
+
+                // /////
+                gridApi.selection.on.rowSelectionChanged($scope, function(row) {
+                    $log.log(row);
+                    // $log.log('Row data: ' + JSON.stringify(row.entity));
+                    // if (row.isSelected) {
+                    angular.forEach(this.grid.options.toolbar.groups, function(group) {
+                        angular.forEach(group.items, function(item) {
+                            if (item.id == 'edit') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'remove') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'approve') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'reject') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'back') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'print') {
+                                item.disabled = !row.isSelected;
+                            } else if (item.id == 'printview') {
+                                item.disabled = !row.isSelected;
+                            }
+                        });
+                    });
+                    $scope.$apply(); // this triggers a $digest
+                    // }
                 });
             }
         };
@@ -313,7 +351,7 @@
         loadGrid($scope.urlGridOptions);
     };
 
-    UrlController.$inject = [ '$scope', 'UrlService' ];
+    UrlController.$inject = [ '$scope', '$log', 'UrlService' ];
     angular.module("app.controllers").controller("UrlController", UrlController);
 
     angular.module("app.filters").filter('trueFalseFilter', function() {
