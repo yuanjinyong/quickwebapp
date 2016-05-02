@@ -45,6 +45,29 @@
             id : 'urlGrid', // 自定义属性，表格ID
             title : 'URL列表', // 自定义属性，表格标题
             toolbar : {
+                updateFn : function(row) {
+                    angular.forEach(this.groups, function(group) {
+                        angular.forEach(group.items, function(item) {
+                            if (item.id == 'edit') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'remove') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'approve') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'reject') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'back') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'print') {
+                                item.disabled = !row || !row.isSelected;
+                            } else if (item.id == 'printview') {
+                                item.disabled = !row || !row.isSelected;
+                            }
+                        });
+                    });
+
+                    $scope.$apply(); // this triggers a $digest
+                },
                 groups : [ {
                     items : [ {
                         id : "add",
@@ -284,28 +307,7 @@
                 gridApi.selection.on.rowSelectionChanged($scope, function(row) {
                     $log.log(row);
                     // $log.log('Row data: ' + JSON.stringify(row.entity));
-                    // if (row.isSelected) {
-                    angular.forEach(this.grid.options.toolbar.groups, function(group) {
-                        angular.forEach(group.items, function(item) {
-                            if (item.id == 'edit') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'remove') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'approve') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'reject') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'back') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'print') {
-                                item.disabled = !row.isSelected;
-                            } else if (item.id == 'printview') {
-                                item.disabled = !row.isSelected;
-                            }
-                        });
-                    });
-                    $scope.$apply(); // this triggers a $digest
-                    // }
+                    row.grid.options.toolbar.updateFn(row);
                 });
             }
         };
@@ -337,6 +339,7 @@
                 gridOptions.totalItems = page.totalCount;
                 // 更新表格当前页的记录
                 gridOptions.data = page.currentPageData;
+                gridOptions.toolbar.updateFn(null);
                 if (gridOptions.data && gridOptions.data.length) {
                     gridOptions.errorMsg = null;
                 } else {
