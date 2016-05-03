@@ -2,6 +2,7 @@
     var UrlController = function($scope, $log, urlService, dictService) {
         console.log('UrlController');
 
+        $scope.dictService = dictService;
         $scope.addItem = function(description) {
             new UrlService({
                 description : description,
@@ -240,7 +241,7 @@
                         displayName : '记录日志',
                         cellClass : 'text-center',
                         headerCellClass : 'text-center',
-                        cellTemplate : '<div class="ui-grid-cell-contents">{{dictService.getValueFn("trueFalse", COL_FIELD)}}</div>',
+                        cellTemplate : '<div class="ui-grid-cell-contents">{{grid.appScope.dictService.dicts.trueFalse[row.entity.f_log]}}</div>',
                         cellFilter : 'TrueFalseFilter',
                         filter : {
                             options : dictService.dicts.trueFalse.options
@@ -249,12 +250,13 @@
                         enableColumnResizing : false,
                         enableSorting : false,
                         width : 100
-                    }, {
+                    },
+                    {
                         field : 'f_auto',
                         displayName : '自动生成',
                         cellClass : 'text-center',
                         headerCellClass : 'text-center',
-                        cellTemplate : '<div class="ui-grid-cell-contents">{{COL_FIELD == "1" ? "是" : "否"}}</div>',
+                        cellTemplate : '<div class="ui-grid-cell-contents">{{grid.appScope.dictService.dicts.trueFalse[row.entity.f_auto]}}</div>',
                         cellFilter : 'TrueFalseFilter',
                         filter : {
                             term : '', // 默认选中值
