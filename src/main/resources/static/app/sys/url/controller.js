@@ -171,7 +171,7 @@
                         ico : "refresh",
                         text : "刷新",
                         click : function(gridOptions, item) {
-                            loadGrid(gridOptions);
+                            gridOptions.loadFn();
                         }
                     }, {
                         id : "export",
