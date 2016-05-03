@@ -26,9 +26,9 @@
                 } ]
             }
         };
-        service.getValueFn = function(dictId, itemId) {
-            return this.dicts[dictId][itemId];
-        };
+        // service.getValueFn = function(dictId, itemId) {
+        // return this.dicts[dictId][itemId];
+        // };
 
         return service;
     };
