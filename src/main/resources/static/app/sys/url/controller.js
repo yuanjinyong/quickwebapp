@@ -1,5 +1,5 @@
 (function(angular) {
-    var UrlController = function($scope, $log, urlService) {
+    var UrlController = function($scope, $log, urlService, dictService) {
         console.log('UrlController');
 
         $scope.addItem = function(description) {
@@ -238,25 +238,29 @@
                     {
                         field : 'f_log',
                         displayName : '记录日志',
+                        cellClass : 'text-center',
                         headerCellClass : 'text-center',
-                        filterHeaderTemplate : '<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters"><div my-custom-dropdown></div></div>',
+                        cellTemplate : '<div class="ui-grid-cell-contents">{{dictService.getValueFn("trueFalse", COL_FIELD)}}</div>',
+                        cellFilter : 'TrueFalseFilter',
                         filter : {
-                            options : [ {
-                                id : '0',
-                                value : '否'
-                            }, {
-                                id : '1',
-                                value : '是'
-                            } ]
+                            options : dictService.dicts.trueFalse.options
                         },
-                        cellFilter : 'trueFalseFilter',
+                        filterHeaderTemplate : '<div grid-filter-dropdown></div>',
                         enableColumnResizing : false,
                         enableSorting : false,
                         width : 100
                     }, {
                         field : 'f_auto',
                         displayName : '自动生成',
+                        cellClass : 'text-center',
                         headerCellClass : 'text-center',
+                        cellTemplate : '<div class="ui-grid-cell-contents">{{COL_FIELD == "1" ? "是" : "否"}}</div>',
+                        cellFilter : 'TrueFalseFilter',
+                        filter : {
+                            term : '', // 默认选中值
+                            options : dictService.dicts.trueFalse.options
+                        },
+                        filterHeaderTemplate : '<div grid-filter-dropdown></div>',
                         enableColumnResizing : false,
                         enableSorting : false,
                         width : 100
@@ -355,32 +359,6 @@
         $scope.urlGridOptions.loadFn();
     };
 
-    UrlController.$inject = [ '$scope', '$log', 'UrlService' ];
+    UrlController.$inject = [ '$scope', '$log', 'UrlService', 'DictService' ];
     angular.module("app.controllers").controller("UrlController", UrlController);
-
-    angular.module("app.filters").filter('trueFalseFilter', function() {
-        var trueFalseHash = {
-            // '' : '',
-            '0' : '否',
-            '1' : '是'
-        };
-
-        return function(input) {
-            if (!input) {
-                return '';
-            } else {
-                return trueFalseHash[input];
-            }
-        };
-    });
-
-    angular
-            .module("app.directives")
-            .directive(
-                    'myCustomDropdown',
-                    function() {
-                        return {
-                            template : '<select ng-model="colFilter.term" ng-options="option.id as option.value for option in colFilter.options"><option value=""></option></select>'
-                        };
-                    });
 }(angular));
