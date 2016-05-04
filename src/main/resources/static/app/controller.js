@@ -84,7 +84,7 @@
         };
 
         $scope.showMode = "list";
-        $scope.setCurrentUser(null); // 先初始成null，然后从服务器上获取当前用户信息，如果没有获取到则跳转到登录页面
+        $scope.currentUser = null; // 先初始成null，然后从服务器上获取当前用户信息，如果没有获取到则跳转到登录页面
         $scope.httpGet('user', {}, function(response) {
             if (response != "") {
                 $scope.setCurrentUser(response);

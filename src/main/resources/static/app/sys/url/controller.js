@@ -114,11 +114,11 @@
                         });
                     });
 
-                    try {
-                        $scope.$apply(); // this triggers a $digest
-                    } catch (e) {
-                        console.error(e);
-                    }
+                    // try {
+                    // $scope.$apply(); // this triggers a $digest
+                    // } catch (e) {
+                    // console.error(e);
+                    // }
                 },
                 groups : [ {
                     items : [ {
