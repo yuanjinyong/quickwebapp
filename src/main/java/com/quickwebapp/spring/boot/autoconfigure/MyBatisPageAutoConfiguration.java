@@ -5,9 +5,9 @@ package com.quickwebapp.spring.boot.autoconfigure;
 
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -15,7 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.quickwebapp.core.interceptor.mybatis.PageInterceptor;
+import com.quickwebapp.framework.core.interceptor.mybatis.PageInterceptor;
 
 /**
  * @author JohnYuan
@@ -26,7 +26,7 @@ import com.quickwebapp.core.interceptor.mybatis.PageInterceptor;
 @EnableConfigurationProperties(MybatisPageProperties.class)
 @AutoConfigureBefore(MybatisAutoConfiguration.class)
 public class MyBatisPageAutoConfiguration {
-    private static final Log logger = LogFactory.getLog(MyBatisPageAutoConfiguration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MyBatisPageAutoConfiguration.class);
 
     @Autowired
     private MybatisPageProperties properties;
@@ -38,7 +38,7 @@ public class MyBatisPageAutoConfiguration {
      */
     @Bean
     public PageInterceptor pageInterceptor() {
-        logger.info("----------------注册MyBatis分页插件PageInterceptor----------------");
+        LOG.info("========注册MyBatis分页插件PageInterceptor========");
         PageInterceptor pageInterceptor = new PageInterceptor();
 
         Properties p = new Properties();

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.quickwebapp.core.listener.ApplicationStartup;
+import com.quickwebapp.framework.core.listener.ApplicationStartup;
 
 /**
  * @author Administrator

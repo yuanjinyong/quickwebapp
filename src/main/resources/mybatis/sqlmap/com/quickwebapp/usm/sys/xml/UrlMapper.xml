@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickwebapp.usm.sys.mapper.UrlMapper">
+    <sql id="Insert_Clause">
+        INSERT INTO t_sys_url(
+        f_id,
+        f_url,
+        f_description,
+        f_patterns,
+        f_methods,
+        f_params,
+        f_headers,
+        f_consumes,
+        f_produces,
+        f_custom,
+        f_handler_method,
+        f_log,
+        f_auto
+        )
+        VALUES
+    </sql>
+    <sql id="Insert_Value_Clause">
+        (
+        #{f_id},
+        #{f_url},
+        #{f_description},
+        #{f_patterns},
+        #{f_methods},
+        #{f_params},
+        #{f_headers},
+        #{f_consumes},
+        #{f_produces},
+        #{f_custom},
+        #{f_handler_method},
+        #{f_log},
+        #{f_auto})
+        )
+    </sql>
+    <sql id="Insert_Values_Clause">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.f_id},
+            #{item.f_url},
+            #{item.f_description},
+            #{item.f_patterns},
+            #{item.f_methods},
+            #{item.f_params},
+            #{item.f_headers},
+            #{item.f_consumes},
+            #{item.f_produces},
+            #{item.f_custom},
+            #{item.f_handler_method},
+            #{item.f_log},
+            #{item.f_auto}
+            )
+        </foreach>
+    </sql>
+
+    <sql id="Select_Clause">
+        SELECT
+        f_id,
+        f_url,
+        f_description,
+        f_patterns,
+        f_methods,
+        f_params,
+        f_headers,
+        f_consumes,
+        f_produces,
+        f_custom,
+        f_handler_method,
+        f_log,
+        f_auto
+    </sql>
+    <sql id="From_Clause">
+        FROM t_sys_url
+    </sql>
+    <sql id="Where_Clause">
+        WHERE 1=1
+        <if test="f_url != null and f_url != ''">AND f_url like "%" #{f_url} "%"</if>
+        <if test="f_description != null and f_description != ''">AND f_description like "%" #{f_description} "%"</if>
+        <if test="f_methods != null and f_methods != ''">AND f_methods like "%" #{f_methods} "%"</if>
+        <if test="f_consumes != null and f_consumes != ''">AND f_consumes like "%" #{f_consumes} "%"</if>
+        <if test="f_handler_method != null and f_handler_method != ''">AND f_handler_method like "%" #{f_handler_method} "%"</if>
+        <if test="f_log != null and f_log != ''">AND f_log = #{f_log}</if>
+        <if test="f_auto != null and f_auto != ''">AND f_auto = #{f_auto}</if>
+    </sql>
+
+
+    <!-- select -->
+    <select id="selectEntity" parameterType="java.lang.String" resultType="com.quickwebapp.usm.sys.entity.UrlEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        WHERE f_id = #{f_id}
+    </select>
+    <select id="selectEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.usm.sys.entity.UrlEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+    <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+
+    <!-- insert -->
+    <insert id="insertEntity" parameterType="com.quickwebapp.usm.sys.entity.UrlEntity">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Value_Clause" />
+    </insert>
+    <insert id="insertEntities" parameterType="java.util.ArrayList">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Values_Clause" />
+    </insert>
+
+    <!-- update -->
+    <update id="updateEntity" parameterType="com.quickwebapp.usm.sys.entity.UrlEntity">
+        UPDATE t_sys_url SET
+        <if test="f_description != null">f_description=#{f_description},</if>
+        <if test="f_log != null">f_log=#{f_log},</if>
+        <if test="f_auto != null">f_auto=#{f_auto},</if>
+        f_id=#{f_id}
+        WHERE f_id=#{f_id}
+    </update>
+
+    <!-- delete -->
+    <select id="isCanDeleteEntity" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT 0 FROM DUAL
+    </select>
+    <delete id="deleteEntity" parameterType="java.lang.String">
+        DELETE FROM t_sys_url WHERE f_id=#{f_id}
+    </delete>
+    <delete id="deleteEntities" parameterType="com.quickwebapp.framework.core.entity.MapEntity">
+        DELETE FROM t_sys_url WHERE 1=1
+        <if test="f_auto != null and f_auto !=''">AND f_auto = #{f_auto}</if>
+    </delete>
+
+    <!-- 其他SQL -->
+</mapper>

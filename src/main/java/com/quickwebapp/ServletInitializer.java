@@ -6,7 +6,7 @@ package com.quickwebapp;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
-import com.quickwebapp.core.listener.ApplicationStartup;
+import com.quickwebapp.framework.core.listener.ApplicationStartup;
 
 /**
  * @author Administrator

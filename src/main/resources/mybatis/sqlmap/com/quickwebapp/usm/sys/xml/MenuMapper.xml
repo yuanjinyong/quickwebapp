@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickwebapp.usm.sys.mapper.MenuMapper">
+    <sql id="Insert_Clause">
+        INSERT INTO t_sys_menu(
+        f_id,
+        f_parent_id,
+        f_parent_ids,
+        f_menu_name,
+        f_menu_remark,
+        f_icon,
+        f_type,
+        f_url_id,
+        f_order,
+        f_is_show
+        )
+        VALUES
+    </sql>
+    <sql id="Insert_Value_Clause">
+        (
+        #{f_id},
+        #{f_parent_id},
+        #{f_parent_ids},
+        #{f_menu_name},
+        #{f_menu_remark},
+        #{f_icon},
+        #{f_type},
+        #{f_url_id},
+        #{f_order},
+        #{f_is_show}
+        )
+    </sql>
+    <sql id="Insert_Values_Clause">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.f_id},
+            #{item.f_parent_id},
+            #{item.f_parent_ids},
+            #{item.f_menu_name},
+            #{item.f_menu_remark},
+            #{item.f_icon},
+            #{item.f_type},
+            #{item.f_url_id},
+            #{item.f_order},
+            #{item.f_is_show}
+            )
+        </foreach>
+    </sql>
+
+    <sql id="Select_Clause">
+        SELECT
+        t.f_id,
+        t.f_parent_id,
+        m.f_menu_name f_parent_name,
+        t.f_parent_ids,
+        t.f_menu_name,
+        t.f_menu_remark,
+        t.f_icon,
+        t.f_type,
+        t.f_url_id,
+        u.f_url,
+        t.f_order,
+        t.f_is_show
+    </sql>
+    <sql id="From_Clause">
+        FROM t_sys_menu t
+        LEFT JOIN t_sys_menu m ON m.f_id = t.f_parent_id
+        LEFT JOIN t_sys_url u ON u.f_id = t.f_url_id
+    </sql>
+    <sql id="Where_Clause">
+        WHERE 1=1
+        <if test="f_id != null and f_id != ''">AND t.f_id LIKE "%" #{f_id} "%"</if>
+        <if test="f_menu_name != null and f_menu_name != ''">AND t.f_menu_name LIKE "%" #{f_menu_name} "%"</if>
+        <if test="f_parent_id != null and f_parent_id != ''">AND t.f_parent_id = #{f_parent_id}</if>
+        <if test="f_parent_ids != null and f_parent_ids != ''">AND t.f_parent_ids LIKE "" #{f_parent_ids} "%"</if>
+        <if test="f_type != null and f_type != ''">AND t.f_type = #{f_type}</if>
+        <if test="f_url_id != null and f_url_id != ''">AND t.f_url_id = #{f_url_id}</if>
+        <if test="f_is_show != null and f_is_show != ''">AND t.f_is_show = #{f_is_show}</if>
+    </sql>
+
+
+    <!-- select -->
+    <select id="selectEntity" parameterType="java.lang.String" resultType="com.quickwebapp.usm.sys.entity.MenuEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        WHERE t.f_id = #{f_id}
+    </select>
+    <select id="selectEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.usm.sys.entity.MenuEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+    <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+
+    <!-- insert -->
+    <insert id="insertEntity" parameterType="com.quickwebapp.usm.sys.entity.MenuEntity">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Value_Clause" />
+    </insert>
+    <insert id="insertEntities" parameterType="java.util.ArrayList">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Values_Clause" />
+    </insert>
+
+    <!-- update -->
+    <update id="updateEntity" parameterType="com.quickwebapp.usm.sys.entity.MenuEntity">
+        UPDATE t_sys_menu SET
+        <if test="f_parent_id != null">f_parent_id=#{f_parent_id},</if>
+        <if test="f_parent_ids != null">f_parent_ids=#{f_parent_ids},</if>
+        <if test="f_menu_name != null">f_menu_name=#{f_menu_name},</if>
+        <if test="f_menu_remark != null">f_menu_remark=#{f_menu_remark},</if>
+        <if test="f_icon != null">f_icon=#{f_icon},</if>
+        <if test="f_type != null">f_type=#{f_type},</if>
+        <if test="f_url_id != null">f_url_id=#{f_url_id},</if>
+        <if test="f_order != null">f_order=#{f_order},</if>
+        <if test="f_is_show != null">f_is_show=#{f_is_show},</if>
+        f_id=#{f_id}
+        WHERE f_id=#{f_id}
+    </update>
+
+    <!-- delete -->
+    <select id="isCanDeleteEntity" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT 0 FROM DUAL
+    </select>
+    <delete id="deleteEntity" parameterType="java.lang.String">
+        DELETE FROM t_sys_menu WHERE f_id=#{f_id}
+    </delete>
+    <delete id="deleteEntities" parameterType="com.quickwebapp.framework.core.entity.MapEntity">
+        DELETE FROM t_sys_menu WHERE 1=1
+        <if test="f_parent_id != null and f_parent_id != ''">AND f_parent_id = #{f_parent_id}</if>
+        <if test="f_is_show != null and f_is_show != ''">AND f_is_show = #{f_is_show}</if>
+    </delete>
+
+    <!-- 其他SQL -->
+</mapper>
