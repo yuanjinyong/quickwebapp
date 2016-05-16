@@ -1,0 +1,18 @@
+<div id="{{formOptions.gridOptions.feature.id}}Form">
+    <div class="modal-header" ng-mousedown="startToMove($event)">
+        <button aria-hidden="true" class="close" type="button" ng-click="dismiss()">
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        <h4 class="modal-title">
+            <span class="glyphicon glyphicon-{{formOptions.toolbarItem.ico}}" ng-if="formOptions.toolbarItem.ico"></span> {{formOptions.title || (formOptions.toolbarItem.text + formOptions.gridOptions.feature.name)}}
+        </h4>
+    </div>
+    <div class="modal-body" ng-style="getFormBodyStyle()" qw-resize ng-include="formOptions.formTemplateUrl || (formOptions.gridOptions.feature.path + (formOptions.toolbarItem.view || '/form.html'))"></div>
+    <div class="modal-footer" ng-style="{'text-align': (formOptions.footbar.align || 'center')}">
+        <div class="btn-group" ng-repeat="group in formOptions.footbar.groups">
+            <button class="btn btn-{{item.size || 'sm'}} btn-{{item.css || 'default'}} {{item.block ? 'btn-block' : ''}}" ng-repeat="item in group.items" ng-click="item.click(item, formOptions, entity)" ng-if="!item.hide" ng-disabled="item.disabled">
+                <span class="glyphicon glyphicon-{{item.ico}}" ng-if="item.ico"></span> {{item.text}}
+            </button>
+        </div>
+    </div>
+</div>

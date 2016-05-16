@@ -1,9 +1,8 @@
 (function(angular) {
     var DictService = function($resource) {
-        var uri = 'api/sys/dicts';
-        var service = $resource(this.uri + '/:id', {
-            id : '@id'
-        }, {
+        $qw.dev && console.info('DictService');
+
+        var service = $resource('api/station/stations/:id', {}, {
             update : {
                 method : "PUT"
             },
@@ -11,24 +10,40 @@
                 method : "DELETE"
             }
         });
+        service.uri = 'api/station/stations';
 
-        service.uri = uri;
         service.dicts = {
-            trueFalse : {
-                '0' : '否',
-                '1' : '是',
-                options : [ {
-                    id : '0',
-                    value : '否'
+            TrueFalse : {
+                1 : '是',
+                2 : '否',
+                selectOptions : [ {
+                    value : 1,
+                    label : '是'
                 }, {
-                    id : '1',
-                    value : '是'
+                    value : 2,
+                    label : '否'
+                } ]
+            },
+            MenuType : {
+                0 : '根',
+                1 : '目录',
+                2 : '页面',
+                3 : '按钮',
+                selectOptions : [ {
+                    value : 0,
+                    label : '根'
+                }, {
+                    value : 1,
+                    label : '目录'
+                }, {
+                    value : 2,
+                    label : '页面'
+                }, {
+                    value : 3,
+                    label : '按钮'
                 } ]
             }
         };
-        // service.getValueFn = function(dictId, itemId) {
-        // return this.dicts[dictId][itemId];
-        // };
 
         return service;
     };

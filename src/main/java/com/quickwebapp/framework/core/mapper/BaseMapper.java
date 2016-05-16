@@ -23,7 +23,7 @@ public interface BaseMapper<P, E> {
      * @return
      *         实体对象列表
      */
-    public List<E> selectEntityListPage(MapEntity mapEntity);
+    public List<E> selectEntityListPage(MapEntity params);
 
     /**
      * 根据组合条件查询多个数据记录，没行数据以Map形式返回
@@ -32,7 +32,7 @@ public interface BaseMapper<P, E> {
      * @return
      *         数据记录列表
      */
-    public List<MapEntity> selectMapEntityListPage(MapEntity mapEntity);
+    public List<MapEntity> selectMapEntityListPage(MapEntity params);
 
     /**
      * 插入单个实体对象
@@ -79,7 +79,7 @@ public interface BaseMapper<P, E> {
      * @param mapEntity
      *            组合条件
      */
-    public void deleteEntities(MapEntity mapEntity);
+    public void deleteEntities(MapEntity params);
 
     /**
      * 根据主键判断实体对象是否可以删除，返回0表示可以删除

@@ -18,12 +18,12 @@ public abstract class BaseService<P, E> {
         return getMapper().selectEntity(primaryKey);
     }
 
-    public List<E> selectEntityListPage(MapEntity mapEntity) {
-        return getMapper().selectEntityListPage(mapEntity);
+    public List<E> selectEntityListPage(MapEntity params) {
+        return getMapper().selectEntityListPage(params);
     }
 
-    public List<MapEntity> selectMapEntityListPage(MapEntity mapEntity) {
-        return getMapper().selectMapEntityListPage(mapEntity);
+    public List<MapEntity> selectMapEntityListPage(MapEntity params) {
+        return getMapper().selectMapEntityListPage(params);
     }
 
     public void insertEntity(E entity) {
@@ -46,7 +46,7 @@ public abstract class BaseService<P, E> {
         getMapper().deleteEntity(primaryKey);
     }
 
-    public void deleteEntities(MapEntity mapEntity) {
-        getMapper().deleteEntities(mapEntity);
+    public void deleteEntities(MapEntity params) {
+        getMapper().deleteEntities(params);
     }
 }

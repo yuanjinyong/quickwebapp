@@ -4,24 +4,14 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.quickwebapp.framework.core.entity.BaseEntity;
 import com.quickwebapp.framework.core.entity.MapEntity;
-import com.quickwebapp.framework.core.exception.BusinessException;
 import com.quickwebapp.framework.core.utils.HelpUtil;
 import com.quickwebapp.framework.core.utils.Pagination;
 
 public abstract class TopController {
-    private Logger logger = LoggerFactory.getLogger(TopController.class);
-
     /**
      * 直接获取参数
      */
@@ -127,59 +117,6 @@ public abstract class TopController {
         for (int i = 1; i < args.length; i += 2) {
             request.setAttribute(String.valueOf(args[i - 1]), args[i]);
         }
-    }
-
-    protected MapEntity success() {
-        return success(new MapEntity());
-    }
-
-    protected MapEntity success(MapEntity data) {
-        return success(data, null);
-    }
-
-    protected MapEntity success(BaseEntity<?> entity) {
-        return success(new MapEntity(), entity);
-    }
-
-    protected MapEntity success(MapEntity data, Object entity) {
-        data.put("operation", $("operation", "list"));
-        data.safePut("identity", $("identity"));
-        data.safePut("entity", entity);
-        return result(true, "系统处理成功！", data);
-    }
-
-    protected MapEntity failed(String errorMsg) {
-        return result(false, errorMsg, null);
-    }
-
-    private MapEntity result(boolean state, String message, MapEntity data) {
-        MapEntity resultMap = new MapEntity();
-        resultMap.put("state", state);
-        resultMap.put("msg", message);
-        resultMap.safePut("data", data);
-        return resultMap;
-    }
-
-    /** 基于@ExceptionHandler异常处理 */
-    @ExceptionHandler
-    @ResponseBody
-    public MapEntity exceptionHandler(HttpServletRequest request, Exception e) {
-        String errorMsg = "";
-        if (e instanceof DataAccessException) {
-            Throwable root = ((DataAccessException) e).getRootCause();
-            errorMsg = root != null ? root.getMessage() : ((DataAccessException) e).getMessage();
-        } else if (e instanceof BusinessException) {
-            errorMsg = ((BusinessException) e).getFormattedMessage();
-        } else if (e instanceof NoSuchMethodException) {
-            errorMsg = "请求的方法不存在!";
-        } else if (e instanceof BindException) {
-            errorMsg = "类型转换错误!";
-        } else {
-            errorMsg = e.toString();
-        }
-        logger.error(e.getMessage(), e);
-
-        return failed(errorMsg);
     }
 
     protected static HttpServletRequest getRequest() {

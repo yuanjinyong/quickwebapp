@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import com.quickwebapp.usm.sys.entity.UrlEntity;
 import com.quickwebapp.usm.sys.service.UrlService;
+import com.quickwebapp.weixin.http.client.WeixinClient;
+import com.quickwebapp.weixin.service.MeunService;
 
 /**
  * @author JohnYuan
@@ -30,10 +32,11 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        ApplicationContext ac = event.getApplicationContext();
         // 在web 项目中（spring mvc），系统会存在两个容器，一个是root application context ,另一个是我们自己的 projectName-servlet context
         // 这种情况下，就会造成onApplicationEvent方法被执行两次。为了避免上面提到的问题，我们可以只在root application
         // context初始化完成后调用逻辑代码，其他的容器的初始化完成，则不做任何处理。
-        if (event.getApplicationContext().getParent() != null) {
+        if (ac.getParent() != null) {
             return;
         }
 
@@ -45,10 +48,10 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         // }
         // }).start();
         // } else {
-        refreshUrlAndRight(event.getApplicationContext());
+        refreshUrlAndRight(ac);
         // }
-        // public static void main(null);
-        // new MeunClient().createMenu();
+        MeunService meunService = ac.getBean(WeixinClient.getProperties().getMeunService(), MeunService.class);
+        meunService.createMenu();
     }
 
     private void refreshUrlAndRight(ApplicationContext ac) {
@@ -81,7 +84,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         entity.setF_produces(mapping.getProducesCondition().toString());
         entity.setF_custom(mapping.getCustomCondition() == null ? "[]" : mapping.getCustomCondition().toString());
         entity.setF_handler_method(method.getMethod().toString());
-        entity.setF_log(0);
+        entity.setF_log(2);
         entity.setF_auto(1);
 
         entity.setF_id(

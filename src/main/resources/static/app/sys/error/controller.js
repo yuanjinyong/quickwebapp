@@ -1,6 +1,6 @@
 (function(angular) {
     var ErrorController = function($scope, $location) {
-        $scope.debug('ErrorController');
+        $qw.dev && console.info('ErrorController');
     };
 
     ErrorController.$inject = [ '$scope', '$location' ];

@@ -1,6 +1,6 @@
 (function(angular) {
-    var LoginController = function($scope, $location) {
-        console.log('LoginController');
+    var LoginController = function($scope, $location, http) {
+        $qw.dev && console.info('LoginController');
 
         $scope.login = function() {
             var user = $scope.credentials;
@@ -8,26 +8,24 @@
                 authorization : 'Basic ' + btoa(user.username + ':' + user.password)
             } : {};
 
-            $scope.httpGet('authenticate', {
+            http.get('authenticate', {
                 headers : headers
             }, function(response) {
                 $scope.setCurrentUser(response);
-                $scope.error = false;
                 $location.path('/');
             }, function(response) {
+                console.error('登录失败！', response);
                 $scope.setCurrentUser(null);
-                $scope.error = true;
-                $location.path('/login');
+                $location.path('/app/login');
             });
         };
 
-        $scope.error = false;
         $scope.credentials = {
-            username : ($scope.dev ? 'admin' : ''),
-            password : ($scope.dev ? 'pkpm' : '')
+            username : ($qw.dev ? 'admin' : ''),
+            password : ($qw.dev ? 'pkpm' : '')
         };
     };
 
-    LoginController.$inject = [ '$scope', '$location' ];
+    LoginController.$inject = [ '$scope', '$location', 'HttpService' ];
     angular.module('app.controllers').controller('LoginController', LoginController);
 }(angular));

@@ -3,9 +3,9 @@ package com.quickwebapp.usm.sys.entity;
 import java.util.List;
 
 import com.quickwebapp.framework.core.entity.MapEntity;
-import com.quickwebapp.framework.core.entity.TreeEntity;
+import com.quickwebapp.framework.core.entity.TreeNodeEntity;
 
-public class MenuEntity extends TreeEntity<String, MenuEntity> {
+public class MenuEntity extends TreeNodeEntity<String, MenuEntity> {
     private String f_parent_name; // 父级名称
     private String f_parent_ids; // 所有父级的ID，用“/”分隔
     private String f_menu_name; // 菜单名称

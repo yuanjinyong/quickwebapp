@@ -10,7 +10,7 @@ import com.quickwebapp.framework.core.utils.HelpUtil;
  *
  */
 public class BusinessException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7325689908042779385L;
     private Long code; // 异常编码
     private String message; // 异常信息
     private Object[] args;

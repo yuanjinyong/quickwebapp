@@ -92,6 +92,10 @@ dependencies {
     compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.0.2")
     //MD5算法
     compile("commons-codec:commons-codec:1.10")
+    //微信后台Java代码http调用需要使用到的jar包
+    compile("org.apache.httpcomponents:httpclient")
+    compile("com.thoughtworks.xstream:xstream:1.4.7")
+    compile("org.dom4j:dom4j:2.0.0-RC1")
 
     //MySQL
     //runtime "mysql:mysql-connector-java:5.1.32"

@@ -3,15 +3,25 @@
 <head>
 <meta charset="utf-8" />
 <title>Quick Webapp - Web应用快速开发平台</title>
+<script type="text/javascript">
+    // 全局变量、函数和服务，避免很多地方都需要去写依赖注入
+    var $qw = {};
+    // 开发模式，生产环境上需要注释掉这行
+    $qw.dev = true;
+    $qw.dev && console.info('初始化$qw。');
+</script>
 <link rel="icon" type="image/x-icon" href="weblibs/favicon.ico">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" />
 <link rel="stylesheet" href="webjars/ui-grid/3.1.1/ui-grid.min.css" />
 <link rel="stylesheet" href="weblibs/css/app.css" />
+<script type="text/javascript">
+//使用document.write这种方式异步加载js和css
+</script>
 </head>
 
 
 <body ng-app="app" ng-controller="ApplicationController">
-    <div id="app" class="app-navbar-fixed app-sidebar-fixed">
+    <div id="app" ng-controller="MainController" class="app-navbar-fixed app-sidebar-fixed">
         <div class="header-container" style="height: 65px; line-height: 65px;">
             <div style="display: inline; font-size: xx-large; font-weight: bold;">
                 <span><img style="margin: 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
@@ -43,24 +53,21 @@
         <div class="main-container">
             <div class="page-container">
                 <!-- angular的视图 -->
-                <div ng-view class="view-container"></div>
+                <div ng-view class="view-container" ng-style="getPageStyle()"></div>
             </div>
 
             <!-- 用户登录才可见 -->
-            <div class="menu-container" ng-if="currentUser">
-                <div id="sidebar" class="sidebar app-aside">
-                    <div class="sidebar-container perfect-scrollbar ps-container ps-active-y">
-                        <nav>
-                            <div class="navbar-title">
+            <div class="menu-container" ng-style="getMenuStyle()" ng-if="currentUser">
+                <div class="glyphicon glyphicon-triangle-{{hideMenu ? 'right' : 'left'}}" style="float: right; padding: 10px 5px 10px 5px; font-size: 18px; font-weight: bold;" ng-click="hideMenuFn()"></div>
+                <div class="qw-menu" ng-hide="hideMenu">
+                    <div class="qw-menu-title">
                                 <span>系统菜单</span>
                             </div>
+                    <div class="qw-menu-content">
                             <!-- 采用递归方式，实现无限级菜单 -->
-                            <ul class="main-navigation-menu">
-                                <li ng-repeat="menu in currentUser.menu.children" ng-include="'template/menu.html'"></li>
-                            </ul>
-                        </nav>
-                        <!--div class="ps-scrollbar-x-rail" style="left: 0px; bottom: -994px;"></div-->
-                        <!--div class="ps-scrollbar-y-rail" style="top: 997px; height: 175px; right: 3px;"</div-->
+                        <div class="list-group">
+                            <div class="list-sub-group" ng-repeat="menu in currentUser.menu.children" ng-include="'template/menu.html'"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,19 +79,35 @@
         </div>
     </div>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular.min.js"></script>
+    <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-animate.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-route.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-resource.min.js"></script>
+    <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-cookies.min.js"></script>
     <script type="text/javascript" src="webjars/angular-ui-bootstrap/1.0.3/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="webjars/ui-grid/3.1.1/ui-grid.min.js"></script>
     <script type="text/javascript" src="webjars/lodash/4.0.0/lodash.min.js"></script>
+
+
+    <script type="text/javascript">
+    //使用document.write这种方式异步加载js和css
+    </script>
+
+
     <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/controller.js"></script>
-    <script type="text/javascript" src="app/directive.js"></script>
-    <script type="text/javascript" src="app/filter.js"></script>
+    <script type="text/javascript" src="app/global/controller/ApplicationController.js"></script>
+    <script type="text/javascript" src="app/global/controller/DialogController.js"></script>
+    <script type="text/javascript" src="app/global/controller/MainController.js"></script>
+    <script type="text/javascript" src="app/global/directive/grid.js"></script>
+    <script type="text/javascript" src="app/global/directive/resize.js"></script>
+    <script type="text/javascript" src="app/global/filter/dict.js"></script>
+    <script type="text/javascript" src="app/global/service/DialogService.js"></script>
+    <script type="text/javascript" src="app/global/service/GridService.js"></script>
+    <script type="text/javascript" src="app/global/service/HttpService.js"></script>
     <script type="text/javascript" src="app/sys/login/controller.js"></script>
     <script type="text/javascript" src="app/sys/error/controller.js"></script>
     <script type="text/javascript" src="app/sys/url/controller.js"></script>
     <script type="text/javascript" src="app/sys/url/service.js"></script>
+    <script type="text/javascript" src="app/sys/dict/controller.js"></script>
     <script type="text/javascript" src="app/sys/dict/service.js"></script>
     <script type="text/javascript" src="app/sys/menu/controller.js"></script>
     <script type="text/javascript" src="app/sys/menu/service.js"></script>

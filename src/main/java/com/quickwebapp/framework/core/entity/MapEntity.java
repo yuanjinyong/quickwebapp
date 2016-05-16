@@ -373,4 +373,23 @@ public class MapEntity extends TreeMap<String, Object> {
     public boolean isNotEmpty() {
         return !isEmpty();
     }
+
+    public String toXML() {
+        StringBuffer xml = new StringBuffer();
+        xml.append("<xml>");
+        for (Map.Entry<String, Object> entry : this.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            xml.append('<').append(key).append('>');
+            if (value instanceof Number) {
+                xml.append(value.toString());
+            } else {
+                xml.append("<![CDATA[").append(value).append("]]>");
+            }
+            xml.append("</").append(key).append('>');
+        }
+        xml.append("</xml>");
+
+        return xml.toString();
+    }
 }

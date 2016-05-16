@@ -34,27 +34,27 @@ public class UrlController extends BaseController<String, UrlEntity> {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> create(@RequestBody UrlEntity entity, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<MapEntity> create(@RequestBody UrlEntity entity, UriComponentsBuilder ucBuilder) {
         return super.create(entity, ucBuilder);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UrlEntity> get(@PathVariable("id") String primaryKey) {
+    public ResponseEntity<MapEntity> get(@PathVariable("id") String primaryKey) {
         return super.get(primaryKey);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<UrlEntity> update(@PathVariable("id") String primaryKey, @RequestBody UrlEntity entity) {
+    public ResponseEntity<MapEntity> update(@PathVariable("id") String primaryKey, @RequestBody UrlEntity entity) {
         return super.update(primaryKey, entity);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<UrlEntity> delete(@PathVariable("id") String primaryKey) {
+    public ResponseEntity<MapEntity> delete(@PathVariable("id") String primaryKey) {
         return super.delete(primaryKey);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity<UrlEntity> delete(HttpServletRequest request) {
+    public ResponseEntity<MapEntity> delete(HttpServletRequest request) {
         return super.deleteBatch($params(request));
     }
 }

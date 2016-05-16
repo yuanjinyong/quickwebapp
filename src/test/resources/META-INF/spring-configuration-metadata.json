@@ -3,7 +3,13 @@
     "name": "mybatis.page",
     "type": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties",
     "sourceType": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties"
-  }],
+    },
+    {
+      "name": "weixin",
+      "type": "com.quickwebapp.weixin.autoconfigure.WeixinProperties",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    }
+  ],
   "properties": [
     {
       "name": "mybatis.page.dialect",
@@ -16,6 +22,42 @@
       "type": "java.lang.String",
       "description": "应用分页插件的SQL语句的ID（正则表达式匹配）",
       "sourceType": "com.quickwebapp.spring.boot.autoconfigure.MybatisPageProperties"
+    },
+    {
+      "name": "weixin.access-token-url",
+      "type": "java.lang.String",
+      "description": "获取Access Token的URL地址",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    },
+    {
+      "name": "weixin.meun-service",
+      "type": "java.lang.String",
+      "description": "同步自定义菜单到微信服务器的处理类，必须实现MeunService接口。",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    },
+    {
+      "name": "weixin.token",
+      "type": "java.lang.String",
+      "description": "提供给微信公众号签名校验用的Token",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    },
+    {
+      "name": "weixin.url",
+      "type": "java.lang.String",
+      "description": "微信服务器的URL地址",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    },
+    {
+      "name": "weixin.user-info-url",
+      "type": "java.lang.String",
+      "description": "获取用户信息的URL地址",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
+    },
+    {
+      "name": "weixin.create-menu-url",
+      "type": "java.lang.String",
+      "description": "更新自定义菜单的URL地址",
+      "sourceType": "com.quickwebapp.weixin.autoconfigure.WeixinProperties"
     }
   ],
   "hints": []

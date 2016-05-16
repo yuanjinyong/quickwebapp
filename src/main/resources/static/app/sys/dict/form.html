@@ -1,0 +1,73 @@
+<div ng-controller="DictFormController as formCtrl">
+    <form role="form" name="form" class="form-horizontal qw-form" style="transition: all linear 0.5s; background: transparent;">
+        <input type="hidden" id="f_id" name="f_id" ng-model="entity.f_id">
+        <fieldset ng-disabled="formOptions.toolbarItem.id == 'view'">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_station_no">搅拌站编号：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control {{form.f_station_no.$error.required ? 'has-error' : ''}}" id="f_station_no" name="f_station_no" ng-model="entity.f_station_no" required placeholder="编号必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_station_no.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_station_name">搅拌站名称：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_station_name" name="f_station_name" ng-model="entity.f_station_name" required placeholder="名称必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_station_name.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_visit_url">外网访问地址：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_visit_url" name="f_visit_url" ng-model="entity.f_visit_url" required placeholder="访问登录页的地址，不要带登录页的页面名称，如：http://www.jianyanxinxin.com/erp" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_visit_url.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_province">所属省份：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_province" name="f_province" ng-model="entity.f_province" required tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_province.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_city">所属城市：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_city" name="f_city" ng-model="entity.f_city" required tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_city.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_address">地址：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_address" name="f_address" ng-model="entity.f_address">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_linker">联系人：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_linker" name="f_linker" ng-model="entity.f_linker">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_link_phone">联系电话：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_link_phone" name="f_link_phone" ng-model="entity.f_link_phone">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_secret_key">加密秘钥：</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_secret_key" name="f_secret_key" ng-model="entity.f_secret_key" required tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_secret_key.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_status">启用：</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="f_status" name="f_status" ng-model="entity.f_status" ng-options="option.value as option.label for option in $qw.dict.dicts.TrueFalse.selectOptions" required tooltip-placement="bottom" tooltip-trigger="none" tooltip-is-open="form.f_status.$error.required" uib-tooltip="必填字段，不能为空！"></select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_remark">备注：</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="f_remark" name="f_remark" ng-model="entity.f_remark"></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
