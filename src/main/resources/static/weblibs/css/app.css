@@ -9,12 +9,13 @@ html, body, #app {
     font-size: 14px;
 }
 
-.header-container, .main-container, .footer-container {
+.header-container, .middle-container, .footer-container {
     width: 100%;
+    color: #fff;
+    background-color: rgba(117, 29, 138, 0.90);
 }
 
 .header-container {
-    background: #d9edf7;
     position: absolute;
     top: 0;
     height: 65px;
@@ -22,7 +23,6 @@ html, body, #app {
 }
 
 .footer-container {
-    background: #d9edf7;
     position: absolute;
     bottom: 0;
     height: 30px;
@@ -30,39 +30,29 @@ html, body, #app {
     text-align: center;
 }
 
-.main-container {
-    background: #fff;
+.middle-container {
+    color: #000;
+    background-color: #fff;
     position: absolute;
     top: 65px;
     bottom: 30px;
     height: auto;
 }
 
-.menu-container, .page-container {
+.left-container, .right-container {
     float: left;
     position: absolute;
     top: 0px;
     height: 100%;
 }
 
-.menu-container {
+.left-container {
     color: #fff;
-    background-color: #337ab7;
-    width: 170px;
+    background-color: rgba(117, 29, 138, 0.90);
 }
 
-.page-container {
-    /*border: 1px solid #ccc;*/
+.right-container {
     width: 100%;
-    overflow-y: auto;
-}
-
-.page-container .view-container {
-    /*border: 1px solid #ccc;*/
-    background: #fff;
-    overflow-x: auto;
-    height: 100%;
-    margin: 0px 0px 0px 170px;
     overflow-y: auto;
 }
 
@@ -75,7 +65,6 @@ html, body, #app {
 }
 
 .qw-menu-content {
-    /*border: 1px solid red;*/
     position: absolute;
     top: 45px;
     bottom: 0px;
@@ -83,7 +72,6 @@ html, body, #app {
     height: auto;
     overflow-x: auto;
     overflow-y: auto;
-    top: 45px;
 }
 
 .qw-menu-content .list-group, .qw-menu-content .list-sub-group, .qw-menu-content .list-group-item {
@@ -101,20 +89,18 @@ html, body, #app {
 .qw-menu-content .list-group-item {
     font-size: 14px;
     font-weight: bold;
-    background-color: #337ab7;
-    border-color: #2e6da4;
+    background-color: rgba(117, 29, 138, 0);
+    border-color: rgb(117, 29, 138);
 }
 
 .qw-menu-content .list-group-item:hover {
-    background-color: #f0ad4e;
-    border: 5px solid #eea236;
-    /*filter: alpha(opacity = 50);*/
-    /*opacity: .50;*/
+    background-color: rgba(117, 29, 138, 0.80);
+    border: 2px solid rgb(117, 29, 138);
 }
 
 .qw-menu-content .list-group-item-active {
-    background-color: #f0ad4e;
-    border-color: #eea236;
+    background-color: rgba(117, 29, 138, 1);
+    border-color: rgb(117, 29, 138);
 }
 
 .qw-menu-content .list-group-item:first-child {
@@ -133,6 +119,13 @@ html, body, #app {
     -moz-user-select: -moz-none;
     -o-user-select: none;
     -khtml-user-select: none;
+}
+
+.view-container {
+    height: 100%;
+    margin: 0px 0px 0px 170px;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/

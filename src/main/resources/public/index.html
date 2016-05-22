@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="webjars/ui-grid/3.1.1/ui-grid.min.css" />
 <link rel="stylesheet" href="weblibs/css/app.css" />
 <script type="text/javascript">
-//使用document.write这种方式异步加载js和css
+    //使用document.write这种方式异步加载js和css
 </script>
 </head>
 
@@ -39,7 +39,7 @@
             </div>
             <div style="display: inline;" ng-if="currentUser">
                 <div style="display: inline; margin-left: 20px;">
-                    <div style="display: inline;; font-weight: bold; color: blue;">
+                    <div style="display: inline;; font-weight: bold; color: yellowgreen;">
                         <span>欢迎您：{{currentUser.principal.username}}</span>
                     </div>
                     <div style="display: inline; float: right; margin-right: 10px;">
@@ -50,21 +50,23 @@
                 </div>
             </div>
         </div>
-        <div class="main-container">
-            <div class="page-container">
-                <!-- angular的视图 -->
-                <div ng-view class="view-container" ng-style="getPageStyle()"></div>
+        <div class="middle-container">
+            <div class="right-container">
+                <div class="view-container" ng-style="getPageStyle()">
+                    <!-- angular的视图 -->
+                    <div ng-view></div>
+                </div>
             </div>
 
             <!-- 用户登录才可见 -->
-            <div class="menu-container" ng-style="getMenuStyle()" ng-if="currentUser">
+            <div class="left-container" ng-style="getMenuStyle()" ng-if="currentUser">
                 <div class="glyphicon glyphicon-triangle-{{hideMenu ? 'right' : 'left'}}" style="float: right; padding: 10px 5px 10px 5px; font-size: 18px; font-weight: bold;" ng-click="hideMenuFn()"></div>
                 <div class="qw-menu" ng-hide="hideMenu">
                     <div class="qw-menu-title">
-                                <span>系统菜单</span>
-                            </div>
+                        <span>系统菜单</span>
+                    </div>
                     <div class="qw-menu-content">
-                            <!-- 采用递归方式，实现无限级菜单 -->
+                        <!-- 采用递归方式，实现无限级菜单 -->
                         <div class="list-group">
                             <div class="list-sub-group" ng-repeat="menu in currentUser.menu.children" ng-include="'template/menu.html'"></div>
                         </div>
@@ -89,8 +91,8 @@
 
 
     <script type="text/javascript">
-    //使用document.write这种方式异步加载js和css
-    </script>
+                    //使用document.write这种方式异步加载js和css
+                </script>
 
 
     <script type="text/javascript" src="app/app.js"></script>
