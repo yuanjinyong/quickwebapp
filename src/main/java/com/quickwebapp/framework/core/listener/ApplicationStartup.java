@@ -50,8 +50,8 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         // } else {
         refreshUrlAndRight(ac);
         // }
-        MeunService meunService = ac.getBean(WeixinClient.getProperties().getMeunService(), MeunService.class);
-        meunService.createMenu();
+        // MeunService meunService = ac.getBean(WeixinClient.getProperties().getMeunService(), MeunService.class);
+        // meunService.createMenu();
     }
 
     private void refreshUrlAndRight(ApplicationContext ac) {
