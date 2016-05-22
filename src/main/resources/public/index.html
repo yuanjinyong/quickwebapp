@@ -22,11 +22,14 @@
 
 <body ng-app="app" ng-controller="ApplicationController">
     <div id="app" ng-controller="MainController" class="app-navbar-fixed app-sidebar-fixed">
-        <div class="header-container" style="height: 65px; line-height: 65px;">
-            <div style="display: inline; font-size: xx-large; font-weight: bold;">
-                <span><img style="margin: 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
+        <div class="header-container" style="">
+            <div style="display: inline-block; font-size: xx-large; font-weight: bold;">
+                <span><img style="margin: 5px 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
             </div>
-            <div style="display: inline; float: right; margin-right: 20px;">
+            <div style="height: 58px; line-height: 58px; display: inline-block; float: right; margin: 0px 20px;">
+                <button class="btn btn-sm btn-primary" ng-click="logout()" ng-if="currentUser">
+                    <span class="glyphicon glyphicon-log-out"></span> 退出
+                </button>
                 <div class="btn-group" uib-dropdown>
                     <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
                     <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
@@ -37,20 +40,13 @@
                     </ul>
                 </div>
             </div>
-            <div style="display: inline;" ng-if="currentUser">
-                <div style="display: inline; margin-left: 20px;">
-                    <div style="display: inline;; font-weight: bold; color: yellowgreen;">
-                        <span>欢迎您：{{currentUser.principal.username}}</span>
-                    </div>
-                    <div style="display: inline; float: right; margin-right: 10px;">
-                        <button class="btn btn-sm btn-primary" ng-click="logout()">
-                            <span class="glyphicon glyphicon-log-out"></span> 退出
-                        </button>
-                    </div>
+            <div style="display: inline-block; margin: 10px;" ng-if="currentUser">
+                <div style="display: inline; font-weight: bold; color: yellowgreen;">
+                    <span>欢迎您：{{currentUser.principal.username}}</span>
                 </div>
             </div>
         </div>
-        <div class="middle-container">
+        <div class="middle-container" ng-style="getMiddleContainerStyle()" qw-resize>
             <div class="right-container">
                 <div class="view-container" ng-style="getPageStyle()">
                     <!-- angular的视图 -->

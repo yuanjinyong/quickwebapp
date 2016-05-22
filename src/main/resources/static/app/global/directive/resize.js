@@ -10,6 +10,17 @@
                 };
             };
             $scope.$watch($scope.getWindowDimensions, function(newValue, oldValue) {
+                $scope.getMiddleContainerStyle = function() {
+                    var header = document.querySelector('.header-container');
+                    var footer = document.querySelector('.footer-container');
+                    // console.info('header', header.clientHeight, 'footer', footer.clientHeight);
+                    return {
+                        'position' : 'absolute',
+                        'top' : header.clientHeight + 'px',
+                        'bottom' : footer.clientHeight + 'px',
+                        'height' : 'auto'
+                    };
+                };
                 $scope.getFormBodyStyle = function() {
                     return {
                         'overflow-y' : 'auto',
