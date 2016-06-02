@@ -7,6 +7,9 @@ html, body, .main-container {
     height: 100%;
     *overflow: hidden; /* 消除IE7下的横向滚动条 */
     font-size: 14px;
+}
+
+.main-container {
     color: #fff;
     background-color: rgba(117, 29, 138, 1);
 }
