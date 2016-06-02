@@ -1,24 +1,31 @@
 <div class="header-container">
     <div style="display: inline-block; font-size: xx-large; font-weight: bold;">
-        <span><img style="margin: 5px 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
-    </div>
-    <div style="height: 58px; line-height: 58px; display: inline-block; float: right; margin: 0px 20px;">
-        <button class="btn btn-sm btn-primary" ng-click="logout()" ng-if="currentUser">
-            <span class="glyphicon glyphicon-log-out"></span> 退出
-        </button>
-        <div class="btn-group" uib-dropdown>
-            <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
-            <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
-                <span class="caret"></span> <span class="sr-only">{{currentLang.name}}</span>
-            </button>
-            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                <li role="menuitem" ng-repeat="lang in langs"><a href="" ng-click="changeLang(lang)">{{lang.name}}</a></li>
-            </ul>
+        <div style="display: table;">
+            <div style="display: table-cell;">
+                <img style="margin: 5px 10px;" src="weblibs/image/logo.png"></img>
+            </div>
+            <div style="display: table-cell;">Quick Webapp - Web应用快速开发平台</div>
         </div>
     </div>
-    <div style="display: inline-block; margin: 10px;" ng-if="currentUser">
-        <div style="display: inline; font-weight: bold; color: yellowgreen;">
-            <span>欢迎您：{{currentUser.principal.username}}</span>
+    <div style="height: 58px; line-height: 58px; display: inline-block; float: right;">
+        <div style="display: inline-block; float: right; margin: 0px 20px;">
+            <button class="btn btn-sm btn-primary" ng-click="logout()" ng-if="currentUser">
+                <span class="glyphicon glyphicon-log-out"></span> 退出
+            </button>
+            <div class="btn-group" uib-dropdown>
+                <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
+                <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
+                    <span class="caret"></span> <span class="sr-only">{{currentLang.name}}</span>
+                </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                    <li role="menuitem" ng-repeat="lang in langs"><a href="" ng-click="changeLang(lang)">{{lang.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="display: inline-block; margin: 10px;" ng-if="currentUser">
+            <div style="display: inline; font-weight: bold; color: yellowgreen;">
+                <span>欢迎您：{{currentUser.principal.username}}</span>
+            </div>
         </div>
     </div>
 </div>
