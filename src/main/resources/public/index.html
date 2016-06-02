@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"  name="viewport" content="width=device-width, initial-scale=1"/>
+<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
 <title>Quick Webapp - Web应用快速开发平台</title>
 
 <link rel="icon" type="image/x-icon" href="weblibs/favicon.ico">
@@ -12,61 +12,8 @@
 
 
 <body ng-controller="ApplicationController">
-    <div id="app" ng-controller="MainController">
-        <div class="header-container">
-            <div style="display: inline-block; font-size: xx-large; font-weight: bold;">
-                <span><img style="margin: 5px 10px;" src="weblibs/image/logo.png"></img>Quick Webapp - Web应用快速开发平台</span>
-            </div>
-            <div style="height: 58px; line-height: 58px; display: inline-block; float: right; margin: 0px 20px;">
-                <button class="btn btn-sm btn-primary" ng-click="logout()" ng-if="currentUser">
-                    <span class="glyphicon glyphicon-log-out"></span> 退出
-                </button>
-                <div class="btn-group" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
-                    <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
-                        <span class="caret"></span> <span class="sr-only">{{currentLang.name}}</span>
-                    </button>
-                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                        <li role="menuitem" ng-repeat="lang in langs"><a href="" ng-click="changeLang(lang)">{{lang.name}}</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div style="display: inline-block; margin: 10px;" ng-if="currentUser">
-                <div style="display: inline; font-weight: bold; color: yellowgreen;">
-                    <span>欢迎您：{{currentUser.principal.username}}</span>
-                </div>
-            </div>
-        </div>
-        <div class="middle-container" ng-style="getMiddleContainerStyle()" qw-resize>
-            <div class="right-container">
-                <div class="view-container" ng-style="getPageStyle()">
-                    <!-- angular的视图 -->
-                    <div ng-view></div>
-                </div>
-            </div>
-
-            <!-- 用户登录才可见 -->
-            <div class="left-container" ng-style="getMenuStyle()" ng-if="currentUser">
-                <div class="glyphicon glyphicon-triangle-{{hideMenu ? 'right' : 'left'}}" style="float: right; padding: 10px 5px 10px 5px; font-size: 18px; font-weight: bold;" ng-click="hideMenuFn()"></div>
-                <div class="qw-menu" ng-hide="hideMenu">
-                    <div class="qw-menu-title">
-                        <span>系统菜单</span>
-                    </div>
-                    <div class="qw-menu-content">
-                        <!-- 采用递归方式，实现无限级菜单 -->
-                        <div class="list-group">
-                            <div class="list-sub-group" ng-repeat="menu in currentUser.menu.children" ng-include="'template/menu.html'"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="footer-container">
-            <span style="text-align: center;">© 2016-2017 袁进勇版权所有</span>
-        </div>
-    </div>
+    <div class="main-container" ng-controller="MainController" ng-if="$qw.isMobile" ng-include="'index-mobile.html'"></div>
+    <div class="main-container" ng-controller="MainController" ng-if="!$qw.isMobile" ng-include="'index-desktop.html'"></div>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-animate.min.js"></script>
     <script type="text/javascript" src="webjars/angularjs/1.4.8/angular-route.min.js"></script>
