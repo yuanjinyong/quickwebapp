@@ -20,8 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import com.quickwebapp.usm.sys.entity.UrlEntity;
 import com.quickwebapp.usm.sys.service.UrlService;
-import com.quickwebapp.weixin.http.client.WeixinClient;
-import com.quickwebapp.weixin.service.MeunService;
 
 /**
  * @author JohnYuan

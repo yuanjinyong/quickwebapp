@@ -1,17 +1,19 @@
 (function(angular) {
-    var GridService = function() {
+    var GridService = function($q) {
         $qw.dev && console.info('GridService');
 
         var service = {
             buildGridOptionsFn : function($scope, customGridOptions) {
+                var feature = $scope.feature || {};
                 var gridOptions = {
-                    feature : $scope.feature || {},
+                    feature : feature,
                     showRowNumber : true, // 自定义属性，默认显示行号
                     beginRowNum : 0, // 自定义属性，后台查询起始行号
                     orderBy : '', // 自定义属性，用于后台排序的
+                    initQueryParams : {}, //初始化的固定查询参数
                     queryParams : {}, // 自定义属性，用于后台查询过滤的条件参数
                     errorMsg : null, // 自定义属性，用于显示错误信息
-                    exporterCsvFilename : $scope.feature.name + '.csv',
+                    exporterCsvFilename : feature.name ? (feature.name + '.csv') : '导出.csv',
                     loadFn : function(params, isExporterAllData) {
                         var gridOptions = this;
 
@@ -27,7 +29,7 @@
                         queryParams.beginRowNum = gridOptions.beginRowNum;
                         queryParams.orderBy = gridOptions.orderBy || '';
 
-                        angular.extend(queryParams, gridOptions.queryParams);
+                        angular.extend(queryParams, gridOptions.initQueryParams, gridOptions.queryParams);
                         if (params) {
                             angular.extend(queryParams, params);
                         }
@@ -221,6 +223,8 @@
                                     multiSelect : false, // 禁用多选
                                     enableGridMenu : true, // 启用表格右上角菜单
                                     enableFiltering : true, // 启用过滤器
+                                    enableExpandable : false, //启用折叠
+                                    enableExpandableRowHeader : false, //隐藏折叠行图标
                                     enableColumnResizing : true, // 启用调整列宽
                                     useExternalSorting : true, // 启用后台排序
                                     useExternalPagination : true, // 启用后台分页
@@ -262,9 +266,9 @@
                                         };
                                         return docDefinition;
                                     },
-                                    //exporterPdfOrientation : 'landscape', //'landscape' or 'portrait', Defaults to landscape 
-                                    //exporterPdfPageSize : 'A4', // Defaults to A4
-                                    //exporterPdfMaxGridWidth : 720, // Defaults to 720 (for A4 landscape), use 670 for LETTER
+                                    // exporterPdfOrientation : 'landscape', //'landscape' or 'portrait', Defaults to landscape 
+                                    // exporterPdfPageSize : 'A4', // Defaults to A4
+                                    // exporterPdfMaxGridWidth : 720, // Defaults to 720 (for A4 landscape), use 670 for LETTER
                                     exporterCsvLinkElement : angular.element(document
                                             .querySelectorAll(".custom-csv-link-location")),
                                     exporterAllDataFn : function() {
@@ -308,6 +312,21 @@
                                                     });
                                         }
 
+                                        if (gridApi.expandable) {
+                                            gridApi.expandable.on
+                                                    .rowExpandedStateChanged(
+                                                            $scope,
+                                                            function(row) {
+                                                                var gridOptions = row.grid.options;
+                                                                if (gridOptions.onRowExpandedStateChanged) {
+                                                                    gridOptions.onRowExpandedStateChanged(row);
+                                                                } else {
+                                                                    $qw.dev
+                                                                            && console
+                                                                                    .debug('可以通过添加gridOptions.onRowExpandedStateChanged(row)来接收行展开收缩变更事件');
+                                                                }
+                                                            });
+                                        }
                                         gridApi.core.on.filterChanged($scope, function() {
                                             var grid = this.grid;
                                             var gridOptions = grid.options;
@@ -327,20 +346,50 @@
                                         });
 
                                         // /////
-                                        gridApi.selection.on
-                                                .rowSelectionChanged(
-                                                        $scope,
-                                                        function(row) {
-                                                            $qw.dev && console.debug('Row data is:', row);
-                                                            var gridOptions = row.grid.options;
-                                                            if (gridOptions.onRowSelectionChanged) {
-                                                                gridOptions.onRowSelectionChanged(row);
-                                                            } else {
-                                                                $qw.dev
-                                                                        && console
-                                                                                .debug('可以通过添加gridOptions.onRowSelectionChanged(row)来接收行选择变更事件');
-                                                            }
-                                                        });
+                                        if (gridApi.selection) {
+                                            gridApi.selection.on
+                                                    .rowSelectionChanged(
+                                                            $scope,
+                                                            function(row) {
+                                                                $qw.dev && console.debug('Row data is:', row);
+                                                                var gridOptions = row.grid.options;
+                                                                if (gridOptions.onRowSelectionChanged) {
+                                                                    gridOptions.onRowSelectionChanged(row);
+                                                                } else {
+                                                                    $qw.dev
+                                                                            && console
+                                                                                    .debug('可以通过添加gridOptions.onRowSelectionChanged(row)来接收行选择变更事件');
+                                                                }
+                                                            });
+                                        }
+
+                                        if (gridApi.rowEdit) {
+                                            gridApi.rowEdit.on
+                                                    .saveRow(
+                                                            $scope,
+                                                            function(rowEntity) {
+                                                                $qw.dev && console.debug("rowEntity", rowEntity);
+
+                                                                var promise = $q.defer();
+                                                                gridApi.rowEdit.setSavePromise(rowEntity,
+                                                                        promise.promise);
+
+                                                                $qw.timeout(function() {
+                                                                    if (rowEntity.f_order === 0) {
+                                                                        promise.reject();
+                                                                    } else {
+                                                                        promise.resolve();
+                                                                    }
+                                                                }, 100);
+                                                                if (gridOptions.onRowEdit) {
+                                                                    gridOptions.onRowEdit(rowEntity);
+                                                                } else {
+                                                                    $qw.dev
+                                                                            && console
+                                                                                    .debug('可以通过添加gridOptions.onRowEdit(rowEntity)来接收行选择变更事件');
+                                                                }
+                                                            });
+                                        }
                                     }
                                 }, customGridOptions);
 
@@ -351,6 +400,6 @@
         return service;
     };
 
-    // GridService.$inject = [ 'HttpService', 'DialogService' ];
+    GridService.$inject = [ '$q' ];
     angular.module("app.services").factory("GridService", GridService);
 }(angular));

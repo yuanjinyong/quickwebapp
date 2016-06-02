@@ -133,8 +133,8 @@
             },
             buildAlertDialogFn : function(customFormOptions, customAlertOptions) {
                 var formOptions = {
-                    gridOptions : customFormOptions.gridOptions,
-                    toolbarItem : customFormOptions.toolbarItem,
+                    gridOptions : customFormOptions.gridOptions || {feature:{name:'提示'}},
+                    toolbarItem : customFormOptions.toolbarItem || {},
                     formTemplateUrl : 'template/dialog/alert.html',
                     footbar : $qw.buildButtonBarFn('alertFootbar', [ $qw.buildGroupFn('alertYesGroup', [ {
                         id : "yes",

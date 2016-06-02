@@ -1,11 +1,11 @@
 (function(angular) {
     var ApplicationController = function($rootScope, $scope, $location, $route, $cookies, $resource, $timeout,
-            i18nService, HttpService, dialogService, DictService, GridService, uiGridConstants) {
+            i18nService, HttpService, dialogService, GridService, uiGridConstants) {
         $qw.dev && console.info('ApplicationController');
 
         $qw.route = function(path) {
             if (path != '') {
-                console.info('路由到' + path);
+                $qw.dev && console.info('路由到' + path);
                 $location.path(path);
             }
         };
@@ -315,20 +315,54 @@
         $qw.i18n = i18nService;
         $qw.http = HttpService;
         $qw.dialog = dialogService;
-        $qw.dict = DictService;
+        // $qw.dict = DictService;
+        $qw.dict = {
+            dicts : {
+                TrueFalse : {
+                    1 : '是',
+                    2 : '否',
+                    selectOptions : [ {
+                        value : 1,
+                        label : '是'
+                    }, {
+                        value : 2,
+                        label : '否'
+                    } ]
+                },
+                MenuType : {
+                    0 : '根',
+                    1 : '目录',
+                    2 : '页面',
+                    3 : '按钮',
+                    selectOptions : [ {
+                        value : 0,
+                        label : '根'
+                    }, {
+                        value : 1,
+                        label : '目录'
+                    }, {
+                        value : 2,
+                        label : '页面'
+                    }, {
+                        value : 3,
+                        label : '按钮'
+                    } ]
+                }
+            }
+        };
         $qw.grid = GridService;
 
         angular.$qw = $qw;
         $rootScope.$qw = angular.$qw;
 
         // 这行打印语句放到最后面
-        $qw.dev && console.info('$rootScope.$qw:', $rootScope.$qw);
-        $qw.dev && console.info('angular.$qw:', angular.$qw);
+        //$qw.dev && console.info('$rootScope.$qw:', $rootScope.$qw);
+        //$qw.dev && console.info('angular.$qw:', angular.$qw);
         $qw.dev && console.info('$qw:', $qw);
     };
 
     ApplicationController.$inject = [ '$rootScope', '$scope', '$location', '$route', '$cookies', '$resource',
-            '$timeout', 'i18nService', 'HttpService', 'DialogService', 'DictService', 'GridService', 'uiGridConstants' ];
+            '$timeout', 'i18nService', 'HttpService', 'DialogService', 'GridService', 'uiGridConstants' ];
     angular.module('app.controllers').controller('ApplicationController', ApplicationController);
 
 }(angular));

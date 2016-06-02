@@ -36,7 +36,7 @@
                     menu.isOpen = true;
                 }
 
-                $qw.timeout($scope.resizeMenuItemWidth, 10);
+                $qw.timeout($scope.resizeMenuItemWidth, 100);
             }
         };
 
@@ -59,7 +59,7 @@
                     var item = angular.element(itemE);
                     item.css('width', maxWidth + 'px');
                 });
-            }, 10);
+            }, 200);
         }
         $qw.timeout($scope.resizeMenuItemWidth, 100);
 
@@ -85,35 +85,67 @@
             };
         };
 
-        $scope.setCurrentUser = function(user) {
+        $scope.toOriginalPath = function(user, originalPath) {
             $scope.currentUser = user;
+
+            var path = '/';
+            $qw.dev && console.info('originalPath', originalPath);
+            if (originalPath && originalPath != '/app/login') {
+                path = originalPath;
+            }
+
+            $location.path(path);
         };
 
-        $scope.toLogin = function() {
-            $scope.setCurrentUser(null);
-            console.info('跳转到登录页面');
+        $scope.toLogin = function(unauthorized, response) {
+            $scope.currentUser = null;
+
+            if (unauthorized) {
+                $qw.dev && console.info('还未登录，跳转到登录页面。', $location.path(), response);
+                // 备份原来的path
+                $qw.originalPath = $location.path();
+            } else {
+                $qw.dev && console.info('退出成功，跳转到登录页面。', response);
+            }
+
             $location.path('/app/login');
+        };
+        $qw.http.unauthorizedCallback = function(response) {
+            $scope.toLogin(true, response);
+        }
+
+        $scope.login = function(user) {
+            var headers = user ? {
+                authorization : 'Basic ' + btoa(user.username + ':' + user.password)
+            } : {};
+
+            $qw.http.get('authenticate', {
+                headers : headers
+            }, function(response) {
+                $scope.toOriginalPath(response, $qw.originalPath);
+                $qw.originalPath = null;
+            }, function(response) {
+                console.error('登录失败！', response);
+            });
         };
 
         $scope.logout = function() {
             $qw.http.post('logout', {}, function(response) {
-                $scope.toLogin();
+                $scope.toLogin(false, response);
             }, function(response) {
                 console.error('退出失败！', response);
             });
         };
 
-        $scope.currentUser = null; // 先初始成null，然后从服务器上获取当前用户信息，如果没有获取到则跳转到登录页面
+        // 获取用户信息，如果用户还未登录，则会通过调用$qw.http.unauthorizedCallback跳转到登录页面。
         $qw.http.get('user', {}, function(response) {
             if (response != "") {
-                $scope.setCurrentUser(response);
+                $scope.toOriginalPath(response, $location.path());
             } else {
-                console.info('未获取到用户信息。', response);
-                $scope.toLogin();
+                console.error('未获取到用户信息。', response);
             }
         }, function(response) {
-            console.error('未获取到用户信息。', response);
-            $scope.toLogin();
+            console.error('获取用户信息失败。', response);
         });
     };
 

@@ -6,7 +6,7 @@
 
         $scope.feature = {
             id : 'dict',
-            name : '字典',
+            name : '字典组',
             path : 'app/sys/dict',
             service : dictService
         }
