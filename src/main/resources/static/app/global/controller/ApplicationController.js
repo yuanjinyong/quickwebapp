@@ -1,7 +1,30 @@
 (function(angular) {
-    var ApplicationController = function($rootScope, $scope, $location, $route, $cookies, $resource, $timeout,
+    var ApplicationController = function($rootScope, $scope, $location, $route, $cookies, $resource, $timeout, $window,
             i18nService, HttpService, dialogService, GridService, uiGridConstants) {
         $qw.dev && console.info('ApplicationController');
+
+        $qw.window = {
+            innerWidth : $window.innerWidth,
+            innerHeight : $window.innerHeight
+        };
+        // http://127.0.0.1/stzj/#/app/stzj/member/station/bind?code=041ynunx1HFJM30F9rox1n8pnx1ynunU&state=123
+        $qw.location = {
+            hash : $window.location.hash + ''
+        };
+        $qw.location.path = $location.path();
+        $qw.location.params = {};
+        var queryIndex = $qw.location.hash.indexOf('?');
+        if (queryIndex > 0) {
+            $qw.location.queryString = $qw.location.hash.substring($qw.location.hash.indexOf('?') + 1);
+            angular.forEach($qw.location.queryString.split('&'), function(param, index, params) {
+                var arr = param.split('=');
+                if (arr.length > 1) {
+                    $qw.location.params[arr[0]] = arr[1];
+                } else {
+                    $qw.location.params[arr[0]] = '';
+                }
+            });
+        }
 
         $qw.route = function(path) {
             if (path != '') {
@@ -356,13 +379,13 @@
         $rootScope.$qw = angular.$qw;
 
         // 这行打印语句放到最后面
-        //$qw.dev && console.info('$rootScope.$qw:', $rootScope.$qw);
-        //$qw.dev && console.info('angular.$qw:', angular.$qw);
+        // $qw.dev && console.info('$rootScope.$qw:', $rootScope.$qw);
+        // $qw.dev && console.info('angular.$qw:', angular.$qw);
         $qw.dev && console.info('$qw:', $qw);
     };
 
     ApplicationController.$inject = [ '$rootScope', '$scope', '$location', '$route', '$cookies', '$resource',
-            '$timeout', 'i18nService', 'HttpService', 'DialogService', 'GridService', 'uiGridConstants' ];
+            '$timeout', '$window', 'i18nService', 'HttpService', 'DialogService', 'GridService', 'uiGridConstants' ];
     angular.module('app.controllers').controller('ApplicationController', ApplicationController);
 
 }(angular));

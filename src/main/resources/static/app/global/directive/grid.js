@@ -9,7 +9,7 @@
             scope : {
                 qwGridOptions : '=qwGridList'
             },
-            templateUrl : 'template/grid/list.html',
+            templateUrl : $qw.getTemplateUrl('template/grid/list.html'),
             link : function($scope, $element, $attrs, $ctrl, $transclude) {
                 $scope.$qw = $qw;
                 $transclude(function(clone) {
@@ -40,7 +40,7 @@
             scope : {
                 qwGridOptions : '=qwGridTree'
             },
-            templateUrl : 'template/grid/tree.html',
+            templateUrl : $qw.getTemplateUrl('template/grid/tree.html'),
             link : function($scope, $element, $attrs, $ctrl, $transclude) {
                 $scope.$qw = $qw;
                 $transclude(function(clone) {

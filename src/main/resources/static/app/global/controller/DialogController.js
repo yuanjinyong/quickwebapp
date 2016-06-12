@@ -3,6 +3,7 @@
         $qw.dev && console.info('DialogController');
 
         // 在html中使用FormController的entity，formOptions下的entity作为备份的旧数据
+        $scope.formTemplateUrl = formOptions.getFormTemplateUrl();
         $scope.formOptions = formOptions;
         $scope.entity = angular.copy(formOptions.entity);
 

@@ -26,9 +26,6 @@ html, body, .main-container {
 .footer-container {
     position: absolute;
     bottom: 0;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
 }
 
 .middle-container {
@@ -173,8 +170,6 @@ html, body, .main-container {
 }
 
 .qw-grid-cell-img {
-    position: absolute;
-    top: 3px;
     width: 24px;
     height: 24px;
 }

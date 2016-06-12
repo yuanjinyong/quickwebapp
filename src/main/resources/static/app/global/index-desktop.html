@@ -1,5 +1,5 @@
 <div class="header-container">
-    <div style="display: inline-block; font-size: xx-large; font-weight: bold;">
+    <div style="margin-top: 5px; display: inline-block; font-size: xx-large; font-weight: bold;">
         <div style="display: table;">
             <div style="display: table-cell;">
                 <img style="margin: 5px 10px;" src="weblibs/image/logo.png"></img>
@@ -7,14 +7,14 @@
             <div style="display: table-cell;">Quick Webapp - Web应用快速开发平台</div>
         </div>
     </div>
-    <div style="height: 58px; line-height: 58px; display: inline-block; float: right;">
+    <div style="height: 56px; line-height: 56px; display: inline-block; float: right;">
         <div style="display: inline-block; float: right; margin: 0px 20px;">
-            <button class="btn btn-sm btn-primary" ng-click="logout()" ng-if="currentUser">
+            <button class="btn btn-sm btn-success" ng-click="logout()" ng-if="currentUser">
                 <span class="glyphicon glyphicon-log-out"></span> 退出
             </button>
             <div class="btn-group" uib-dropdown>
-                <button id="split-button" type="button" class="btn btn-sm btn-primary">{{currentLang.name}}</button>
-                <button type="button" class="btn btn-sm btn-primary" uib-dropdown-toggle>
+                <button id="split-button" type="button" class="btn btn-sm btn-success">{{currentLang.name}}</button>
+                <button type="button" class="btn btn-sm btn-success" uib-dropdown-toggle>
                     <span class="caret"></span> <span class="sr-only">{{currentLang.name}}</span>
                 </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
@@ -56,5 +56,5 @@
 
 
 <div class="footer-container">
-    <span style="text-align: center;">© 2016-2017 袁进勇版权所有</span>
+    <div class="text-center" style="height: 30px; line-height: 30px;">© 2016-2017 袁进勇 版权所有 （当前分辨率：{{$qw.window.innerWidth}}x{{$qw.window.innerHeight}}）</div>
 </div>

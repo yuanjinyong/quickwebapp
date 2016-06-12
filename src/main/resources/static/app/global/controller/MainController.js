@@ -36,32 +36,27 @@
                     menu.isOpen = true;
                 }
 
-                $qw.timeout($scope.resizeMenuItemWidth, 100);
+                $qw.timeout(function() {
+                    var maxWidth = $scope.menuItemWidth - 16;
+                    var itemEs = document.querySelectorAll('.list-group-item');
+                    angular.forEach(itemEs, function(itemE) {
+                        var item = angular.element(itemE);
+                        item.css('width', 'initial'); // 这里要先设置回原始宽度
+                        var clientWidth = item.prop('clientWidth'); // 获取计算后的原始宽度
+                        if (maxWidth < clientWidth) {
+                            maxWidth = clientWidth;
+                        }
+                    });
+
+                    // 把所有的宽度都设置为最大的那个宽度
+                    maxWidth += 16;
+                    angular.forEach(itemEs, function(itemE) {
+                        var item = angular.element(itemE);
+                        item.css('width', maxWidth + 'px');
+                    });
+                }, 200);
             }
         };
-
-        $scope.resizeMenuItemWidth = function() {
-            $qw.timeout(function() {
-                var maxWidth = $scope.menuItemWidth - 16;
-                var itemEs = document.querySelectorAll('.list-group-item');
-                angular.forEach(itemEs, function(itemE) {
-                    var item = angular.element(itemE);
-                    item.css('width', 'initial'); // 这里要先设置回原始宽度
-                    var clientWidth = item.prop('clientWidth'); // 获取计算后的原始宽度
-                    if (maxWidth < clientWidth) {
-                        maxWidth = clientWidth;
-                    }
-                });
-
-                // 把所有的宽度都设置为最大的那个宽度
-                maxWidth += 16;
-                angular.forEach(itemEs, function(itemE) {
-                    var item = angular.element(itemE);
-                    item.css('width', maxWidth + 'px');
-                });
-            }, 200);
-        }
-        $qw.timeout($scope.resizeMenuItemWidth, 100);
 
         $scope.hideMenu = $cookies.get('hideMenu') == 'true';
         $scope.hideMenuFn = function() {
@@ -70,27 +65,32 @@
         };
         $scope.getMenuStyle = function() {
             return {
-                'width' : ($scope.hideMenu ? $scope.menuHideWidth : $scope.menuItemWidth) + 'px'
+                'width' : ($location.path() == '/app/global/login' ? 0 : ($scope.hideMenu ? $scope.menuHideWidth
+                        : $scope.menuItemWidth))
+                        + 'px'
             };
         };
 
         $scope.getMenuItemStyle = function(menu) {
             return {
+                'width' : $scope.menuItemWidth + 'px',
                 'padding-left' : (menu.f_parent_ids.split('/').length * 16) + 'px'
             };
         };
         $scope.getPageStyle = function() {
             return {
-                'margin-left' : ($scope.hideMenu ? $scope.menuHideWidth : $scope.menuItemWidth) + 'px'
+                'margin-left' : ($location.path() == '/app/global/login' ? 0 : ($scope.hideMenu ? $scope.menuHideWidth
+                        : $scope.menuItemWidth))
+                        + 'px'
             };
         };
 
         $scope.toOriginalPath = function(user, originalPath) {
             $scope.currentUser = user;
 
-            var path = '/';
+            var path = '/app/global/welcome';
             $qw.dev && console.info('originalPath', originalPath);
-            if (originalPath && originalPath != '/app/login') {
+            if (originalPath && originalPath != '/app/global/login') {
                 path = originalPath;
             }
 
@@ -102,13 +102,15 @@
 
             if (unauthorized) {
                 $qw.dev && console.info('还未登录，跳转到登录页面。', $location.path(), response);
-                // 备份原来的path
-                $qw.originalPath = $location.path();
+                if ($location.path() != '/app/global/login') {
+                    // 备份原来的path
+                    $qw.originalPath = $location.path();
+                }
             } else {
                 $qw.dev && console.info('退出成功，跳转到登录页面。', response);
             }
 
-            $location.path('/app/login');
+            $location.path('/app/global/login');
         };
         $qw.http.unauthorizedCallback = function(response) {
             $scope.toLogin(true, response);
@@ -116,36 +118,49 @@
 
         $scope.login = function(user) {
             var headers = user ? {
-                authorization : 'Basic ' + btoa(user.username + ':' + user.password)
+                Authorization : 'Basic ' + btoa(user.username + ':' + user.password)
             } : {};
 
-            $qw.http.get('authenticate', {
+            $qw.http.get('api/sys/user', {
                 headers : headers
             }, function(response) {
                 $scope.toOriginalPath(response, $qw.originalPath);
                 $qw.originalPath = null;
             }, function(response) {
+                $scope.loginErrorMsg = response || '账号密码不正确！';
                 console.error('登录失败！', response);
             });
         };
 
         $scope.logout = function() {
-            $qw.http.post('logout', {}, function(response) {
+            $qw.http.post('logout', {}, {}, function(response) {
                 $scope.toLogin(false, response);
             }, function(response) {
                 console.error('退出失败！', response);
             });
         };
 
+        $scope.isLoading = true;
+        $location.path('/app/global/login');
+        var code = $qw.location.params['code'];
         // 获取用户信息，如果用户还未登录，则会通过调用$qw.http.unauthorizedCallback跳转到登录页面。
-        $qw.http.get('user', {}, function(response) {
-            if (response != "") {
-                $scope.toOriginalPath(response, $location.path());
+        $qw.http.get('api/sys/user', {
+            headers : code ? {
+                'Weixin-Code' : code
+            } : {}
+        }, function(response) {
+            if (response) {
+                $scope.toOriginalPath(response, $qw.location.path);
             } else {
                 console.error('未获取到用户信息。', response);
             }
+            $scope.isLoading = false;
         }, function(response) {
             console.error('获取用户信息失败。', response);
+            $scope.isLoading = false;
+        }, function(response) {
+            console.warn('还未登录。', response);
+            $scope.isLoading = false;
         });
     };
 

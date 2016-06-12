@@ -1,10 +1,3 @@
-// 全局变量、函数和服务，避免很多地方都需要去写依赖注入
-var $qw = {};
-
-// 开发模式，生产环境上需要注释掉这行
-$qw.dev = true;
-$qw.dev && console.info('初始化$qw');
-
 $qw.isMobile = false;
 (function(a) {
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)
@@ -12,6 +5,12 @@ $qw.isMobile = false;
         $qw.isMobile = true;
     }
 })(navigator.userAgent || navigator.vendor || window.opera);
+
+$qw.getTemplateUrl = function(templateUrl) {
+    return function() {
+        return templateUrl + '?__t=' + ($qw.dev ? new Date().getTime() : $qw.buildTimestamp);
+    };
+};
 
 // 这里把toJson包装下，然后加入到$rootScope中，这样就可以在所有的html页面中使用了
 $qw.toJson = function(obj, pretty) {
@@ -72,34 +71,20 @@ angular.element(document).ready(function() {
         // authentication).
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-        /*
-         * $http.get('api/sys/routes', {}).success(function(response) { $scope.logger(response); successCallback && successCallback(response); }).error(function(response) { $scope.logger(response); failCallback && failCallback(response); });
-         */
-
-        $routeProvider.when('/workspace', {
-            templateUrl : 'workspace.html',
-            controller : 'WorkspaceController'
-        }).when('/app/login', {
-            templateUrl : 'app/sys/login/form.html',
-            controller : 'LoginController'
+        $routeProvider.when('/app/global/error', {
+            templateUrl : $qw.getTemplateUrl('app/global/error.html')
+        }).when('/app/global/login', {
+            templateUrl : $qw.getTemplateUrl('app/global/login.html')
+        }).when('/app/global/welcome', {
+            templateUrl : $qw.getTemplateUrl('app/global/welcome.html')
         }).when('/app/sys/url', {
-            templateUrl : 'app/sys/url/list.html',
-            controller : 'UrlController'
+            templateUrl : $qw.getTemplateUrl('app/sys/url/list.html')
         }).when('/app/sys/dict', {
-            templateUrl : 'app/sys/dict/list.html',
-            controller : 'DictController'
+            templateUrl : $qw.getTemplateUrl('app/sys/dict/list.html')
         }).when('/app/sys/menu', {
-            templateUrl : 'app/sys/menu/list.html',
-            controller : 'MenuController'
-        }).when('/app/stzj/member/info', {
-            templateUrl : 'app/stzj/member/info/list.html',
-            controller : 'MemberInfoController'
-        }).when('/app/stzj/station/info', {
-            templateUrl : 'app/stzj/station/info/list.html',
-            controller : 'StationInfoController'
-        }).otherwise('/app/sys/error', {
-            templateUrl : 'app/sys/error/error.html',
-            controller : 'ErrorController'
+            templateUrl : $qw.getTemplateUrl('app/sys/menu/list.html')
+        }).otherwise({
+            redirectTo : '/app/global/error'
         });
     });
 }(angular));

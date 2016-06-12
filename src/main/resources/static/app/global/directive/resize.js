@@ -10,6 +10,9 @@
                 };
             };
             $scope.$watch($scope.getWindowDimensions, function(newValue, oldValue) {
+                $qw.window.innerWidth = newValue.innerWidth;
+                $qw.window.innerHeight = newValue.innerHeight;
+
                 $scope.getMiddleContainerStyle = function() {
                     var header = document.querySelector('.header-container');
                     var footer = document.querySelector('.footer-container');

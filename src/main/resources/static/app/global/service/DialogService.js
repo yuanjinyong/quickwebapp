@@ -54,6 +54,16 @@
                             $qw.dialog.buildErrorDialogFn(formOptions, result.msg).openFn();
                         }
                     }, // 自定义方法，用于关闭表单对话框
+                    getFormTemplateUrl : function() {
+                        if (typeof this.formTemplateUrl == 'function') {
+                            return this.formTemplateUrl();
+                        } else if (typeof this.formTemplateUrl == 'string') {
+                            return this.formTemplateUrl;
+                        } else {
+                            return $qw.getTemplateUrl(
+                                    this.gridOptions.feature.path + (this.toolbarItem.view || '/form.html'))();
+                        }
+                    },
                 };
 
                 // 自定义属性，编辑表单的底部按钮栏，按钮靠右对齐
@@ -120,7 +130,7 @@
                 };
 
                 angular.extend(dialogOptions, {
-                    templateUrl : 'template/grid/form.html',
+                    templateUrl : $qw.getTemplateUrl('template/grid/form.html'),
                     controller : 'DialogController',
                     animation : true,
                     backdrop : 'static', // 点击对话框外面部分时不自动关闭对话框
@@ -133,9 +143,13 @@
             },
             buildAlertDialogFn : function(customFormOptions, customAlertOptions) {
                 var formOptions = {
-                    gridOptions : customFormOptions.gridOptions || {feature:{name:'提示'}},
+                    gridOptions : customFormOptions.gridOptions || {
+                        feature : {
+                            name : '提示'
+                        }
+                    },
                     toolbarItem : customFormOptions.toolbarItem || {},
-                    formTemplateUrl : 'template/dialog/alert.html',
+                    formTemplateUrl : $qw.getTemplateUrl('template/dialog/alert.html'),
                     footbar : $qw.buildButtonBarFn('alertFootbar', [ $qw.buildGroupFn('alertYesGroup', [ {
                         id : "yes",
                         text : "是",

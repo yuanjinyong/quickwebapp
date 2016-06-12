@@ -266,7 +266,7 @@
                                         };
                                         return docDefinition;
                                     },
-                                    // exporterPdfOrientation : 'landscape', //'landscape' or 'portrait', Defaults to landscape 
+                                    // exporterPdfOrientation : 'landscape', //'landscape' or 'portrait', Defaults to landscape
                                     // exporterPdfPageSize : 'A4', // Defaults to A4
                                     // exporterPdfMaxGridWidth : 720, // Defaults to 720 (for A4 landscape), use 670 for LETTER
                                     exporterCsvLinkElement : angular.element(document
