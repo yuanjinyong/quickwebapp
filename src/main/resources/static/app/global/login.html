@@ -1,18 +1,51 @@
-<div class="jumbotron" ng-hide="isLoading" ng-controller="LoginController">
-    <div ng-style="getFormStyle()">
+<div class="container-fluid" ng-hide="isLoading" ng-controller="LoginController">
+    <div ng-if="$qw.isMobile">
+        <div class="switch-panel-header">
+            <div class="text-center">模拟微信登录</div>
+        </div>
+        <div class="switch-panel-body">
+            <form id="loginForm" role="form">
+                <div class="form-group">
+                    <label for="username">Open ID：</label>
+                    <div>
+                        <input type="text" class="form-control" id="openId" name="openId" ng-model="credentials.openId" placeholder="输入会员的Open ID，可以从t_member_info表获取。" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <div class="alert alert-danger" ng-show="loginErrorMsg">{{loginErrorMsg}}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="switch-panel-footer">
+            <div class="btn-group btn-group-justified">
+                <a href="javascript:void(0)" class="btn btn-primary" ng-disabled="!credentials.openId" ng-click="login(credentials.openId ? credentials : null)">登录 </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-style="getFormStyle()" ng-if="!$qw.isMobile">
         <form id="loginForm" role="form" ng-submit="login(credentials)">
-            <div style="text-align: center;">
+            <div class="text-center">
                 <div class="alert alert-danger" style="margin-top: -72px;" ng-show="loginErrorMsg">{{loginErrorMsg}}</div>
             </div>
             <div style="text-align: left;">
                 <div class="form-group">
-                    <label for="username">用户名：</label> <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username" />
+                    <label for="username">用户名：</label>
+                    <div>
+                        <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username" />
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">密码：</label> <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password" />
+                    <label for="password">密码：</label>
+                    <div>
+                        <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password" />
+                    </div>
                 </div>
             </div>
-            <div style="text-align: center;">
+            <div class="text-center">
                 <button type="submit" class="btn btn-primary">登录</button>
                 <button type="reset" class="btn btn-warning">重置</button>
             </div>

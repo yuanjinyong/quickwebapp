@@ -37,6 +37,10 @@
         // buildServiceFn begin
         $qw.buildServiceFn = function(uri) {
             var service = $resource(uri + '/:id', {}, {
+                query : {
+                    method : 'GET',
+                    isArray : false
+                },
                 update : {
                     method : "PUT"
                 },

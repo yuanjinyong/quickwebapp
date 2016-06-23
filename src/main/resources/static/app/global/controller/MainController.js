@@ -127,8 +127,12 @@
                 $scope.toOriginalPath(response, $qw.originalPath);
                 $qw.originalPath = null;
             }, function(response) {
-                $scope.loginErrorMsg = response || '账号密码不正确！';
                 console.error('登录失败！', response);
+                if (response.status === 500) {
+                    $scope.loginErrorMsg = response.message;
+                } else {
+                    $scope.loginErrorMsg = response || '账号密码不正确！';
+                }
             });
         };
 

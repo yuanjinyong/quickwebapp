@@ -6,6 +6,7 @@
 html, body, .main-container {
     height: 100%;
     *overflow: hidden; /* 消除IE7下的横向滚动条 */
+    font-family: Times;
     font-size: 14px;
 }
 
@@ -121,6 +122,39 @@ html, body, .main-container {
     overflow-x: auto;
     overflow-y: auto;
 }
+
+.switch-panel-header {
+    font-weight: bold;
+    font-size: 18px;
+    position: fixed;
+    right: 0px;
+    top: 41px;
+    left: 0px;
+    padding: 15px;
+}
+
+.switch-panel-body {
+    overflow-y: auto;
+    position: fixed;
+    top: 94px;
+    right: 0px;
+    bottom: 64px;
+    left: 0px;
+    padding: 0px 15px;
+}
+
+.switch-panel-body .form-horizontal {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.switch-panel-footer {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    padding: 15px;
+}
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/
 /**********************************************************************************************************************/
@@ -130,6 +164,10 @@ html, body, .main-container {
 .container {
     /*border: 1px solid #ccc;*/
     margin: 0px;
+    padding: 15px;
+}
+
+.container-fluid {
     padding: 15px;
 }
 
