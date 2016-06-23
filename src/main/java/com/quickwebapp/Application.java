@@ -7,18 +7,16 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.quickwebapp.framework.core.listener.ApplicationStartup;
 import com.quickwebapp.usm.sys.security.SecurityConfiguration;
 
 /**
- * @author Administrator
+ * @author 袁进勇
  *
  */
-@SpringBootApplication
-@ComponentScan(basePackages = { "com.quickwebapp.**.controller.**", "com.quickwebapp.**.service.**" })
+@SpringBootApplication(scanBasePackages = { "com.quickwebapp.**.controller.**", "com.quickwebapp.**.service.**" })
 @MapperScan(basePackages = { "com.quickwebapp.**.mapper.**" })
 public class Application {
     @Bean

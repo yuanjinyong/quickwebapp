@@ -52,7 +52,6 @@
                                         field : 'f_id',
                                         displayName : '菜单编码',
                                         cellClass : 'text-left',
-                                        pinnedLeft : true,// 靠左固定列
                                         width : 200
                                     }), $qw.buildColumnFn({
                                         field : 'f_menu_remark',
