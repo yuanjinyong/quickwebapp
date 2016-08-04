@@ -15,7 +15,7 @@ public class HelpUtil extends StringUtils {
     }
 
     /**
-     * »ñÈ¡Ó¦ÓÃ·şÎñÆ÷µ±Ç°Ê±¼ä
+     * è·å–åº”ç”¨æœåŠ¡å™¨å½“å‰æ—¶é—´
      * 
      * @return
      */

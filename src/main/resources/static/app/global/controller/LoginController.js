@@ -3,7 +3,7 @@
         $qw.dev && console.info('LoginController');
 
         $scope.credentials = {
-            username : ($qw.dev ? 'admin' : ''),
+            username : ($qw.dev ? $qw.superAdmin : ''),
             password : ($qw.dev ? 'pkpm' : '')
         };
 

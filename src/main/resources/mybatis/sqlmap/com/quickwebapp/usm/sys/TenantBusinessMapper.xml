@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickwebapp.usm.sys.mapper.TenantBusinessMapper">
+    <sql id="Insert_Clause">
+        INSERT INTO t_sys_tenant_business(
+        f_id,
+        f_tenant_cid,
+        f_name,
+        f_remark
+        )
+        VALUES
+    </sql>
+    <sql id="Insert_Value_Clause">
+        (
+        #{f_id},
+        #{f_tenant_cid},
+        #{f_name},
+        #{f_remark}
+        )
+    </sql>
+    <sql id="Insert_Values_Clause">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.f_id},
+            #{item.f_tenant_cid},
+            #{item.f_name},
+            #{item.f_remark}
+            )
+        </foreach>
+    </sql>
+
+    <sql id="Select_Clause">
+        SELECT
+        t.f_id,
+        t.f_tenant_cid,
+        c.f_name f_tenant_cname,
+        t.f_name,
+        t.f_remark
+    </sql>
+    <sql id="From_Clause">
+        FROM t_sys_tenant_business t
+        LEFT JOIN t_sys_tenant_customer c ON t.f_tenant_cid = c.f_id
+    </sql>
+    <sql id="Where_Clause">
+        WHERE 1=1
+        <if test="f_id != null">AND t.f_id = #{f_id}</if>
+        <if test="f_tenant_cid != null">AND t.f_tenant_cid = #{f_tenant_cid}</if>
+        <if test="f_name != null and f_name != ''">AND t.f_name = #{f_name}</if>
+        <if test="f_name_like != null and f_name_like != ''">AND t.f_name like "%" #{f_name_like} "%"</if>
+    </sql>
+
+
+    <!-- select -->
+    <select id="selectEntity" parameterType="java.lang.Integer" resultType="com.quickwebapp.usm.sys.entity.TenantBusinessEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        WHERE t.f_id = #{f_id}
+    </select>
+    <select id="selectEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.usm.sys.entity.TenantBusinessEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+    <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+
+    <!-- insert -->
+    <insert id="insertEntity" parameterType="com.quickwebapp.usm.sys.entity.TenantBusinessEntity">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Value_Clause" />
+    </insert>
+    <insert id="insertEntities" parameterType="java.util.ArrayList">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Values_Clause" />
+    </insert>
+
+    <!-- update -->
+    <update id="updateEntity" parameterType="com.quickwebapp.usm.sys.entity.TenantBusinessEntity">
+        UPDATE t_sys_tenant_business SET
+        <if test="f_tenant_cid != null">f_tenant_cid=#{f_tenant_cid},</if>
+        <if test="f_name != null">f_name=#{f_name},</if>
+        <if test="f_remark != null">f_remark=#{f_remark},</if>
+        f_id=#{f_id}
+        WHERE f_id=#{f_id}
+    </update>
+
+    <!-- delete -->
+    <select id="isCanDeleteEntity" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT 0 FROM dual
+    </select>
+    <delete id="deleteEntity" parameterType="java.lang.Integer">
+        DELETE FROM t_sys_tenant_business WHERE f_id=#{f_id}
+    </delete>
+    <delete id="deleteEntities" parameterType="com.quickwebapp.framework.core.entity.MapEntity">
+        DELETE FROM t_sys_tenant_business WHERE 1=1
+        <if test="f_tenant_cid != null and f_tenant_cid !=''">AND f_tenant_cid = #{f_tenant_cid}</if>
+        <if test="f_name != null and f_name !=''">AND f_rolef_name_code = #{f_name}</if>
+    </delete>
+
+    <!-- 其他SQL -->
+</mapper>

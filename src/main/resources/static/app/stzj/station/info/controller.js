@@ -1,17 +1,17 @@
 (function(angular) {
     // *****************************************************************************************************************
-    // DictController begin
-    var DictController = function($scope, dictService) {
-        $qw.dev && console.info('DictController');
+    // StationInfoController begin
+    var StationInfoController = function($scope, stationInfoService) {
+        $qw.dev && console.info('StationInfoController');
 
         $scope.feature = {
-            id : 'dict',
-            name : '字典组',
-            path : 'app/sys/dict',
-            service : dictService
+            id : 'stationInfo',
+            name : '站点信息',
+            path : 'app/stzj/station/info',
+            service : stationInfoService
         }
 
-        $scope.dictGridOptions = $qw.grid.buildGridOptionsFn($scope, {
+        $scope.stationGridOptions = $qw.grid.buildGridOptionsFn($scope, {
             onLoadedSuccess : function(result) {
                 this.toolbar.enableItems([ 'add', 'refresh' ]);
             },
@@ -58,9 +58,6 @@
             }), $qw.buildColumnFn({
                 field : 'f_linker',
                 displayName : '联系人',
-                filter : {
-                    term : '二'
-                },
                 width : 90
             }), $qw.buildColumnFn({
                 field : 'f_link_phone',
@@ -68,7 +65,7 @@
                 width : 110
             }), $qw.buildColumnFn({
                 field : 'f_secret_key',
-                displayName : '加密秘钥2',
+                displayName : '加密秘钥',
                 width : 150
             }), $qw.buildDictColumnFn({
                 field : 'f_status',
@@ -83,20 +80,20 @@
             }) ]
         });
 
-        $scope.dictGridOptions.toolbar.showItems([ 'add', 'copy', 'edit', 'remove', 'export', 'refresh' ]);
+        $scope.stationGridOptions.toolbar.showItems([ 'add', 'copy', 'edit', 'remove', 'export', 'refresh' ]);
 
-        $scope.dictGridOptions.loadFn();
+        $scope.stationGridOptions.loadFn();
     };
 
-    DictController.$inject = [ '$scope', 'DictService' ];
-    angular.module("app.controllers").controller("DictController", DictController);
-    // DictController end
+    StationInfoController.$inject = [ '$scope', 'StationInfoService' ];
+    angular.module("app.controllers").controller("StationInfoController", StationInfoController);
+    // StationInfoController end
     // *****************************************************************************************************************
 
     // *****************************************************************************************************************
-    // DictFormController begin
-    var DictFormController = function($scope, dictService) {
-        $qw.dev && console.log('DictFormController');
+    // StationInfoFormController begin
+    var StationInfoFormController = function($scope, stationInfoService) {
+        $qw.dev && console.log('StationInfoFormController');
 
         if ($scope.formOptions.toolbarItem.id == 'copy') {
             $scope.entity.f_id = null;
@@ -104,8 +101,8 @@
         }
     };
 
-    DictFormController.$inject = [ '$scope', 'DictService' ];
-    angular.module("app.controllers").controller("DictFormController", DictFormController);
-    // DictFormController end
+    StationInfoFormController.$inject = [ '$scope', 'StationInfoService' ];
+    angular.module("app.controllers").controller("StationInfoFormController", StationInfoFormController);
+    // StationInfoFormController end
     // *****************************************************************************************************************
 }(angular));

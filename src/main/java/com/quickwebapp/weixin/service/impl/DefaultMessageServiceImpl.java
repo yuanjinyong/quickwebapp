@@ -30,7 +30,7 @@ public class DefaultMessageServiceImpl implements MessageService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.jianyanxinxi.weixin.service.MessageService#onReceivedMessage(com.jianyanxinxi.weixin.entity.Message)
+     * @see com.quickwebapp.weixin.service.MessageService#onReceivedMessage(com.quickwebapp.weixin.entity.Message)
      */
     @Override
     public Message oMessage(Message reqMsg) {

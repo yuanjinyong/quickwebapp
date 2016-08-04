@@ -77,9 +77,13 @@ public class PageInterceptor implements Interceptor {
                         metaObject.setValue("delegate.boundSql.sql", pageSql);
 
                         LOG.info("\n重写分页后的SQL如下：\n" + pageSql);
+
+                        return invocation.proceed();
                     }
                 }
             }
+
+            LOG.info("\n原始的SQL如下：\n" + boundSql.getSql());
         }
 
         return invocation.proceed();

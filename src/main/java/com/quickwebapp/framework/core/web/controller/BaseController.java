@@ -20,11 +20,17 @@ import com.quickwebapp.framework.core.entity.MapEntity;
 import com.quickwebapp.framework.core.exception.BusinessException;
 import com.quickwebapp.framework.core.service.BaseService;
 import com.quickwebapp.framework.core.utils.HelpUtil;
+import com.quickwebapp.usm.sys.security.OpenIdAuthenticationToken;
 
 public abstract class BaseController<P, E extends BaseEntity<P>> extends TopController {
     private static final Logger LOG = LoggerFactory.getLogger(BaseController.class);
 
     protected abstract BaseService<P, E> getService();
+
+    protected String getF_openid(HttpServletRequest request) {
+        OpenIdAuthenticationToken token = (OpenIdAuthenticationToken) request.getUserPrincipal();
+        return token.getOpenid();
+    }
 
     public ResponseEntity<List<E>> list(MapEntity params) {
         return new ResponseEntity<List<E>>(getService().selectEntityListPage(params), HttpStatus.OK);
@@ -54,6 +60,9 @@ public abstract class BaseController<P, E extends BaseEntity<P>> extends TopCont
 
     public ResponseEntity<MapEntity> delete(P primaryKey) {
         getService().deleteEntity(primaryKey);
+
+        // 这里我们把执行结果通过state和msg字段返回给客户端，所以返回的状态码从204改为200。
+        // 返回码具体意义请参考HTTP协议：https://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html
         // return new ResponseEntity<MapEntity>(success(), HttpStatus.NO_CONTENT);
         return new ResponseEntity<MapEntity>(success(), HttpStatus.OK);
     }

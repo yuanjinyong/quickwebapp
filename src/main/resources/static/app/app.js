@@ -12,6 +12,16 @@ $qw.getTemplateUrl = function(templateUrl) {
     };
 };
 
+$qw.treeNodeForEach = function(nodes, callback, removeChildren, parentNode) {
+    angular.forEach(nodes, function(node, index, nodes) {
+        callback && callback(node, node.$$parent || parentNode);
+        $qw.treeNodeForEach(node.children, callback, removeChildren, node);
+        if (removeChildren) {
+            delete node.children;
+        }
+    });
+};
+
 // 这里把toJson包装下，然后加入到$rootScope中，这样就可以在所有的html页面中使用了
 $qw.toJson = function(obj, pretty) {
     return angular.toJson(obj, pretty);
@@ -70,6 +80,76 @@ angular.element(document).ready(function() {
         // browser will not pop up an authentication dialog (which is desirable in our app since we want to control the
         // authentication).
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        // $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
+        // $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
+        $httpProvider.interceptors.push(function($q, $location) {
+            return {
+                // optional method, do something on success
+                'request' : function(config) {
+                    // $qw.dev && console.debug('request', config);
+                    config.requestTimestamp = new Date().getTime();
+                    return config;
+                },
+                // optional method, do something on error
+                'requestError' : function(rejection) {
+                    $qw.dev && console.error('rejection', rejection);
+                    return $q.reject(rejection);
+                },
+
+                // optional method, do something on success
+                'response' : function(response) {
+                    response.config.responseTimestamp = new Date().getTime();
+                    if (response.data.state == false) {
+                        console.error('response.data', response.data);
+
+                        $qw.dialog.buildErrorDialogFn({}, response.data.msg).openFn();
+                    }
+                    //                            $qw.dev
+                    //                                    && console.debug('[' + response.config.method + '][' + response.config.url + ']耗时：'
+                    //                                            + (response.config.responseTimestamp - response.config.requestTimestamp)
+                    //                                            + 'ms。');
+                    return response;
+                },
+                // optional method, do something on error
+                'responseError' : function(response) {
+                    $qw.dev && console.error('response', response);
+                    if (response.status === 401) {
+                        $qw.dev && console.error('访问URL地址' + response.config.url + '需要先登录认证');
+                        $qw.originalPath = $location.path();
+                        $qw.dev && console.info('跳转到登录页面，备份当前path', $qw.originalPath);
+                        $location.path('/app/global/login');
+                    } else if (response.status === 403) {
+                        if (response.data && response.data.message) {
+                            $qw.dev && console.error(response.data.message);
+                            $qw.dialog.buildErrorDialogFn({}, response.data.message).openFn();
+                        } else {
+                            var msg = '无[' + response.config.method + '][' + response.config.url + ']的访问权限，请联系系统管理员！';
+                            $qw.dev && console.error(msg);
+                            $qw.dialog.buildErrorDialogFn({}, msg).openFn();
+                        }
+                    }  else if (response.status === 404) {
+                        var msg = '未找到[' + response.config.method + '][' + response.config.url + ']URL！';
+                        $qw.dev && console.error(msg);
+                        $qw.dialog.buildErrorDialogFn({}, msg).openFn();
+                    } else {
+                        if (response.data && response.data.message) {
+                            $qw.dialog.buildErrorDialogFn({}, response.data.message).openFn();
+                        } else {
+                            $qw.dialog.buildErrorDialogFn({}, response.statusText).openFn();
+                        }
+                    }
+                    return $q.reject(response);
+                }
+            };
+        });
+
+        angular.forEach($qw.pages, function(page, index, pages) {
+            if (page.f_url_id) {
+                $routeProvider.when('/' + page.f_url_id.substring(0, page.f_url_id.lastIndexOf('.')), {
+                    templateUrl : $qw.getTemplateUrl(page.f_url_id)
+                });
+            }
+        });
 
         $routeProvider.when('/app/global/error', {
             templateUrl : $qw.getTemplateUrl('app/global/error.html')
@@ -77,12 +157,6 @@ angular.element(document).ready(function() {
             templateUrl : $qw.getTemplateUrl('app/global/login.html')
         }).when('/app/global/welcome', {
             templateUrl : $qw.getTemplateUrl('app/global/welcome.html')
-        }).when('/app/sys/url', {
-            templateUrl : $qw.getTemplateUrl('app/sys/url/list.html')
-        }).when('/app/sys/dict', {
-            templateUrl : $qw.getTemplateUrl('app/sys/dict/list.html')
-        }).when('/app/sys/menu', {
-            templateUrl : $qw.getTemplateUrl('app/sys/menu/list.html')
         }).otherwise({
             redirectTo : '/app/global/error'
         });

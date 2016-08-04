@@ -7,38 +7,40 @@
             name : 'URL',
             path : 'app/sys/url',
             service : urlService
-        }
+        };
 
         $scope.urlGridOptions = $qw.grid.buildGridOptionsFn($scope, {
+            orderBy : 'f_patterns,f_methods desc',
             onLoadedSuccess : function(result) {
-                this.toolbar.enableItems([ 'add', 'refresh' ]);
+                this.toolbar && this.toolbar.enableItems([ 'add', 'refresh' ]);
             },
             onRowSelectionChanged : function(row) {
                 if (!row.isSelected) {
-                    this.toolbar.enableItems([ 'add', 'refresh' ]);
+                    this.toolbar && this.toolbar.enableItems([ 'add', 'refresh' ]);
                 } else {
-                    this.toolbar.enableAllItems();
+                    this.toolbar && this.toolbar.enableAllItems();
                 }
             },
-            columnDefs : [ $qw.buildLinkColumnFn({
-                field : 'f_url',
+            columnDefs : [ $qw.buildColumnFn({
+                field : 'f_methods',
+                displayName : '提交方式',
+                pinnedLeft : true,// 靠左固定列
+                width : 90
+            }), $qw.buildLinkColumnFn({
+                field : 'f_patterns',
                 displayName : 'URL',
                 cellClass : 'text-left',
                 pinnedLeft : true,// 靠左固定列
-                width : 300
             }), $qw.buildColumnFn({
                 field : 'f_description',
                 displayName : 'URL描述',
                 cellClass : 'text-left',
                 width : 200
             }), $qw.buildColumnFn({
-                field : 'f_methods',
-                displayName : '提交方式',
-                width : 90
-            }), $qw.buildColumnFn({
                 field : 'f_handler_method',
                 displayName : '处理方法',
                 cellClass : 'text-left',
+                visible : false,
                 minWidth : 300
             }), $qw.buildDictColumnFn({
                 field : 'f_log',
@@ -46,6 +48,7 @@
                 dictCode : 'TrueFalse',
                 enableColumnResizing : false,
                 enableSorting : false,
+                visible : $scope.formOptions && $scope.formOptions.toolbarItem.id !== 'search',
                 width : 90
             }), $qw.buildDictColumnFn({
                 field : 'f_auto',
@@ -53,13 +56,14 @@
                 dictCode : 'TrueFalse',
                 enableColumnResizing : false,
                 enableSorting : false,
+                visible : $scope.formOptions && $scope.formOptions.toolbarItem.id !== 'search',
                 width : 90
             }) ]
         });
 
         // /////////////////////////////////////////////////////////////////
         // 在已有的组内新增一个按钮
-        $scope.urlGridOptions.toolbar.getGroup('refreshGroup').addItem($qw.buildGroupItemFn({
+        $scope.urlGridOptions.toolbar.getGroup('addGroup').addItem($qw.buildGroupItemFn({
             id : "info",
             ico : "info-sign",
             css : "default",
@@ -99,8 +103,21 @@
         $scope.urlGridOptions.toolbar.getGroup('approveGroup').getItem('back').hide = false;
         $scope.urlGridOptions.toolbar.getGroup('refreshGroup').getItem('print').hide = false;
         $scope.urlGridOptions.toolbar.getGroup('refreshGroup').getItem('printview').hide = false;
-        // 去掉整个工具栏
-        // $scope.urlGridOptions.toolbar = null;
+
+        if ($scope.formOptions && $scope.formOptions.toolbarItem.id === 'search') {
+            $scope.urlGridOptions.height = '10line';
+            $scope.urlGridOptions.paginationPageSize = 10;
+            // 去掉整个工具栏
+            $scope.urlGridOptions.toolbar = null;
+            $scope.urlGridOptions.multiSelect = true; // 启用多选
+
+            var submitBtn = $scope.formOptions.footbar.getGroup('submitGroup').getItem('submit');
+            submitBtn.text = '确定所选';
+            submitBtn.click = function(footbarItem, formOptions, entity) {
+                formOptions.selectedFn(footbarItem, formOptions, entity, $scope.urlGridOptions.gridApi.selection
+                        .getSelectedRows());
+            };
+        }
         // /////////////////////////////////////////////////////////////////
 
         // 打开时首次加载表格数据

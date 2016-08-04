@@ -10,7 +10,7 @@
                     showRowNumber : true, // 自定义属性，默认显示行号
                     beginRowNum : 0, // 自定义属性，后台查询起始行号
                     orderBy : '', // 自定义属性，用于后台排序的
-                    initQueryParams : {}, //初始化的固定查询参数
+                    initQueryParams : {}, // 初始化的固定查询参数
                     queryParams : {}, // 自定义属性，用于后台查询过滤的条件参数
                     errorMsg : null, // 自定义属性，用于显示错误信息
                     exporterCsvFilename : feature.name ? (feature.name + '.csv') : '导出.csv',
@@ -40,8 +40,32 @@
                             // 更新表格的相关数据
                             if (result.currentPageData && result.currentPageData.length > 0) {
                                 gridOptions.totalItems = result.totalCount;
-                                gridOptions.data = result.currentPageData;
                                 gridOptions.errorMsg = null;
+
+                                // 如果是树形表格，则补上$$treeLevel属性。注意：返回的行数据必须是已经排好序的，父节点必须排在子节点的前面
+                                if (gridOptions.gridApi.treeBase) {
+                                    var topNodes = [];
+                                    var nodeMap = {};
+                                    angular.forEach(result.currentPageData, function(node, index, data) {
+                                        nodeMap[node.f_id] = node;
+                                        var parentNode = nodeMap[node.f_parent_id];
+                                        if (parentNode) {
+                                            node.$$treeLevel = parentNode.$$treeLevel + 1;
+                                            parentNode.children.push(node);
+                                        } else {
+                                            node.$$treeLevel = 0;
+                                            topNodes.push(node);
+                                        }
+                                        node.children = [];
+                                    });
+
+                                    gridOptions.data = [];
+                                    $qw.treeNodeForEach(topNodes, function(node, parentNode) {
+                                        gridOptions.data.push(node);
+                                    }, true);
+                                } else {
+                                    gridOptions.data = result.currentPageData;
+                                }
                             } else {
                                 gridOptions.totalItems = 0;
                                 gridOptions.data = [];
@@ -63,6 +87,8 @@
                                 } else if (angular.isObject(result)) {
                                     if (result.msg) {
                                         gridOptions.errorMsg = result.msg;
+                                    } else if (result.message) {
+                                        gridOptions.errorMsg = result.message;
                                     } else if (result.status === 404) {
                                         gridOptions.errorMsg = result.path + ' ' + result.error;
                                     } else {
@@ -223,14 +249,15 @@
                                     multiSelect : false, // 禁用多选
                                     enableGridMenu : true, // 启用表格右上角菜单
                                     enableFiltering : true, // 启用过滤器
-                                    enableExpandable : false, //启用折叠
-                                    enableExpandableRowHeader : false, //隐藏折叠行图标
+                                    enableExpandable : false, // 启用折叠
+                                    enableExpandableRowHeader : false, // 隐藏折叠行图标
                                     enableColumnResizing : true, // 启用调整列宽
                                     useExternalSorting : true, // 启用后台排序
                                     useExternalPagination : true, // 启用后台分页
                                     paginationPageSizes : [ 10, 20, 30, 50, 100 ], // 可选每页记录数
-                                    paginationPageSize : 10, // 每页记录数
+                                    paginationPageSize : 20, // 每页记录数
                                     totalItems : 0, // 总记录数
+                                    data : [],
                                     exporterPdfDefaultStyle : {
                                         fontSize : 9
                                     },
@@ -351,7 +378,7 @@
                                                     .rowSelectionChanged(
                                                             $scope,
                                                             function(row) {
-                                                                $qw.dev && console.debug('Row data is:', row);
+                                                                //$qw.dev && console.debug('Row data is:', row);
                                                                 var gridOptions = row.grid.options;
                                                                 if (gridOptions.onRowSelectionChanged) {
                                                                     gridOptions.onRowSelectionChanged(row);

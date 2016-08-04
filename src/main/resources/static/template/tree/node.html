@@ -1,0 +1,9 @@
+<span class="{{getNodeIcon(node)}}" ng-style="{'cursor': isLeaf(node) ? 'default' : 'pointer'}" ng-click="nodeExpanded(node, $event);"></span>
+
+<input type="checkbox" ng-model="node.checked" ng-if="treeOptions.checkable" ng-change="warpCallback('nodeCheckedChanged', node, $event)">
+
+<span style="cursor: pointer;" ng-click="warpCallback('nodeClicked', node, $event);">{{render ? render(treeOptions, node) : node[treeOptions.textField]}}</span>
+
+<div ng-if="!isLeaf(node)" ng-show="node.expanded" ng-style="{'padding-left' : '14px'}" ng-init="parent=node">
+    <div ng-repeat="node in node.children" ng-init="node.$$parent=parent" ng-include="treeOptions.nodeTemplateUrl"></div>
+</div>

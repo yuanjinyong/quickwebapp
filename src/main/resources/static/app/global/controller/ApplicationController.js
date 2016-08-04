@@ -35,8 +35,8 @@
 
         // =============================================================================================================
         // buildServiceFn begin
-        $qw.buildServiceFn = function(uri) {
-            var service = $resource(uri + '/:id', {}, {
+        $qw.buildServiceFn = function(uri, paramDefaults) {
+            var service = $resource(uri + '/:id', paramDefaults || {}, {
                 query : {
                     method : 'GET',
                     isArray : false
@@ -61,7 +61,8 @@
             return angular.extend({
                 id : "_itemId", // 按钮ID
                 text : "按钮文本", // 按钮文本
-                // ico : null, // 按钮图标。默认是null，search、plus、plus-sign、pencil、minus等字体图标，详细的请查看http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp
+                // ico : null, //
+                // 按钮图标。默认是null，search、plus、plus-sign、pencil、minus等字体图标，详细的请查看http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp
                 size : "sm", // 按钮大小。lg、md、sm、xs
                 css : "primary", // 按钮类别。default、primary、success、info、warning、danger、link
                 block : false, // 是否为块级显示。主要为微信界面使用
@@ -325,14 +326,18 @@
         };
         $qw.buildDictColumnFn = function(columnDef, dictCode) {
             columnDef.dictCode || console.error('请在columnDef指明dictCode属性的值');
+            var cellTemplateText = '<div class="ui-grid-cell-contents">{{grid.appScope.$qw.dict.dicts["'
+                    + columnDef.dictCode + '"].items[grid.getCellValue(row,col)]}}</div>';
             return angular.extend($qw.buildColumnFn({
-                // cellTemplate : '<div class="ui-grid-cell-contents">{{grid.appScope.$qw.dict.dicts["'+columnDef.dictCode+'"][grid.getCellValue(row, col)]}}</div>',
-                cellFilter : columnDef.dictCode,
+                cellTemplate : cellTemplateText,
+                // cellFilter : columnDef.dictCode,
                 filter : {
                     type : uiGridConstants.filter.SELECT,
                     selectOptions : $qw.dict.dicts[columnDef.dictCode].selectOptions
                 },
-            // filterHeaderTemplate : '<div class="ui-grid-filter-container" ng-repeat="colFilter in col.filters"><select ng-model="colFilter.term" ng-options="option.value as option.label for option in colFilter.selectOptions"><option value=""></option></select></div>'
+            // filterHeaderTemplate : '<div class="ui-grid-filter-container" ng-repeat="colFilter in
+            // col.filters"><select ng-model="colFilter.term" ng-options="option.value as option.label for option in
+            // colFilter.selectOptions"><option value=""></option></select></div>'
             }), columnDef);
         };
         // Grid end
@@ -342,42 +347,50 @@
         $qw.i18n = i18nService;
         $qw.http = HttpService;
         $qw.dialog = dialogService;
-        // $qw.dict = DictService;
         $qw.dict = {
-            dicts : {
-                TrueFalse : {
-                    1 : '是',
-                    2 : '否',
-                    selectOptions : [ {
-                        value : 1,
-                        label : '是'
-                    }, {
-                        value : 2,
-                        label : '否'
-                    } ]
-                },
-                MenuType : {
-                    0 : '根',
-                    1 : '目录',
-                    2 : '页面',
-                    3 : '按钮',
-                    selectOptions : [ {
-                        value : 0,
-                        label : '根'
-                    }, {
-                        value : 1,
-                        label : '目录'
-                    }, {
-                        value : 2,
-                        label : '页面'
-                    }, {
-                        value : 3,
-                        label : '按钮'
-                    } ]
+            dicts : {},
+            buildDictFn : function(dictData) {
+                // $qw.dev && console.debug('dictData', dictData);
+                for ( var dictCode in dictData) {
+                    this.dicts[dictCode] = {
+                        selectOptions : [],
+                        items : {}
+                    };
+
+                    var options = this.dicts[dictCode].selectOptions;
+                    var items = this.dicts[dictCode].items;
+                    var dictGroup = dictData[dictCode];
+                    for ( var itemCode in dictGroup) {
+                        var dictItem = dictGroup[itemCode];
+                        var num = +dictItem.value;
+                        var key = num.toString() === dictItem.value ? parseInt(dictItem.value) : dictItem.value;
+                        options.push({
+                            value : key,
+                            label : dictItem.label
+                        });
+                        items[key] = dictItem.label;
+                    }
+                    // $qw.dev && console.debug(dictCode, this.dicts[dictCode]);
                 }
             }
         };
         $qw.grid = GridService;
+
+        $qw.hasAuthority = function(authority) {
+            if ($qw.currentUser) {
+                for ( var i in $qw.currentUser.authorities) {
+                    var grantedAuthority = $qw.currentUser.authorities[i];
+                    // $qw.dev && console.debug('grantedAuthority.authority:', grantedAuthority.authority);
+                    if (authority === grantedAuthority.authority) {
+                        // $qw.dev && console.debug('hasAuthority: true');
+                        return true;
+                    }
+                }
+            }
+
+            // $qw.dev && console.debug('hasAuthority: false');
+            return false;
+        }
 
         angular.$qw = $qw;
         $rootScope.$qw = angular.$qw;

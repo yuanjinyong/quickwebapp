@@ -1,11 +1,11 @@
-<div class="jumbotron" ng-controller="UrlController">
-    <h3>{{urlGridOptions.feature.name}}管理</h3>
+<div class="container-fluid" ng-controller="UrlController">
+    <!--h3 ng-if="!(formOptions && formOptions.toolbarItem.id === 'search')">{{urlGridOptions.feature.name}}管理</h3-->
 
     <div qw-grid-list="urlGridOptions">
         <!-- 这里可以添加需要插入到表格前面和后面的元素 -->
-        <div class="qw-grid-insert-before">这是插到Grid前面的第一个元素。{{urlGridOptions.title}}</div>
+        <!--div class="qw-grid-insert-before">这是插到Grid前面的第一个元素。{{urlGridOptions.title}}</div>
         <div class="qw-grid-insert-before">这是插到Grid前面的第二个元素。{{urlGridOptions.exporterCsvFilename}}</div>
         <div class="qw-grid-insert-after">这是插到Grid后面的第一个元素。{{urlGridOptions.title}}</div>
-        <div class="qw-grid-insert-after">这是插到Grid后面的第二个元素。{{urlGridOptions.exporterCsvFilename}}</div>
+        <div class="qw-grid-insert-after">这是插到Grid后面的第二个元素。{{urlGridOptions.exporterCsvFilename}}</div-->
     </div>
 </div>

@@ -2,9 +2,7 @@ package com.quickwebapp.usm.sys.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,56 +35,6 @@ public class MenuService extends BaseService<String, MenuEntity> {
     @Override
     protected BaseMapper<String, MenuEntity> getMapper() {
         return menuMapper;
-    }
-
-    /**
-     * 获取指定菜单节点的菜单树
-     * 
-     * @param menuId
-     *            根节点的菜单ID
-     * @param includeAllChildren
-     *            是否递归包含所有下级子菜单，false则只返回一级子菜单
-     * @return
-     */
-    public MenuEntity getMenuTree(String menuId, boolean includeAllChildren) {
-        MenuEntity rootMenu = getMapper().selectEntity(menuId);
-
-        MapEntity mapEntity = new MapEntity();
-        if (includeAllChildren) {
-            mapEntity.put("f_parent_ids",
-                    (HelpUtil.isEmptyString(rootMenu.getF_parent_ids()) ? "" : rootMenu.getF_parent_ids() + "/")
-                            + rootMenu.getF_id());
-        } else {
-            mapEntity.put("f_parent_id", rootMenu.getF_id());
-        }
-
-        rootMenu.setChildren(getMenuList(mapEntity));
-
-        return rootMenu;
-    }
-
-    public List<MenuEntity> getMenuList(MapEntity mapEntity) {
-        mapEntity.setPageSizeWithMax().setOrderBy("f_parent_ids, f_order");
-        List<MenuEntity> menuList = getMapper().selectEntityListPage(mapEntity);
-        Map<String, MenuEntity> menuMap = new HashMap<String, MenuEntity>();
-        for (MenuEntity menu : menuList) {
-            menu.setChildren(new ArrayList<MenuEntity>());
-            menuMap.put(menu.getF_id(), menu);
-
-            MenuEntity parentMenu = menuMap.get(menu.getF_parent_id());
-            if (parentMenu != null) {
-                parentMenu.getChildren().add(menu);
-            }
-        }
-
-        List<MenuEntity> childrenList = new ArrayList<MenuEntity>();
-        for (MenuEntity menu : menuList) {
-            if (!menuMap.containsKey(menu.getF_parent_id())) {
-                childrenList.add(menu);
-            }
-        }
-
-        return childrenList;
     }
 
     @Override

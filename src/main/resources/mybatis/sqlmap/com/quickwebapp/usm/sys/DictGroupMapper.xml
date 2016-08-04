@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickwebapp.usm.sys.mapper.DictGroupMapper">
+    <sql id="Insert_Clause">
+        INSERT INTO t_sys_dict_group(
+        f_code,
+        f_remark,
+        f_type,
+        f_sql
+        )
+        VALUES
+    </sql>
+    <sql id="Insert_Value_Clause">
+        (
+        #{f_code},
+        #{f_remark},
+        #{f_type},
+        #{f_sql}
+        )
+    </sql>
+    <sql id="Insert_Values_Clause">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.f_code},
+            #{item.f_remark},
+            #{item.f_type},
+            #{item.f_sql}
+            )
+        </foreach>
+    </sql>
+
+    <sql id="Select_Clause">
+        SELECT
+        t.f_id,
+        t.f_code,
+        t.f_remark,
+        t.f_type,
+        t.f_sql
+    </sql>
+    <sql id="From_Clause">
+        FROM t_sys_dict_group t
+    </sql>
+    <sql id="Where_Clause">
+        WHERE 1=1
+        <if test="f_type != null and f_type != ''">AND t.f_type = #{f_type}</if>
+        <if test="f_code != null and f_code != ''">AND t.f_code = #{f_code}</if>
+        <if test="f_code_like != null and f_code_like != ''">AND t.f_role_code like "%" #{f_code_like} "%"</if>
+        <if test="f_remark_like != null and f_remark_like != ''">AND t.f_remark like "%" #{f_remark_like} "%"</if>
+    </sql>
+
+
+    <!-- select -->
+    <select id="selectEntity" parameterType="java.lang.Integer" resultType="com.quickwebapp.usm.sys.entity.DictGroupEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        WHERE t.f_id = #{f_id}
+    </select>
+    <select id="selectEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.usm.sys.entity.DictGroupEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+    <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+
+    <!-- insert -->
+    <insert id="insertEntity" parameterType="com.quickwebapp.usm.sys.entity.DictGroupEntity">
+        <selectKey resultType="java.lang.Integer" keyProperty="f_id" order="AFTER">
+            SELECT @@IDENTITY
+        </selectKey>
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Value_Clause" />
+    </insert>
+    <insert id="insertEntities" parameterType="java.util.ArrayList">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Values_Clause" />
+    </insert>
+
+    <!-- update -->
+    <update id="updateEntity" parameterType="com.quickwebapp.usm.sys.entity.DictGroupEntity">
+        UPDATE t_sys_dict_group SET
+        <if test="f_remark != null">f_remark=#{f_remark},</if>
+        <if test="f_type != null">f_type=#{f_type},</if>
+        <if test="f_sql != null">f_sql=#{f_sql},</if>
+        f_id=#{f_id}
+        WHERE f_id=#{f_id}
+    </update>
+
+    <!-- delete -->
+    <select id="isCanDeleteEntity" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT 0 FROM DUAL
+    </select>
+    <delete id="deleteEntity" parameterType="java.lang.Integer">
+        DELETE FROM t_sys_dict_group WHERE f_id=#{f_id}
+    </delete>
+    <delete id="deleteEntities" parameterType="com.quickwebapp.framework.core.entity.MapEntity">
+        DELETE FROM t_sys_dict_group WHERE 1=1
+        <if test="f_type != null and f_type !=''">AND f_type = #{f_type}</if>
+    </delete>
+
+    <!-- 其他SQL -->
+</mapper>

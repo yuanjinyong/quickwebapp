@@ -5,21 +5,30 @@
         var service = {
             buildFormOptionsFn : function(customFormOptions) {
                 var formOptions = {
+                    withDismiss : true,
                     gridOptions : {}, // 自定义属性，对应的表格配置。必须通过customFormOptions传入
                     toolbarItem : {}, // 自定义属性，对应的表格工具栏上所点击的按钮。必须通过customFormOptions传入
                     entity : {}, // 自定义属性，对应的表格中选择的记录。必须通过customFormOptions传入
                     // title : '修改站点信息', /* 自定义属性，编辑表单的标题。可以不传，默认取值为formOptions.toolbarItem.text + formOptions.gridOptions.feature.name
                     // formTemplateUrl : 'app/stzj/station/info/form.html', // 自定义属性，编辑表单的模板path。可以不传，默认取值为formOptions.gridOptions.feature.path + (formOptions.toolbarItem.view || '/form.html')
-                    submitFn : function(footbarItem, formOptions, entity) {
+                    submitFn : customFormOptions.submitFn || function(footbarItem, formOptions, entity) {
                         if (formOptions.toolbarItem.id == 'add' || formOptions.toolbarItem.id == 'copy') {
+                            $qw.dialog.openWaitingDialogFn('数据保存中……');
                             formOptions.gridOptions.feature.service.save(entity, function(result, putResponseHeaders) {
+                                $qw.dialog.closeWaitingDialogFn();
                                 formOptions.closeFn(footbarItem, formOptions, entity, result, putResponseHeaders);
+                            }, function(result, putResponseHeaders) {
+                                $qw.dialog.closeWaitingDialogFn();
                             });
                         } else if (formOptions.toolbarItem.id == 'edit') {
+                            $qw.dialog.openWaitingDialogFn('数据保存中……');
                             formOptions.gridOptions.feature.service.update({
                                 id : formOptions.entity.f_id
                             }, entity, function(result, putResponseHeaders) {
+                                $qw.dialog.closeWaitingDialogFn();
                                 formOptions.closeFn(footbarItem, formOptions, entity, result, putResponseHeaders);
+                            }, function(result, putResponseHeaders) {
+                                $qw.dialog.closeWaitingDialogFn();
                             });
                         } else {
                             console.error('未知的操作类型：', formOptions.toolbarItem.id);
@@ -60,6 +69,9 @@
                         } else if (typeof this.formTemplateUrl == 'string') {
                             return this.formTemplateUrl;
                         } else {
+                            if (this.gridOptions.feature.formTemplateUrl) {
+                                return this.gridOptions.feature.formTemplateUrl;
+                            }
                             return $qw.getTemplateUrl(
                                     this.gridOptions.feature.path + (this.toolbarItem.view || '/form.html'))();
                         }
@@ -207,6 +219,11 @@
                 return $qw.dialog.buildDialogOptionsFn(formOptions, customAlertOptions);
             },
             buildSuccessDialogFn : function(formOptions, msg) {
+                formOptions.gridOptions = formOptions.gridOptions || {
+                    feature : {
+                        name : '成功'
+                    }
+                };
                 return $qw.dialog.buildAlertDialogFn(formOptions, {
                     size : 'sm',
                     type : 'success',
@@ -217,6 +234,11 @@
                 });
             },
             buildErrorDialogFn : function(formOptions, msg) {
+                formOptions.gridOptions = formOptions.gridOptions || {
+                    feature : {
+                        name : '错误'
+                    }
+                };
                 return $qw.dialog.buildAlertDialogFn(formOptions, {
                     size : 'sm',
                     type : 'danger',
@@ -242,6 +264,25 @@
                     items : [ 'confirm', 'cancel' ],
                     msg : msg
                 });
+            },
+            openWaitingDialogFn : function(title) {
+                this.waitDialogOptions = $qw.dialog.buildDialogOptionsFn({
+                    withDismiss : false,
+                    formTemplateUrl : $qw.getTemplateUrl('template/wait/wait.html'),
+                    gridOptions : {
+                        feature : {
+                            name : title,
+                        },
+                    },
+                    toolbarItem : {},
+                    footbar : null
+                }, {
+                    size : ''
+                });
+                this.waitDialogOptions.openFn();
+            },
+            closeWaitingDialogFn : function() {
+                this.waitDialogOptions && this.waitDialogOptions.formOptions.modalInstance.close();
             }
         };
 

@@ -1,0 +1,15 @@
+<div class="animate-switch-container" ng-switch="qwStepOptions.currentStepId">
+    <div class="animate-switch" ng-repeat="currentStep in qwStepOptions.steps" ng-switch-when="{{currentStep.id}}">
+        <div class="switch-panel-header" ng-if="currentStep.name">
+            <div class="text-center">{{currentStep.name}}</div>
+        </div>
+
+        <div class="switch-panel-body" ng-include="getStepBodyTemplateUrl(currentStep)"></div>
+
+        <div class="switch-panel-footer" ng-if="currentStep.navbar">
+            <div class="btn-group btn-group-justified" ng-if="currentStep.navbar.items">
+                <a href="javascript:void(0)" ng-repeat="item in currentStep.navbar.items" class="btn btn-{{item.css || 'primary'}}" ng-click="navbarItemClick(currentStep)"><span class="glyphicon glyphicon-{{item.ico}}" ng-if="item.ico"></span> {{item.text}}</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,7 +21,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.jianyanxinxi.weixin.service.UserInfoService#getUserInfo(java.lang.String, java.lang.String)
+     * @see com.quickwebapp.weixin.service.UserInfoService#getUserInfo(java.lang.String, java.lang.String)
      */
     @Override
     public UserInfo getUserInfo(String openId, String language) {

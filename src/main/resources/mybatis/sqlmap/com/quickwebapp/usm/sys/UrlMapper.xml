@@ -33,8 +33,8 @@
         #{f_custom},
         #{f_handler_method},
         #{f_log},
-        #{f_auto})
-        )
+        #{f_auto}
+        ) 
     </sql>
     <sql id="Insert_Values_Clause">
         <foreach collection="list" item="item" index="index" separator=",">
@@ -78,6 +78,7 @@
     <sql id="Where_Clause">
         WHERE 1=1
         <if test="f_url != null and f_url != ''">AND f_url like "%" #{f_url} "%"</if>
+        <if test="f_patterns != null and f_patterns != ''">AND f_patterns like "%" #{f_patterns} "%"</if>
         <if test="f_description != null and f_description != ''">AND f_description like "%" #{f_description} "%"</if>
         <if test="f_methods != null and f_methods != ''">AND f_methods like "%" #{f_methods} "%"</if>
         <if test="f_consumes != null and f_consumes != ''">AND f_consumes like "%" #{f_consumes} "%"</if>

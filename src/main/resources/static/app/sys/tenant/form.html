@@ -1,0 +1,29 @@
+<div ng-controller="TenantFormController as formCtrl">
+    <form role="form" name="form" class="form-horizontal qw-form" style="transition: all linear 0.5s; background: transparent;">
+        <fieldset ng-disabled="formOptions.toolbarItem.id == 'view'">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_id">租户客户ID</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control {{form.f_id.$error.required ? 'has-error' : ''}}" id="f_id" name="f_id" ng-model="entity.f_id" required placeholder="客户ID必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_id.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_name">租户客户名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_name" name="f_name" ng-model="entity.f_name" required placeholder="必填字段，不能为空！" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_name.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_remark">租户客户描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_remark" name="f_remark" ng-model="entity.f_remark">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <div qw-grid-edit="tenantBusinessGridOptions" class="grid"></div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -56,14 +56,14 @@ public interface BaseMapper<P, E> {
      * @param entity
      *            实体对象
      */
-    public void updateEntity(E entity);
+    public Integer updateEntity(E entity);
 
     /**
      * 暂未实现
      * 
      * @param entityList
      */
-    public void updateEntities(List<E> entityList);
+    public Integer updateEntities(List<E> entityList);
 
     /**
      * 根据主键删除单个实体对象
@@ -71,7 +71,7 @@ public interface BaseMapper<P, E> {
      * @param primaryKey
      *            主键
      */
-    public void deleteEntity(P primaryKey);
+    public Integer deleteEntity(P primaryKey);
 
     /**
      * 根据组合条件删除多个实体对象
@@ -79,7 +79,7 @@ public interface BaseMapper<P, E> {
      * @param mapEntity
      *            组合条件
      */
-    public void deleteEntities(MapEntity params);
+    public Integer deleteEntities(MapEntity params);
 
     /**
      * 根据主键判断实体对象是否可以删除，返回0表示可以删除

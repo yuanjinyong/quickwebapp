@@ -48,6 +48,11 @@ public class WeixinProperties {
      */
     private String createMenuUrl;
 
+    /**
+     * 主动推送消息的URL地址
+     */
+    private String sendMessageUrl;
+
     @PostConstruct
     public void init() {
         if (token == null) {
@@ -68,6 +73,9 @@ public class WeixinProperties {
         }
         if (createMenuUrl == null) {
             createMenuUrl = url + "/menu/create";
+        }
+        if (sendMessageUrl == null) {
+            sendMessageUrl = url + "/message/custom/send";
         }
     }
 
@@ -117,5 +125,13 @@ public class WeixinProperties {
 
     public void setCreateMenuUrl(String createMenuUrl) {
         this.createMenuUrl = createMenuUrl;
+    }
+
+    public String getSendMessageUrl() {
+        return sendMessageUrl;
+    }
+
+    public void setSendMessageUrl(String sendMessageUrl) {
+        this.sendMessageUrl = sendMessageUrl;
     }
 }

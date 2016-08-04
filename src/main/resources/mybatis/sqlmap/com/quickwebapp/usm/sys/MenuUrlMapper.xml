@@ -53,7 +53,9 @@
     <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
         <include refid="Select_Clause" />
         <include refid="From_Clause" />
+        LEFT JOIN t_sys_menu m ON m.f_id = t.f_menu_id
         <include refid="Where_Clause" />
+        <if test="f_is_show != null and f_is_show != ''">AND m.f_is_show = #{f_is_show}</if>
     </select>
 
     <!-- insert -->

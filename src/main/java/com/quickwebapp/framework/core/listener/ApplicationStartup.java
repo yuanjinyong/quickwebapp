@@ -3,26 +3,17 @@
  */
 package com.quickwebapp.framework.core.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import com.quickwebapp.usm.sys.entity.UrlEntity;
-import com.quickwebapp.usm.sys.service.UrlService;
+import com.quickwebapp.weixin.http.client.WeixinClient;
+import com.quickwebapp.weixin.service.MeunService;
 
 /**
- * @author JohnYuan
+ * @author 袁进勇
  *
  */
 public class ApplicationStartup implements ApplicationListener<ContextRefreshedEvent> {
@@ -38,58 +29,9 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
             return;
         }
 
-        // 当spring容器初始化完成后就会执行该方法。
-        // if (MapUtils.getInteger(HelpUtils.getSysSet(), "ASYNC_LOAD_DATA", 2) == 1) { // 是否异步加载，默认为同步
-        // new Thread(new Runnable() {
-        // public void run() {
-        // refreshUrlAndRight(event.getApplicationContext());
-        // }
-        // }).start();
-        // } else {
-        refreshUrlAndRight(ac);
-        // }
-        // MeunService meunService = ac.getBean(WeixinClient.getProperties().getMeunService(), MeunService.class);
-        // meunService.createMenu();
-    }
+        LOG.info("Application context加载完成。");
 
-    private void refreshUrlAndRight(ApplicationContext ac) {
-        LOG.info("========更新t_sys_url开始========");
-
-        long startTime = System.currentTimeMillis();
-        RequestMappingHandlerMapping requestMappingHandlerMapping = (RequestMappingHandlerMapping) ac
-                .getBean("requestMappingHandlerMapping");
-        UrlService urlService = (UrlService) ac.getBean("urlService");
-
-        List<UrlEntity> entityList = new ArrayList<UrlEntity>();
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-        for (Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
-            entityList.add(buildUrlEntity(entry.getKey(), entry.getValue()));
-        }
-        urlService.updateAutoEntities(entityList);
-
-        LOG.info("========更新t_sys_url完成，耗时：{}ms========", (System.currentTimeMillis() - startTime));
-    }
-
-    private UrlEntity buildUrlEntity(RequestMappingInfo mapping, HandlerMethod method) {
-        UrlEntity entity = new UrlEntity();
-        entity.setF_url(mapping.getPatternsCondition().getPatterns().iterator().next().substring(1));
-        entity.setF_description("d");
-        entity.setF_patterns(mapping.getPatternsCondition().toString());
-        entity.setF_methods(mapping.getMethodsCondition().toString());
-        entity.setF_params(mapping.getParamsCondition().toString());
-        entity.setF_headers(mapping.getHeadersCondition().toString());
-        entity.setF_consumes(mapping.getConsumesCondition().toString());
-        entity.setF_produces(mapping.getProducesCondition().toString());
-        entity.setF_custom(mapping.getCustomCondition() == null ? "[]" : mapping.getCustomCondition().toString());
-        entity.setF_handler_method(method.getMethod().toString());
-        entity.setF_log(2);
-        entity.setF_auto(1);
-
-        entity.setF_id(
-                DigestUtils.md5Hex(new StringBuffer().append(entity.getF_patterns()).append(entity.getF_methods())
-                        .append(entity.getF_params()).append(entity.getF_headers()).append(entity.getF_consumes())
-                        .append(entity.getF_produces()).append(entity.getF_custom()).toString()));
-
-        return entity;
+        MeunService meunService = ac.getBean(WeixinClient.getProperties().getMeunService(), MeunService.class);
+        meunService.createMenu();
     }
 }

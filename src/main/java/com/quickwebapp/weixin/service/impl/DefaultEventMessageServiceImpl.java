@@ -30,7 +30,7 @@ public class DefaultEventMessageServiceImpl implements EventMessageService {
     /*
      * (non-Javadoc)
      * 
-     * @see com.jianyanxinxi.weixin.service.EventService#onEvent(com.jianyanxinxi.weixin.entity.Message)
+     * @see com.quickwebapp.weixin.service.EventService#onEvent(com.quickwebapp.weixin.entity.Message)
      */
     @Override
     public Message onEvent(Message reqMsg) {

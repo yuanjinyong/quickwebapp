@@ -1,0 +1,174 @@
+<div ng-controller="UserFormController as form">
+    <form role="form" name="form" class="form-horizontal qw-form">
+        <fieldset ng-disabled="formOptions.toolbarItem.id == 'view'">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">基本信息</h4>
+                    </div>
+                    <div class="panel-collapse collapse in">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_account">账号</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control {{form.f_account.$error.required ? 'has-error' : ''}}" id="f_account" name="f_account" ng-model="entity.f_account" ng-disabled="formOptions.toolbarItem.id != 'add'" required placeholder="账号必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_account.$error.required" uib-tooltip="必填字段，不能为空！">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_name">姓名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_name" name="f_name" ng-model="entity.f_name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_is_can_login">是否允许登录</label>
+                            <div class="col-sm-10">
+                                <select class="form-control {{form.f_is_can_login.$error.required ? 'has-error' : ''}}" id="f_is_can_login" name="f_is_can_login" ng-model="entity.f_is_can_login" ng-options="option.value as option.label for option in $qw.dict.dicts.TrueFalse.selectOptions" required tooltip-placement="bottom" tooltip-trigger="none"
+                                    tooltip-is-open="form.f_is_can_login.$error.required" uib-tooltip="必填字段，不能为空！"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_remark">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="f_remark" name="f_remark" ng-model="entity.f_remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span>角色</span>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div style="display: inline-block; width: 120px; height: 22px; line-height: 22px;" ng-repeat="role in roleGridOptions.data">
+                                    <input type="checkbox" ng-model="role.checked" id="role_{{role.f_id}}"> <label for="role_{{role.f_id}}" style="font-weight: normal; margin: 0px;">{{role.f_role_name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="panel panel-default" ng-init="showExtInfo = false">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span>其他信息</span>
+                            <div class="glyphicon {{showExtInfo ? 'glyphicon glyphicon-minus' : 'glyphicon-plus'}}" style="float: right;" ng-click="showExtInfo = !showExtInfo"></div>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse {{showExtInfo ? 'in' : ''}}">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_staff_no">工号</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_staff_no" name="f_staff_no" ng-model="entity.userExtEntity.f_staff_no">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_gender">性别</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="f_gender" name="f_gender" ng-model="entity.userExtEntity.f_gender" ng-options="option.value as option.label for option in $qw.dict.dicts.Gender.selectOptions"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_certificate_type">证件类型</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="f_certificate_type" name="f_certificate_type" ng-model="entity.userExtEntity.f_certificate_type" ng-options="option.value as option.label for option in $qw.dict.dicts.CertificateType.selectOptions"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_certificate_no">证件号码</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_certificate_no" name="f_certificate_no" ng-model="entity.userExtEntity.f_certificate_no">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_mobile">手机号码</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_mobile" name="f_mobile" ng-model="entity.userExtEntity.f_mobile">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_register_addr">户籍地址</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_register_addr" name="f_register_addr" ng-model="entity.userExtEntity.f_register_addr">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_home_addr">居住地址</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_home_addr" name="f_home_addr" ng-model="entity.userExtEntity.f_home_addr">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_dept_id">所属部门</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_dept_id" name="f_dept_id" ng-model="entity.userExtEntity.f_dept_id">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_post">岗位</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_post" name="f_post" ng-model="entity.userExtEntity.f_post">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_status">状态</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_status" name="f_status" ng-model="entity.userExtEntity.f_status">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_entry_date">入职时间</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_entry_date" name="f_entry_date" ng-model="entity.userExtEntity.f_entry_date">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_resign_date">离职时间</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_resign_date" name="f_resign_date" ng-model="entity.userExtEntity.f_resign_date">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_phone">办公电话</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_phone" name="f_phone" ng-model="entity.userExtEntity.f_phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_email">电子邮箱</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="f_email" name="f_email" ng-model="entity.userExtEntity.f_email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="f_remark">备注</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="f_remark" name="f_remark" ng-model="entity.userExtEntity.f_remark"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span>所赋权限</span>
+                            <div class="glyphicon {{showMenuInfo ? 'glyphicon glyphicon-minus' : 'glyphicon-plus'}}" style="float: right;" ng-click="showMenuInfo = !showMenuInfo"></div>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse {{showMenuInfo ? 'in' : ''}}">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div qw-tree="menuTreeOptions"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

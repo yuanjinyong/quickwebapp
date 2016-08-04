@@ -1,0 +1,33 @@
+<div ng-controller="DictGroupFormController as formCtrl">
+    <form role="form" name="form" class="form-horizontal qw-form" style="transition: all linear 0.5s; background: transparent;">
+        <fieldset ng-disabled="formOptions.toolbarItem.id == 'view'">
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_code">字典组编码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control {{form.f_code.$error.required ? 'has-error' : ''}}" id="f_code" name="f_code" ng-model="entity.f_code" required placeholder="字典组编码必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_code.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_remark">字典组描述</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="f_remark" name="f_remark" ng-model="entity.f_remark" required placeholder="必填字段，不能为空！" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_remark.$error.required" uib-tooltip="必填字段，不能为空！">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="f_type">字典组描述</label>
+                <div class="col-sm-10">
+                    <select class="form-control" name="f_type" ng-model="entity.f_type" required>
+                        <option ng-value="'通用'">通用</option>
+                        <option ng-value="'单表'">单表</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-if="entity.f_type === '单表'">
+                <label class="control-label col-sm-2" for="f_remark">SQL语句</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="f_sql" name="f_sql" ng-model="entity.f_sql" placeholder="查询字典项的SQL语句，单表时有效。"></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -1,11 +1,12 @@
-<div ng-controller="DictFormController as formCtrl">
+<div ng-controller="StationInfoFormController as formCtrl">
     <form role="form" name="form" class="form-horizontal qw-form" style="transition: all linear 0.5s; background: transparent;">
         <input type="hidden" id="f_id" name="f_id" ng-model="entity.f_id">
         <fieldset ng-disabled="formOptions.toolbarItem.id == 'view'">
             <div class="form-group">
                 <label class="control-label col-sm-2" for="f_station_no">搅拌站编号：</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control {{form.f_station_no.$error.required ? 'has-error' : ''}}" id="f_station_no" name="f_station_no" ng-model="entity.f_station_no" required placeholder="编号必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_station_no.$error.required" uib-tooltip="必填字段，不能为空！">
+                <div class="col-sm-10 {{form.f_station_no.$error.required ? 'has-error' : 'has-success'}} has-feedback">
+                    <input type="text" class="form-control" id="f_station_no" name="f_station_no" ng-model="entity.f_station_no" required placeholder="编号必须唯一" tooltip-placement="bottom-right" tooltip-trigger="none" tooltip-is-open="form.f_station_no.$error.required" uib-tooltip="必填字段，不能为空！">
+                    <span class="glyphicon glyphicon-{{form.f_station_no.$error.required ? 'remove' : 'ok'}} form-control-feedback"></span>
                 </div>
             </div>
             <div class="form-group">

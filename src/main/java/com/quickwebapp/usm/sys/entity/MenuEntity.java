@@ -6,6 +6,7 @@ import com.quickwebapp.framework.core.entity.MapEntity;
 import com.quickwebapp.framework.core.entity.TreeNodeEntity;
 
 public class MenuEntity extends TreeNodeEntity<String, MenuEntity> {
+    public static final String MENU_ROOT = "ROOT"; // 根菜单
     private String f_parent_name; // 父级名称
     private String f_parent_ids; // 所有父级的ID，用“/”分隔
     private String f_menu_name; // 菜单名称

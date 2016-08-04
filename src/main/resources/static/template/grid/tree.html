@@ -1,35 +1,32 @@
-<div id="{{qwGridOptions.feature.id}}Grid">
-    <div class="panel panel-default qw-grid">
-        <div class="panel-heading qw-grid-heading" ng-if="qwGridOptions.feature.name">{{qwGridOptions.feature.name}}树</div>
+<div class="panel panel-default qw-grid" id="{{qwGridOptions.feature.id}}Grid">
+    <div class="panel-heading qw-grid-heading" id="{{qwGridOptions.feature.id}}GridHead" ng-if="qwGridOptions.feature.name">{{qwGridOptions.feature.name}}树</div>
+
+    <div class="qw-grid-toolbar" id="{{qwGridOptions.feature.id}}GridToolbar" ng-if="qwGridOptions.toolbar">
         <!-- 
-                    .visible-xs Extra small (less than 768px) visible
-                    .visible-sm Small (up to 768 px) visible
-                    .visible-md Medium (768 px to 991 px) visible
-                    .visible-lg Larger (992 px and above) visible
-                    -->
-        <div class="qw-grid-toolbar visible-md visible-lg" ng-if="qwGridOptions.toolbar">
-            <!--
-            <button class="btn btn-sm btn-default" ng-click="">
-                <span class="glyphicon glyphicon-menu-hamburger"></span>
-            </button>
-            -->
-            <div class="btn-group " ng-repeat="group in qwGridOptions.toolbar.groups">
+        .visible-xs Extra small (less than 768px) visible
+        .visible-sm Small (up to 768 px) visible
+        .visible-md Medium (768 px to 991 px) visible
+        .visible-lg Larger (992 px and above) visible
+        -->
+        <div class="visible-md visible-lg">
+            <div class="btn-group" ng-repeat="group in qwGridOptions.toolbar.groups" ng-if="group.items && group.items.length > 0">
                 <button class="btn btn-{{item.size || 'sm'}} btn-{{item.css || 'default'}} {{item.block ? 'btn-block' : ''}}" ng-repeat="item in group.items" ng-click="item.click(item, qwGridOptions)" ng-if="!item.hide" ng-disabled="item.disabled">
                     <span class="glyphicon glyphicon-{{item.ico}}" ng-if="item.ico"> {{item.text}}</span>
                 </button>
             </div>
         </div>
-        <div class="qw-grid-toolbar visible-xs visible-sm" ng-if="qwGridOptions.toolbar">
-            <div class="btn-group " ng-repeat="group in qwGridOptions.toolbar.groups">
+        <div class="visible-xs visible-sm">
+            <div class="btn-group" ng-repeat="group in qwGridOptions.toolbar.groups" ng-if="group.items && group.items.length > 0">
                 <button class="btn btn-{{item.size || 'sm'}} btn-{{item.css || 'default'}} {{item.block ? 'btn-block' : ''}}" ng-repeat="item in group.items" ng-click="item.click(item, qwGridOptions)" ng-if="!item.hide" ng-disabled="item.disabled">
                     <span class="glyphicon glyphicon-{{item.ico}}" ng-if="item.ico"></span>
                 </button>
             </div>
         </div>
-        <div class="grid qw-grid-body" ui-grid="qwGridOptions" ui-grid-auto-resize ui-grid-selection ui-grid-tree-view ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
-            <div class="text-center qw-grid-error-msg" ng-show="qwGridOptions.errorMsg">
-                <uib-alert>{{qwGridOptions.errorMsg}}</uib-alert>
-            </div>
+    </div>
+
+    <div class="grid qw-grid-body" ng-style="getGridBodyHeight()" ui-grid="qwGridOptions" ui-grid-auto-resize ui-grid-selection ui-grid-tree-view ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-exporter>
+        <div class="text-center qw-grid-error-msg" ng-show="qwGridOptions.errorMsg">
+            <uib-alert>{{qwGridOptions.errorMsg}}</uib-alert>
         </div>
     </div>
 </div>

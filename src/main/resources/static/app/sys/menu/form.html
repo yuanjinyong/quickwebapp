@@ -46,7 +46,9 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="f_icon">图标：</label>
                 <div class="col-sm-10">
-                    <select class="form-control" id="f_icon" name="f_icon" ng-model="entity.f_icon" ng-options="option.value as option.label for option in $qw.dict.dicts.ICO.selectOptions"></select>
+                    <select class="form-control" id="f_icon" name="f_icon" ng-model="entity.f_icon" ng-options="option.value as option.label for option in $qw.dict.dicts.Glyphicons.selectOptions">
+                        <option value="">--请选择--</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
@@ -58,7 +60,12 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="f_url_id">页面路径：</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="f_url_id" name="f_url_id" ng-model="entity.f_url_id">
+                    <input type="text" class="form-control" id="f_url_id" name="f_url_id" ng-model="entity.f_url_id" ng-disabled="entity.f_type != 2">
+                </div>
+            </div>
+            <div class="form-group" ng-show="entity.f_type > 1">
+                <div class="col-sm-12">
+                    <div qw-grid-edit="menuUrlGridOptions" class="grid"></div>
                 </div>
             </div>
         </fieldset>

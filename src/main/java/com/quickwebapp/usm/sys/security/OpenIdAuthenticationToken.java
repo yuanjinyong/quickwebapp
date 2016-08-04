@@ -9,44 +9,50 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
- * @author Administrator
+ * @author 袁进勇
  *
  */
 public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = -3287040854242762707L;
-    private final String code;
-    private String openid;
+    private final String authorizationCode;
+    private final String openid;
+    private final Object principal;
     private String accessToken;
     private Integer expiresIn; // access_token接口调用凭证超时时间，单位（秒）
 
-    public OpenIdAuthenticationToken(String code) {
+    public OpenIdAuthenticationToken(String authorizationCode, String openid) {
         super(null);
-        this.code = code;
-        setAuthenticated(false);
+        super.setAuthenticated(false);
+        this.authorizationCode = authorizationCode;
+        this.openid = openid;
+        this.principal = null;
     }
 
-    public OpenIdAuthenticationToken(String code, Collection<? extends GrantedAuthority> authorities) {
+    public OpenIdAuthenticationToken(String authorizationCode, String openid, Object principal,
+            Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.code = code;
         super.setAuthenticated(true); // must use super, as we override
+        this.authorizationCode = authorizationCode;
+        this.openid = openid;
+        this.principal = principal;
     }
 
     @Override
     public Object getCredentials() {
-        return null;
+        return authorizationCode;
     }
 
     @Override
     public Object getPrincipal() {
-        return openid;
+        return principal;
+    }
+
+    public String getAuthorizationCode() {
+        return authorizationCode;
     }
 
     public String getOpenid() {
         return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
     }
 
     public String getAccessToken() {
@@ -64,9 +70,4 @@ public class OpenIdAuthenticationToken extends AbstractAuthenticationToken {
     public void setExpiresIn(Integer expiresIn) {
         this.expiresIn = expiresIn;
     }
-
-    public String getCode() {
-        return code;
-    }
-
 }

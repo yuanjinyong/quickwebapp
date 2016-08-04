@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quickwebapp.usm.sys.mapper.UserExtMapper">
+    <sql id="Insert_Clause">
+        INSERT INTO t_sys_user_ext(
+        f_id,
+        f_staff_no,
+        f_gender,
+        f_certificate_type,
+        f_certificate_no,
+        f_mobile,
+        f_register_addr,
+        f_home_addr,
+        f_dept_id,
+        f_post,
+        f_status,
+        f_entry_date,
+        f_resign_date,
+        f_phone,
+        f_email,
+        f_remark
+        )
+        VALUES
+    </sql>
+    <sql id="Insert_Value_Clause">
+        (
+        #{f_id},
+        #{f_staff_no},
+        #{f_gender},
+        #{f_certificate_type},
+        #{f_certificate_no},
+        #{f_mobile},
+        #{f_register_addr},
+        #{f_home_addr},
+        #{f_dept_id},
+        #{f_post},
+        #{f_status},
+        #{f_entry_date},
+        #{f_resign_date},
+        #{f_phone},
+        #{f_email},
+        #{f_remark}
+        )
+    </sql>
+    <sql id="Insert_Values_Clause">
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.f_id},
+            #{item.f_staff_no},
+            #{item.f_gender},
+            #{item.f_certificate_type},
+            #{item.f_certificate_no},
+            #{item.f_mobile},
+            #{item.f_register_addr},
+            #{item.f_home_addr},
+            #{item.f_dept_id},
+            #{item.f_post},
+            #{item.f_status},
+            #{item.f_entry_date},
+            #{item.f_resign_date},
+            #{item.f_phone},
+            #{item.f_email},
+            #{item.f_remark}
+            )
+        </foreach>
+    </sql>
+
+    <sql id="Select_Clause">
+        SELECT
+        t.f_id,
+        t.f_staff_no,
+        t.f_gender,
+        t.f_certificate_type,
+        t.f_certificate_no,
+        t.f_mobile,
+        t.f_register_addr,
+        t.f_home_addr,
+        t.f_dept_id,
+        t.f_post,
+        t.f_status,
+        t.f_entry_date,
+        t.f_resign_date,
+        t.f_phone,
+        t.f_email,
+        t.f_remark
+    </sql>
+    <sql id="From_Clause">
+        FROM t_sys_user_ext t
+    </sql>
+    <sql id="Where_Clause">
+        WHERE 1=1
+        <if test="f_staff_no != null and f_staff_no != ''">AND t.f_staff_no = #{f_staff_no}</if>
+        <if test="f_staff_no_like != null and f_staff_no_like != ''">AND t.f_staff_no like "%" #{f_staff_no_like} "%"</if>
+        <if test="f_dept_id != null and f_dept_id != ''">AND t.f_dept_id = #{f_dept_id}</if>
+        <if test="f_dept_id_in != null and f_dept_id_in != ''">AND t.f_dept_id in (${f_dept_id_in})</if>
+        <if test="f_status != null and f_status != ''">AND t.f_status = #{f_status}</if>
+        <if test="f_status_in != null and f_status_in != ''">AND t.f_status in (${f_status_in})</if>
+        <if test="f_entry_date_begin != null and f_entry_date_begin != ''">AND t.f_entry_date &gt;= #{f_entry_date_begin} </if>
+        <if test="f_entry_date_end != null and f_entry_date_end != ''">AND t.f_entry_date &lt;= #{f_entry_date_end} </if>
+        <if test="f_resign_date_begin != null and f_resign_date_begin != ''">AND t.f_resign_date &gt;= #{f_resign_date_begin} </if>
+        <if test="f_resign_date_end != null and f_resign_date_end != ''">AND t.f_resign_date &lt;= #{f_resign_date_end} </if>
+    </sql>
+
+
+    <!-- select -->
+    <select id="selectEntity" parameterType="java.lang.Integer" resultType="com.quickwebapp.usm.sys.entity.UserExtEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        WHERE t.f_id = #{f_id}
+    </select>
+    <select id="selectEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.usm.sys.entity.UserExtEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+    <select id="selectMapEntityListPage" parameterType="com.quickwebapp.framework.core.entity.MapEntity" resultType="com.quickwebapp.framework.core.entity.MapEntity">
+        <include refid="Select_Clause" />
+        <include refid="From_Clause" />
+        <include refid="Where_Clause" />
+    </select>
+
+    <!-- insert -->
+    <insert id="insertEntity" parameterType="com.quickwebapp.usm.sys.entity.UserExtEntity">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Value_Clause" />
+    </insert>
+    <insert id="insertEntities" parameterType="java.util.ArrayList">
+        <include refid="Insert_Clause" />
+        <include refid="Insert_Values_Clause" />
+    </insert>
+
+    <!-- update -->
+    <update id="updateEntity" parameterType="com.quickwebapp.usm.sys.entity.UserExtEntity">
+        UPDATE t_sys_user_ext SET
+        <if test="f_staff_no != null">f_staff_no=#{f_staff_no},</if>
+        <if test="f_gender != null">f_gender=#{f_gender},</if>
+        <if test="f_certificate_type != null">f_certificate_type=#{f_certificate_type},</if>
+        <if test="f_certificate_no != null">f_certificate_no=#{f_certificate_no},</if>
+        <if test="f_mobile != null">f_mobile=#{f_mobile},</if>
+        <if test="f_register_addr != null">f_register_addr=#{f_register_addr},</if>
+        <if test="f_home_addr != null">f_home_addr=#{f_home_addr},</if>
+        <if test="f_dept_id != null">f_dept_id=#{f_dept_id},</if>
+        <if test="f_post != null">f_post=#{f_post},</if>
+        <if test="f_status != null">f_status=#{f_status},</if>
+        <if test="f_entry_date != null">f_entry_date=#{f_entry_date},</if>
+        <if test="f_resign_date != null">f_resign_date=#{f_resign_date},</if>
+        <if test="f_phone != null">f_phone=#{f_phone},</if>
+        <if test="f_email != null">f_email=#{f_email},</if>
+        <if test="f_remark != null">f_remark=#{f_remark},</if>
+        f_id=#{f_id}
+        WHERE f_id=#{f_id}
+    </update>
+
+    <!-- delete -->
+    <select id="isCanDeleteEntity" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT 0 FROM DUAL
+    </select>
+    <delete id="deleteEntity" parameterType="java.lang.Integer">
+        DELETE FROM t_sys_user_ext WHERE f_id=#{f_id}
+    </delete>
+    <delete id="deleteEntities" parameterType="com.quickwebapp.framework.core.entity.MapEntity">
+        DELETE FROM t_sys_user_ext WHERE 1=1
+        <if test="f_status != null and f_status != ''">AND f_status = #{f_status}</if>
+        <if test="f_dept_id != null and f_dept_id != ''">AND f_dept_id = #{f_dept_id}</if>
+    </delete>
+
+    <!-- 其他SQL -->
+</mapper>

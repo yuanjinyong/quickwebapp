@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -46,14 +47,18 @@ public class OpenIdAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         String weixinCode = request.getHeader("Weixin-Code");
-        if (weixinCode == null || weixinCode.trim().length() == 0) {
+        String openid = request.getHeader("Open-ID");
+        if ((weixinCode == null || weixinCode.trim().length() == 0)
+                && (openid == null || openid.trim().length() == 0)) {
             chain.doFilter(request, response);
             return;
         }
-
+        weixinCode = weixinCode == null ? null : new String(Base64.decode(weixinCode.getBytes("UTF-8")), "UTF-8");
+        openid = openid == null ? null : new String(Base64.decode(openid.getBytes("UTF-8")), "UTF-8");
         LOG.debug("OpenId Authorization header found for Weixin-Code '" + weixinCode + "'");
-        if (authenticationIsRequired(weixinCode)) {
-            OpenIdAuthenticationToken authRequest = new OpenIdAuthenticationToken(weixinCode);
+
+        if (authenticationIsRequired(weixinCode, openid)) {
+            OpenIdAuthenticationToken authRequest = new OpenIdAuthenticationToken(weixinCode, openid);
 
             try {
                 // authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
@@ -73,7 +78,7 @@ public class OpenIdAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    private boolean authenticationIsRequired(String weixinCode) {
+    private boolean authenticationIsRequired(String weixinCode, String openid) {
         Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
 
         if (existingAuth == null || !existingAuth.isAuthenticated()) {
@@ -81,7 +86,11 @@ public class OpenIdAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (existingAuth instanceof OpenIdAuthenticationToken) {
-            if (!weixinCode.equals(((OpenIdAuthenticationToken) existingAuth).getCode())) {
+            if (weixinCode != null && !weixinCode.equals(((OpenIdAuthenticationToken) existingAuth).getAuthorizationCode())) {
+                return true;
+            }
+
+            if (openid != null && !openid.equals(((OpenIdAuthenticationToken) existingAuth).getOpenid())) {
                 return true;
             }
         }

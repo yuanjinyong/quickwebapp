@@ -1,6 +1,6 @@
 <div id="{{formOptions.gridOptions.feature.id}}Form">
     <div class="modal-header" ng-mousedown="startToMove($event)">
-        <button aria-hidden="true" class="close" type="button" ng-click="dismiss()">
+        <button aria-hidden="true" class="close" type="button" ng-click="dismiss()" ng-if="formOptions.withDismiss">
             <span class="glyphicon glyphicon-remove"></span>
         </button>
         <h4 class="modal-title">
