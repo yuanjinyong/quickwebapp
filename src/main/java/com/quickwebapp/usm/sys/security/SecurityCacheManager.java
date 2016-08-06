@@ -31,6 +31,7 @@ import com.quickwebapp.framework.core.entity.MapEntity;
 import com.quickwebapp.usm.sys.entity.MenuEntity;
 import com.quickwebapp.usm.sys.entity.UrlEntity;
 import com.quickwebapp.usm.sys.entity.UserEntity;
+import com.quickwebapp.usm.sys.mapper.MenuMapper;
 import com.quickwebapp.usm.sys.mapper.MenuUrlMapper;
 import com.quickwebapp.usm.sys.mapper.UrlMapper;
 import com.quickwebapp.usm.sys.mapper.UserMapper;
@@ -44,6 +45,7 @@ import com.quickwebapp.usm.sys.mapper.UserMenuMapper;
 public class SecurityCacheManager implements InitializingBean {
     private static final Logger LOG = LoggerFactory.getLogger(SecurityCacheManager.class);
 
+    private static List<MenuEntity> pagesCache = new ArrayList<MenuEntity>();
     // 权限缓存
     private static Map<String, CustomAuthority> authoritiesCache = new HashMap<String, CustomAuthority>();
     // URL配置的权限缓存
@@ -57,6 +59,8 @@ public class SecurityCacheManager implements InitializingBean {
     private RequestMappingHandlerMapping requestMappingHandlerMapping;
     @Autowired
     private UrlMapper urlMapper;
+    @Autowired
+    private MenuMapper menuMapper;
     @Autowired
     private MenuUrlMapper menuUrlMapper;
     @Autowired
@@ -125,6 +129,8 @@ public class SecurityCacheManager implements InitializingBean {
     }
 
     public void loadUrlAuthoritiesCache() {
+        loadPagesCache();
+
         MapEntity params = new MapEntity();
         params.put("f_is_show", 1);
         params.setOrderBy("f_patterns, f_methods");
@@ -157,6 +163,16 @@ public class SecurityCacheManager implements InitializingBean {
             user.setF_password(superAdmin.getPassword());
             loadSecurityUserCache(user);
         }
+    }
+
+    private void loadPagesCache() {
+        MapEntity params = new MapEntity();
+        params.put("f_type", 2);
+        params.put("f_is_show", 1);
+        params.setPageSizeWithMax().setOrderBy("f_parent_ids, f_order");
+        List<MenuEntity> pages = menuMapper.selectEntityListPage(params);
+        pagesCache.clear();
+        pagesCache.addAll(pages);
     }
 
     public void loadSecurityUserCache() {
@@ -274,5 +290,9 @@ public class SecurityCacheManager implements InitializingBean {
 
     public SecurityUser getSecurityUser(String username) {
         return securityUserCache.get(username);
+    }
+
+    public List<MenuEntity> getAllPages() {
+        return pagesCache;
     }
 }

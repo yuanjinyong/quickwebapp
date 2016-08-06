@@ -73,6 +73,8 @@ public class MenuController extends BaseController<String, MenuEntity> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<MapEntity> delete(@PathVariable("id") String primaryKey) {
+        // 刷新权限控制的缓存
+        securityCacheManager.loadUrlAuthoritiesCache();
         return super.delete(primaryKey);
     }
 }
