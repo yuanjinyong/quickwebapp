@@ -157,6 +157,8 @@
                 };
 
                 $scope.isLoading = true;
+                $location.path('/app/global/login');
+
                 var code = $qw.location.params['code'];
                 $http.get('api/sys/user', {
                     headers : code ? {
