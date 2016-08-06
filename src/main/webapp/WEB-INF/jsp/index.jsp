@@ -56,6 +56,7 @@ var $qw = {
     <script type="text/javascript" src="app/global/directive/resize.js?__t=${timestamp}"></script>
     <script type="text/javascript" src="app/global/directive/tree.js?__t=${timestamp}"></script>
     <script type="text/javascript" src="app/global/filter/dict.js?__t=${timestamp}"></script>
+    <script type="text/javascript" src="app/global/interceptor/HttpInterceptor.js?__t=${timestamp}"></script>
     <script type="text/javascript" src="app/global/service/DialogService.js?__t=${timestamp}"></script>
     <script type="text/javascript" src="app/global/service/GridService.js?__t=${timestamp}"></script>
     <script type="text/javascript" src="app/global/service/HttpService.js?__t=${timestamp}"></script>

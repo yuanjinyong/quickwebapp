@@ -29,7 +29,7 @@ $qw.toJson = function(obj, pretty) {
 
 $qw.getDocHeight = function() {
     return Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight,
-            document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
+        document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
 };
 
 // 手动初始化
@@ -43,7 +43,7 @@ angular.element(document).ready(function() {
 // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 (function(angular) {
-
+    angular.module('app.interceptors', []);
     angular.module('app.directives', []);
     angular.module('app.filters', []);
     angular.module('app.controllers', []);
@@ -67,6 +67,7 @@ angular.element(document).ready(function() {
     'ui.grid.moveColumns', // Grid表格拖动调整列顺序
     'ui.grid.pinning', // Grid表格固定列
     'ui.grid.exporter', // Grid表格导出记录
+    'app.interceptors', // 拦截器
     'app.directives', // 自定义指令
     'app.filters', // 自定义过滤器
     'app.controllers', // 控制器
@@ -82,66 +83,7 @@ angular.element(document).ready(function() {
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         // $httpProvider.defaults.xsrfCookieName = 'XSRF-TOKEN';
         // $httpProvider.defaults.xsrfHeaderName = 'X-XSRF-TOKEN';
-        $httpProvider.interceptors.push(function($q, $location) {
-            return {
-                // optional method, do something on success
-                'request' : function(config) {
-                    // $qw.dev && console.debug('request', config);
-                    config.requestTimestamp = new Date().getTime();
-                    return config;
-                },
-                // optional method, do something on error
-                'requestError' : function(rejection) {
-                    $qw.dev && console.error('rejection', rejection);
-                    return $q.reject(rejection);
-                },
-
-                // optional method, do something on success
-                'response' : function(response) {
-                    response.config.responseTimestamp = new Date().getTime();
-                    if (response.data.state == false) {
-                        console.error('response.data', response.data);
-
-                        $qw.dialog.buildErrorDialogFn({}, response.data.msg).openFn();
-                    }
-                    //                            $qw.dev
-                    //                                    && console.debug('[' + response.config.method + '][' + response.config.url + ']耗时：'
-                    //                                            + (response.config.responseTimestamp - response.config.requestTimestamp)
-                    //                                            + 'ms。');
-                    return response;
-                },
-                // optional method, do something on error
-                'responseError' : function(response) {
-                    $qw.dev && console.error('response', response);
-                    if (response.status === 401) {
-                        $qw.dev && console.error('访问URL地址' + response.config.url + '需要先登录认证');
-                        $qw.originalPath = $location.path();
-                        $qw.dev && console.info('跳转到登录页面，备份当前path', $qw.originalPath);
-                        $location.path('/app/global/login');
-                    } else if (response.status === 403) {
-                        if (response.data && response.data.message) {
-                            $qw.dev && console.error(response.data.message);
-                            $qw.dialog.buildErrorDialogFn({}, response.data.message).openFn();
-                        } else {
-                            var msg = '无[' + response.config.method + '][' + response.config.url + ']的访问权限，请联系系统管理员！';
-                            $qw.dev && console.error(msg);
-                            $qw.dialog.buildErrorDialogFn({}, msg).openFn();
-                        }
-                    }  else if (response.status === 404) {
-                        var msg = '未找到[' + response.config.method + '][' + response.config.url + ']URL！';
-                        $qw.dev && console.error(msg);
-                        $qw.dialog.buildErrorDialogFn({}, msg).openFn();
-                    } else {
-                        if (response.data && response.data.message) {
-                            $qw.dialog.buildErrorDialogFn({}, response.data.message).openFn();
-                        } else {
-                            $qw.dialog.buildErrorDialogFn({}, response.statusText).openFn();
-                        }
-                    }
-                    return $q.reject(response);
-                }
-            };
-        });
+        $httpProvider.interceptors.push('HttpInterceptor');
 
         angular.forEach($qw.pages, function(page, index, pages) {
             if (page.f_url_id) {
@@ -153,10 +95,12 @@ angular.element(document).ready(function() {
 
         $routeProvider.when('/app/global/error', {
             templateUrl : $qw.getTemplateUrl('app/global/error.html')
-        }).when('/app/global/login', {
-            templateUrl : $qw.getTemplateUrl('app/global/login.html')
+        }).when('/', {
+            redirectTo : '/app/global/welcome'
         }).when('/app/global/welcome', {
             templateUrl : $qw.getTemplateUrl('app/global/welcome.html')
+        }).when('/app/global/login', {
+            templateUrl : $qw.getTemplateUrl('app/global/login.html')
         }).otherwise({
             redirectTo : '/app/global/error'
         });
