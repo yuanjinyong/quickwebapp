@@ -8,11 +8,11 @@
         };
 
         $scope.getFormStyle = function() {
+            var padding = (document.getElementsByClassName('view-container')[0].clientHeight - 40 - document
+                .getElementById('loginForm').clientHeight) / 2;
             return {
-                'float' : 'right',
-                'padding-top' : (document.body.clientHeight / 2 - document.querySelectorAll('#loginForm')[0].clientHeight)
-                        + 'px',
-                'width' : '400px'
+                'padding-top' : padding + 'px',
+                'padding-bottom' : padding + 'px',
             };
         };
     };

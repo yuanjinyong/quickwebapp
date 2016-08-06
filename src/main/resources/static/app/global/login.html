@@ -26,29 +26,30 @@
     </div>
 
 
-    <div ng-style="getFormStyle()" ng-if="!$qw.isMobile">
-        <form id="loginForm" role="form" ng-submit="login(credentials)">
-            <div class="text-center">
-                <div class="alert alert-danger" style="margin-top: -72px;" ng-show="loginErrorMsg">{{loginErrorMsg}}</div>
-            </div>
-            <div style="text-align: left;">
+    <div class="row" ng-style="getFormStyle()" ng-if="!$qw.isMobile">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-3">
+            <form id="loginForm" role="form" ng-submit="login(credentials)">
+                <div class="text-center">
+                    <div class="alert alert-danger" style="margin-top: -72px;" ng-show="loginErrorMsg">{{loginErrorMsg}}</div>
+                </div>
                 <div class="form-group">
-                    <label for="username">用户名：</label>
+                    <label for="username">账号</label>
                     <div>
                         <input type="text" class="form-control" id="username" name="username" ng-model="credentials.username" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">密码：</label>
+                    <label for="password">密码</label>
                     <div>
                         <input type="password" class="form-control" id="password" name="password" ng-model="credentials.password" />
                     </div>
                 </div>
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">登录</button>
-                <button type="reset" class="btn btn-warning">重置</button>
-            </div>
-        </form>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">登录</button>
+                    <button type="reset" class="btn btn-warning">重置</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
