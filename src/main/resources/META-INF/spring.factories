@@ -2,3 +2,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.quickwebapp.spring.boot.autoconfigure.MyBatisPageAutoConfiguration,\
 com.quickwebapp.weixin.autoconfigure.WeixinAutoConfiguration
+
+
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+com.quickwebapp.framework.core.listener.ApplicationStartup
